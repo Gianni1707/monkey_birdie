@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spike — BirdNET tfjs-tflite</title>
+  <!-- TF.js + tfjs-tflite da CDN (default: single-thread, validazione correttezza+latenza).
+       IMPORTANTE: tfjs-tflite alpha.10 richiede tfjs-core 4.9.0 ESATTO (peer dep).
+       Per il test isolato/multi-thread vedi README (self-host + COOP/COEP). -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.9.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-tflite@0.0.1-alpha.10/dist/tf-tflite.min.js"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 1.5rem auto; padding: 0 1rem; }
+    h1 { font-size: 1.2rem; }
+    label { display:block; margin:.6rem 0 .2rem; font-weight:600; }
+    .row { margin-bottom: .8rem; }
+    button { padding:.6rem 1rem; font-size:1rem; }
+    pre { background:#111; color:#0f0; padding:1rem; border-radius:8px; overflow:auto; white-space:pre-wrap; }
+    .badge { display:inline-block; padding:.1rem .5rem; border-radius:6px; font-size:.8rem; }
+    .ok { background:#1b5e20; color:#fff; } .warn { background:#9a6700; color:#fff; }
+    table { border-collapse: collapse; width:100%; } td,th{ border:1px solid #ccc; padding:.3rem .5rem; text-align:left; }
+  </style>
+</head>
+<body>
+  <h1>🐦 Spike — BirdNET via tfjs-tflite (WASM)</h1>
+  <p>Valida che lo <strong>stesso</strong> <code>birdnet.tflite</code> giri nel browser
+     (op supportate) e con latenza accettabile. Nessun upload sul server: tutto in locale.</p>
+
+  <div class="row">
+    Cross-origin isolation (multi-thread WASM): <span id="iso" class="badge"></span>
+  </div>
+
+  <div class="row">
+    <label>1) Modello <code>birdnet.tflite</code></label>
+    <input type="file" id="model" accept=".tflite" />
+  </div>
+  <div class="row">
+    <label>2) Label list <code>birdnet_labels.txt</code> (formato <code>Sci_Common</code>)</label>
+    <input type="file" id="labels" accept=".txt" />
+  </div>
+  <div class="row">
+    <label>3) Clip audio di test (≥3s, qualunque formato decodificabile dal browser)</label>
+    <input type="file" id="audio" accept="audio/*" />
+  </div>
+  <div class="row">
+    <label>Top-K</label>
+    <input type="number" id="topk" value="5" min="1" max="20" style="width:5rem" />
+  </div>
+
+  <button id="run" disabled>Esegui riconoscimento</button>
+
+  <h3>Esito</h3>
+  <div id="result"></div>
+  <pre id="log"></pre>
+
+  <script src="spike.js"></script>
+</body>
+</html>

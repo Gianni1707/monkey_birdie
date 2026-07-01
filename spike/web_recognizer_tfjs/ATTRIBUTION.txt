@@ -1,0 +1,13 @@
+Clip di test: sample_3s_48k.wav
+  Specie: Turdus merula (Common Blackbird / Merlo)
+  Estratto (3s, 48kHz mono) da: "Turdus merula - Common Blackbird XC442745.mp3"
+  Autore: James Ray
+  Fonte: Wikimedia Commons (originale: xeno-canto XC442745)
+  Licenza: CC BY-SA 4.0  (https://creativecommons.org/licenses/by-sa/4.0/)
+  URL: https://commons.wikimedia.org/wiki/File:Turdus_merula_-_Common_Blackbird_XC442745.mp3
+  Uso: solo test locale dello spike (non ridistribuito nell'app).
+
+Modello: birdnet.tflite = "audio-model.tflite" (BirdNET GLOBAL 6K V2.4, FP32)
+Label:   birdnet_labels.txt = labels/en_us.txt (6522 specie, formato "Sci_Common")
+  Fonte: Zenodo record 15050749 (BirdNET_v2.4_tflite.zip), BirdNET-Analyzer team.
+  Licenza modelli: CC BY-NC-SA 4.0 (uso non commerciale).

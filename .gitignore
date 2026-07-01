@@ -1,0 +1,31 @@
+# Flutter / Dart
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+pubspec.lock        # app non pubblicata: lock non versionato per ora
+
+# Codegen (rigenerati da build_runner)
+*.g.dart
+*.freezed.dart
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Segreti / config locale Claude
+.claude/settings.local.json
+
+# Modelli BirdNET (grandi, non versionarli: vedi README)
+assets/models/*.tflite
+web/birdnet/model/
+
+# Cartelle di spike (asset/modelli scaricati, pesanti)
+spike/web_recognizer/birdnet.tflite
+spike/web_recognizer_tfjs/model/
+spike/web_recognizer_tfjs/sample.wav
+
+# OS
+.DS_Store

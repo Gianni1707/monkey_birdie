@@ -1,0 +1,10 @@
+# Rinomina automaticamente i campi camelCase <-> snake_case del DB.
+# Cosi' i modelli freezed non hanno bisogno di @JsonKey su ogni campo:
+#   Dart  nomeComune   <->   JSON  nome_comune
+targets:
+  $default:
+    builders:
+      json_serializable:
+        options:
+          field_rename: snake
+          explicit_to_json: true

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spike TF.js — BirdNET</title>
+  <!-- TF.js completo (include layers + tf.signal.stft). Nessun tfjs-tflite qui. -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 760px; margin: 1.5rem auto; padding: 0 1rem; }
+    h1 { font-size: 1.2rem; }
+    button { padding: .6rem 1rem; font-size: 1rem; margin: .3rem .3rem .3rem 0; }
+    pre { background:#111; color:#0f0; padding:1rem; border-radius:8px; white-space:pre-wrap; }
+    table { border-collapse: collapse; width:100%; } td,th{ border:1px solid #ccc; padding:.3rem .5rem; text-align:left; }
+  </style>
+</head>
+<body>
+  <h1>🐦 Spike TF.js — BirdNET (modello ufficiale LayersModel)</h1>
+  <p>Valida il modello TF.js ufficiale in-browser. Il mel-spectrogram è calcolato
+     dal custom layer <code>MelSpecLayerSimple</code> (FFT via <code>tf.signal.stft</code>,
+     nativa in TF.js). Premi il primo bottone: la top-1 attesa è
+     <b>Eurasian Blackbird</b> (<i>Turdus merula</i>).</p>
+  <div>Cross-origin isolation: <span id="iso"></span></div>
+
+  <button id="btnBlackbird" disabled>▶ Esegui sul merlo (atteso: Eurasian Blackbird)</button>
+  <button id="btnSample" disabled>▶ Esegui sul sample BirdNET</button>
+
+  <h3>Esito</h3>
+  <div id="result"></div>
+  <pre id="status"></pre>
+
+  <script src="tfjs_spike.js"></script>
+</body>
+</html>
