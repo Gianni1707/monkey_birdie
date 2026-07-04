@@ -80,6 +80,40 @@
   "searchPlaceHint": "Search a place…",
   "searchNoResults": "No place found.",
   "myLocation": "My location",
+
+  "tabSightings": "Sightings",
+  "tabCollections": "Collections",
+  "collections": "Collections",
+  "newCollection": "New collection",
+  "create": "Create",
+  "save": "Save",
+  "done": "Done",
+  "delete": "Delete",
+  "renameCollection": "Rename",
+  "deleteCollection": "Delete collection",
+  "collectionName": "Name",
+  "collectionDescriptionOptional": "Description (optional)",
+  "collectionNameEmpty": "The name can't be empty.",
+  "collectionNameDuplicate": "A collection with this name already exists.",
+  "deleteCollectionConfirm": "Delete the collection “{nome}”? The sightings won't be deleted.",
+  "@deleteCollectionConfirm": {
+    "placeholders": { "nome": { "type": "String" } }
+  },
+  "addToCollection": "Add to a collection",
+  "removeFromCollection": "Remove from collection",
+  "noCollectionsYet": "You don't have any collections yet.",
+  "collectionsEmptyTitle": "No collections",
+  "collectionsEmptySubtitle": "Create collections to organize your sightings into groups.",
+  "collectionDetailEmptyTitle": "Empty collection",
+  "collectionDetailEmptySubtitle": "Add sightings from the Collection (bookmark) or from the map.",
+  "speciesCount": "{count, plural, =0{No species} =1{1 species} other{{count} species}}",
+  "@speciesCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "sightingsCount": "{count, plural, =0{No sightings} =1{1 sighting} other{{count} sightings}}",
+  "@sightingsCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
   "locationUnavailable": "Location unavailable.",
 
   "retry": "Try again"

@@ -228,6 +228,101 @@ class AppLocalizationsEn extends AppLocalizations {
   String get myLocation => 'My location';
 
   @override
+  String get tabSightings => 'Sightings';
+
+  @override
+  String get tabCollections => 'Collections';
+
+  @override
+  String get collections => 'Collections';
+
+  @override
+  String get newCollection => 'New collection';
+
+  @override
+  String get create => 'Create';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get done => 'Done';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get renameCollection => 'Rename';
+
+  @override
+  String get deleteCollection => 'Delete collection';
+
+  @override
+  String get collectionName => 'Name';
+
+  @override
+  String get collectionDescriptionOptional => 'Description (optional)';
+
+  @override
+  String get collectionNameEmpty => 'The name can\'t be empty.';
+
+  @override
+  String get collectionNameDuplicate =>
+      'A collection with this name already exists.';
+
+  @override
+  String deleteCollectionConfirm(String nome) {
+    return 'Delete the collection “$nome”? The sightings won\'t be deleted.';
+  }
+
+  @override
+  String get addToCollection => 'Add to a collection';
+
+  @override
+  String get removeFromCollection => 'Remove from collection';
+
+  @override
+  String get noCollectionsYet => 'You don\'t have any collections yet.';
+
+  @override
+  String get collectionsEmptyTitle => 'No collections';
+
+  @override
+  String get collectionsEmptySubtitle =>
+      'Create collections to organize your sightings into groups.';
+
+  @override
+  String get collectionDetailEmptyTitle => 'Empty collection';
+
+  @override
+  String get collectionDetailEmptySubtitle =>
+      'Add sightings from the Collection (bookmark) or from the map.';
+
+  @override
+  String speciesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count species',
+      one: '1 species',
+      zero: 'No species',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String sightingsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sightings',
+      one: '1 sighting',
+      zero: 'No sightings',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get locationUnavailable => 'Location unavailable.';
 
   @override

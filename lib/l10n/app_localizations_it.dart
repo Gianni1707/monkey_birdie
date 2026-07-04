@@ -233,6 +233,101 @@ class AppLocalizationsIt extends AppLocalizations {
   String get myLocation => 'La mia posizione';
 
   @override
+  String get tabSightings => 'Avvistamenti';
+
+  @override
+  String get tabCollections => 'Raccolte';
+
+  @override
+  String get collections => 'Raccolte';
+
+  @override
+  String get newCollection => 'Nuova raccolta';
+
+  @override
+  String get create => 'Crea';
+
+  @override
+  String get save => 'Salva';
+
+  @override
+  String get done => 'Fatto';
+
+  @override
+  String get delete => 'Elimina';
+
+  @override
+  String get renameCollection => 'Rinomina';
+
+  @override
+  String get deleteCollection => 'Elimina raccolta';
+
+  @override
+  String get collectionName => 'Nome';
+
+  @override
+  String get collectionDescriptionOptional => 'Descrizione (facoltativa)';
+
+  @override
+  String get collectionNameEmpty => 'Il nome non può essere vuoto.';
+
+  @override
+  String get collectionNameDuplicate =>
+      'Esiste già una raccolta con questo nome.';
+
+  @override
+  String deleteCollectionConfirm(String nome) {
+    return 'Eliminare la raccolta «$nome»? Gli avvistamenti non verranno cancellati.';
+  }
+
+  @override
+  String get addToCollection => 'Aggiungi a una raccolta';
+
+  @override
+  String get removeFromCollection => 'Togli dalla raccolta';
+
+  @override
+  String get noCollectionsYet => 'Non hai ancora raccolte.';
+
+  @override
+  String get collectionsEmptyTitle => 'Nessuna raccolta';
+
+  @override
+  String get collectionsEmptySubtitle =>
+      'Crea raccolte per organizzare i tuoi avvistamenti in gruppi.';
+
+  @override
+  String get collectionDetailEmptyTitle => 'Raccolta vuota';
+
+  @override
+  String get collectionDetailEmptySubtitle =>
+      'Aggiungi avvistamenti dalla Collezione (segnalibro) o dalla mappa.';
+
+  @override
+  String speciesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count specie',
+      one: '1 specie',
+      zero: 'Nessuna specie',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String sightingsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count avvistamenti',
+      one: '1 avvistamento',
+      zero: 'Nessun avvistamento',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get locationUnavailable => 'Posizione non disponibile.';
 
   @override

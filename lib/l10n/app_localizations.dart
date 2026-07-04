@@ -518,6 +518,150 @@ abstract class AppLocalizations {
   /// **'La mia posizione'**
   String get myLocation;
 
+  /// No description provided for @tabSightings.
+  ///
+  /// In it, this message translates to:
+  /// **'Avvistamenti'**
+  String get tabSightings;
+
+  /// No description provided for @tabCollections.
+  ///
+  /// In it, this message translates to:
+  /// **'Raccolte'**
+  String get tabCollections;
+
+  /// No description provided for @collections.
+  ///
+  /// In it, this message translates to:
+  /// **'Raccolte'**
+  String get collections;
+
+  /// No description provided for @newCollection.
+  ///
+  /// In it, this message translates to:
+  /// **'Nuova raccolta'**
+  String get newCollection;
+
+  /// No description provided for @create.
+  ///
+  /// In it, this message translates to:
+  /// **'Crea'**
+  String get create;
+
+  /// No description provided for @save.
+  ///
+  /// In it, this message translates to:
+  /// **'Salva'**
+  String get save;
+
+  /// No description provided for @done.
+  ///
+  /// In it, this message translates to:
+  /// **'Fatto'**
+  String get done;
+
+  /// No description provided for @delete.
+  ///
+  /// In it, this message translates to:
+  /// **'Elimina'**
+  String get delete;
+
+  /// No description provided for @renameCollection.
+  ///
+  /// In it, this message translates to:
+  /// **'Rinomina'**
+  String get renameCollection;
+
+  /// No description provided for @deleteCollection.
+  ///
+  /// In it, this message translates to:
+  /// **'Elimina raccolta'**
+  String get deleteCollection;
+
+  /// No description provided for @collectionName.
+  ///
+  /// In it, this message translates to:
+  /// **'Nome'**
+  String get collectionName;
+
+  /// No description provided for @collectionDescriptionOptional.
+  ///
+  /// In it, this message translates to:
+  /// **'Descrizione (facoltativa)'**
+  String get collectionDescriptionOptional;
+
+  /// No description provided for @collectionNameEmpty.
+  ///
+  /// In it, this message translates to:
+  /// **'Il nome non può essere vuoto.'**
+  String get collectionNameEmpty;
+
+  /// No description provided for @collectionNameDuplicate.
+  ///
+  /// In it, this message translates to:
+  /// **'Esiste già una raccolta con questo nome.'**
+  String get collectionNameDuplicate;
+
+  /// No description provided for @deleteCollectionConfirm.
+  ///
+  /// In it, this message translates to:
+  /// **'Eliminare la raccolta «{nome}»? Gli avvistamenti non verranno cancellati.'**
+  String deleteCollectionConfirm(String nome);
+
+  /// No description provided for @addToCollection.
+  ///
+  /// In it, this message translates to:
+  /// **'Aggiungi a una raccolta'**
+  String get addToCollection;
+
+  /// No description provided for @removeFromCollection.
+  ///
+  /// In it, this message translates to:
+  /// **'Togli dalla raccolta'**
+  String get removeFromCollection;
+
+  /// No description provided for @noCollectionsYet.
+  ///
+  /// In it, this message translates to:
+  /// **'Non hai ancora raccolte.'**
+  String get noCollectionsYet;
+
+  /// No description provided for @collectionsEmptyTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessuna raccolta'**
+  String get collectionsEmptyTitle;
+
+  /// No description provided for @collectionsEmptySubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Crea raccolte per organizzare i tuoi avvistamenti in gruppi.'**
+  String get collectionsEmptySubtitle;
+
+  /// No description provided for @collectionDetailEmptyTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Raccolta vuota'**
+  String get collectionDetailEmptyTitle;
+
+  /// No description provided for @collectionDetailEmptySubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Aggiungi avvistamenti dalla Collezione (segnalibro) o dalla mappa.'**
+  String get collectionDetailEmptySubtitle;
+
+  /// No description provided for @speciesCount.
+  ///
+  /// In it, this message translates to:
+  /// **'{count, plural, =0{Nessuna specie} =1{1 specie} other{{count} specie}}'**
+  String speciesCount(int count);
+
+  /// No description provided for @sightingsCount.
+  ///
+  /// In it, this message translates to:
+  /// **'{count, plural, =0{Nessun avvistamento} =1{1 avvistamento} other{{count} avvistamenti}}'**
+  String sightingsCount(int count);
+
   /// No description provided for @locationUnavailable.
   ///
   /// In it, this message translates to:

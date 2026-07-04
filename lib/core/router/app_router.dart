@@ -9,6 +9,7 @@ import '../../features/auth/presentation/login_screen.dart';
 import '../../features/auth/presentation/register_screen.dart';
 import '../../features/collection/presentation/specie_detail_screen.dart';
 import '../../features/home/presentation/home_shell.dart';
+import '../../features/raccolte/presentation/raccolta_dettaglio_screen.dart';
 
 /// Adatta uno Stream a Listenable per il refresh del redirect di go_router.
 class _AuthRefreshNotifier extends ChangeNotifier {
@@ -49,6 +50,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/specie/:id',
         builder: (_, state) =>
             SpecieDetailScreen(specieId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/raccolta/:id',
+        builder: (_, state) =>
+            RaccoltaDettaglioScreen(raccoltaId: state.pathParameters['id']!),
       ),
     ],
   );

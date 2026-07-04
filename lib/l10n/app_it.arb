@@ -86,6 +86,40 @@
   "searchPlaceHint": "Cerca un luogo…",
   "searchNoResults": "Nessun luogo trovato.",
   "myLocation": "La mia posizione",
+
+  "tabSightings": "Avvistamenti",
+  "tabCollections": "Raccolte",
+  "collections": "Raccolte",
+  "newCollection": "Nuova raccolta",
+  "create": "Crea",
+  "save": "Salva",
+  "done": "Fatto",
+  "delete": "Elimina",
+  "renameCollection": "Rinomina",
+  "deleteCollection": "Elimina raccolta",
+  "collectionName": "Nome",
+  "collectionDescriptionOptional": "Descrizione (facoltativa)",
+  "collectionNameEmpty": "Il nome non può essere vuoto.",
+  "collectionNameDuplicate": "Esiste già una raccolta con questo nome.",
+  "deleteCollectionConfirm": "Eliminare la raccolta «{nome}»? Gli avvistamenti non verranno cancellati.",
+  "@deleteCollectionConfirm": {
+    "placeholders": { "nome": { "type": "String" } }
+  },
+  "addToCollection": "Aggiungi a una raccolta",
+  "removeFromCollection": "Togli dalla raccolta",
+  "noCollectionsYet": "Non hai ancora raccolte.",
+  "collectionsEmptyTitle": "Nessuna raccolta",
+  "collectionsEmptySubtitle": "Crea raccolte per organizzare i tuoi avvistamenti in gruppi.",
+  "collectionDetailEmptyTitle": "Raccolta vuota",
+  "collectionDetailEmptySubtitle": "Aggiungi avvistamenti dalla Collezione (segnalibro) o dalla mappa.",
+  "speciesCount": "{count, plural, =0{Nessuna specie} =1{1 specie} other{{count} specie}}",
+  "@speciesCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "sightingsCount": "{count, plural, =0{Nessun avvistamento} =1{1 avvistamento} other{{count} avvistamenti}}",
+  "@sightingsCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
   "locationUnavailable": "Posizione non disponibile.",
 
   "retry": "Riprova"

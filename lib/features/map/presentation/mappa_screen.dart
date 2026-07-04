@@ -10,6 +10,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/avvistamento_foto.dart';
 import '../../../shared/widgets/state_views.dart';
 import '../../collection/application/collection_controller.dart';
+import '../../raccolte/presentation/aggiungi_a_raccolta_sheet.dart';
 import '../application/geocoding_repository.dart';
 import 'mappa_base.dart';
 
@@ -335,6 +336,12 @@ class _DettaglioAvvistamento extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
+          OutlinedButton.icon(
+            onPressed: () => mostraAggiungiARaccolta(context, a.id),
+            icon: const Icon(Icons.bookmark_add_outlined),
+            label: Text(l10n.addToCollection),
+          ),
+          const SizedBox(height: 8),
           FilledButton.tonalIcon(
             onPressed: () {
               Navigator.of(context).pop();
