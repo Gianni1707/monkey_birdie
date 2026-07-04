@@ -39,6 +39,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get usernameMin => 'At least 3 characters';
 
   @override
+  String get usernameTaken => 'This username is already taken.';
+
+  @override
   String get createAccount => 'Create account';
 
   @override
@@ -189,6 +192,94 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dangerHigh => 'high';
+
+  @override
+  String get tabProfile => 'Profile';
+
+  @override
+  String get editProfile => 'Edit profile';
+
+  @override
+  String get bio => 'Bio';
+
+  @override
+  String get profileBioEmpty => 'No bio yet. Tap “Edit profile” to add one.';
+
+  @override
+  String get nameField => 'Name';
+
+  @override
+  String get locationField => 'Location';
+
+  @override
+  String get experienceField => 'Experience level';
+
+  @override
+  String get experienceUnset => 'Not set';
+
+  @override
+  String get experienceBeginner => 'Beginner';
+
+  @override
+  String get experienceIntermediate => 'Intermediate';
+
+  @override
+  String get experienceExpert => 'Expert';
+
+  @override
+  String get experiencePreferNotToSay => 'Prefer not to say';
+
+  @override
+  String get levelBeginner => 'Beginner';
+
+  @override
+  String get levelEnthusiast => 'Enthusiast';
+
+  @override
+  String get levelExpert => 'Expert';
+
+  @override
+  String get levelMaster => 'Master';
+
+  @override
+  String get levelMax => 'top level reached';
+
+  @override
+  String levelProgress(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count more species to the next level',
+      one: '1 more species to the next level',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get removePhoto => 'Remove photo';
+
+  @override
+  String get favorites => 'Favorite birds';
+
+  @override
+  String get addFavorite => 'Add favorite';
+
+  @override
+  String get removeFavorite => 'Remove from favorites';
+
+  @override
+  String get noFavorites =>
+      'No favorites yet. Add the species you love from the catalog.';
+
+  @override
+  String get searchSpeciesHint => 'Search a species…';
+
+  @override
+  String get searchSpeciesTypeHint =>
+      'Type at least 2 letters to search a species.';
+
+  @override
+  String get searchSpeciesNoResults => 'No species found.';
 
   @override
   String get confirmLocationTitle => 'Confirm the location';

@@ -6,9 +6,10 @@ import '../../../l10n/app_localizations.dart';
 import '../../auth/application/auth_controller.dart';
 import '../../collection/presentation/collection_screen.dart';
 import '../../map/presentation/mappa_screen.dart';
+import '../../profilo/presentation/profilo_screen.dart';
 import '../../recognition/presentation/recognition_screen.dart';
 
-/// Contenitore principale post-login: tab Riconosci / Mappa / Collezione.
+/// Contenitore principale post-login: tab Riconosci / Mappa / Collezione / Profilo.
 class HomeShell extends ConsumerStatefulWidget {
   const HomeShell({super.key});
 
@@ -23,12 +24,18 @@ class _HomeShellState extends ConsumerState<HomeShell> {
     RecognitionScreen(),
     MappaScreen(),
     CollectionScreen(),
+    ProfiloScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final titoli = [l10n.tabRecognize, l10n.tabMap, l10n.tabCollection];
+    final titoli = [
+      l10n.tabRecognize,
+      l10n.tabMap,
+      l10n.tabCollection,
+      l10n.tabProfile,
+    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -75,6 +82,11 @@ class _HomeShellState extends ConsumerState<HomeShell> {
           NavigationDestination(
             icon: const Icon(Icons.collections_bookmark),
             label: l10n.tabCollection,
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.person_outline),
+            selectedIcon: const Icon(Icons.person),
+            label: l10n.tabProfile,
           ),
         ],
       ),

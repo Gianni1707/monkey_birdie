@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../data/models/specie.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/state_views.dart';
+import '../../profilo/presentation/preferito_button.dart';
 import '../application/collection_controller.dart';
 
 /// UT04 — scheda informativa sulla specie. (UT05 mappa habitat: Fase 2.)
@@ -16,7 +17,10 @@ class SpecieDetailScreen extends ConsumerWidget {
     final asyncSpecie = ref.watch(specieProvider(specieId));
 
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context).speciesCard)),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context).speciesCard),
+        actions: [PreferitoIconButton(specieId: specieId)],
+      ),
       body: asyncSpecie.when(
         loading: () => const LoadingView(),
         error: (e, _) => ErrorView(

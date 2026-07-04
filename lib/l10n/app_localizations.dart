@@ -158,6 +158,12 @@ abstract class AppLocalizations {
   /// **'Minimo 3 caratteri'**
   String get usernameMin;
 
+  /// No description provided for @usernameTaken.
+  ///
+  /// In it, this message translates to:
+  /// **'Questo username è già in uso.'**
+  String get usernameTaken;
+
   /// No description provided for @createAccount.
   ///
   /// In it, this message translates to:
@@ -445,6 +451,162 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'alto'**
   String get dangerHigh;
+
+  /// No description provided for @tabProfile.
+  ///
+  /// In it, this message translates to:
+  /// **'Profilo'**
+  String get tabProfile;
+
+  /// No description provided for @editProfile.
+  ///
+  /// In it, this message translates to:
+  /// **'Modifica profilo'**
+  String get editProfile;
+
+  /// No description provided for @bio.
+  ///
+  /// In it, this message translates to:
+  /// **'Bio'**
+  String get bio;
+
+  /// No description provided for @profileBioEmpty.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessuna bio. Tocca «Modifica profilo» per aggiungerne una.'**
+  String get profileBioEmpty;
+
+  /// No description provided for @nameField.
+  ///
+  /// In it, this message translates to:
+  /// **'Nome'**
+  String get nameField;
+
+  /// No description provided for @locationField.
+  ///
+  /// In it, this message translates to:
+  /// **'Località'**
+  String get locationField;
+
+  /// No description provided for @experienceField.
+  ///
+  /// In it, this message translates to:
+  /// **'Livello di esperienza'**
+  String get experienceField;
+
+  /// No description provided for @experienceUnset.
+  ///
+  /// In it, this message translates to:
+  /// **'Non impostato'**
+  String get experienceUnset;
+
+  /// No description provided for @experienceBeginner.
+  ///
+  /// In it, this message translates to:
+  /// **'Principiante'**
+  String get experienceBeginner;
+
+  /// No description provided for @experienceIntermediate.
+  ///
+  /// In it, this message translates to:
+  /// **'Intermedio'**
+  String get experienceIntermediate;
+
+  /// No description provided for @experienceExpert.
+  ///
+  /// In it, this message translates to:
+  /// **'Esperto'**
+  String get experienceExpert;
+
+  /// No description provided for @experiencePreferNotToSay.
+  ///
+  /// In it, this message translates to:
+  /// **'Preferisco non dirlo'**
+  String get experiencePreferNotToSay;
+
+  /// No description provided for @levelBeginner.
+  ///
+  /// In it, this message translates to:
+  /// **'Principiante'**
+  String get levelBeginner;
+
+  /// No description provided for @levelEnthusiast.
+  ///
+  /// In it, this message translates to:
+  /// **'Appassionato'**
+  String get levelEnthusiast;
+
+  /// No description provided for @levelExpert.
+  ///
+  /// In it, this message translates to:
+  /// **'Esperto'**
+  String get levelExpert;
+
+  /// No description provided for @levelMaster.
+  ///
+  /// In it, this message translates to:
+  /// **'Maestro'**
+  String get levelMaster;
+
+  /// No description provided for @levelMax.
+  ///
+  /// In it, this message translates to:
+  /// **'livello massimo raggiunto'**
+  String get levelMax;
+
+  /// No description provided for @levelProgress.
+  ///
+  /// In it, this message translates to:
+  /// **'{count, plural, =1{ancora 1 specie al prossimo livello} other{ancora {count} specie al prossimo livello}}'**
+  String levelProgress(int count);
+
+  /// No description provided for @removePhoto.
+  ///
+  /// In it, this message translates to:
+  /// **'Rimuovi foto'**
+  String get removePhoto;
+
+  /// No description provided for @favorites.
+  ///
+  /// In it, this message translates to:
+  /// **'Uccelli preferiti'**
+  String get favorites;
+
+  /// No description provided for @addFavorite.
+  ///
+  /// In it, this message translates to:
+  /// **'Aggiungi preferito'**
+  String get addFavorite;
+
+  /// No description provided for @removeFavorite.
+  ///
+  /// In it, this message translates to:
+  /// **'Togli dai preferiti'**
+  String get removeFavorite;
+
+  /// No description provided for @noFavorites.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessun preferito. Aggiungi le specie che ami dal catalogo.'**
+  String get noFavorites;
+
+  /// No description provided for @searchSpeciesHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Cerca una specie…'**
+  String get searchSpeciesHint;
+
+  /// No description provided for @searchSpeciesTypeHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Scrivi almeno 2 lettere per cercare una specie.'**
+  String get searchSpeciesTypeHint;
+
+  /// No description provided for @searchSpeciesNoResults.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessuna specie trovata.'**
+  String get searchSpeciesNoResults;
 
   /// No description provided for @confirmLocationTitle.
   ///

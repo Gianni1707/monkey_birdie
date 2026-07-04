@@ -83,6 +83,25 @@ class SpecieRepository {
       throw mapError(e);
     }
   }
+
+  /// Ricerca testuale nel catalogo per nome comune o scientifico (per scegliere
+  /// una specie preferita). Best-effort: lista vuota se query < 2 caratteri.
+  Future<List<Specie>> cercaCatalogo(String query, {int limite = 25}) async {
+    final q = query.trim();
+    if (q.length < 2) return const [];
+    try {
+      final like = '%$q%';
+      final rows = await _client
+          .from('specie')
+          .select()
+          .or('nome_comune.ilike.$like,nome_scientifico.ilike.$like')
+          .order('nome_comune')
+          .limit(limite);
+      return rows.map((j) => Specie.fromJson(j)).toList(growable: false);
+    } catch (e) {
+      throw mapError(e);
+    }
+  }
 }
 
 final specieRepositoryProvider = Provider<SpecieRepository>((ref) {

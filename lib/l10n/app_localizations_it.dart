@@ -39,6 +39,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get usernameMin => 'Minimo 3 caratteri';
 
   @override
+  String get usernameTaken => 'Questo username è già in uso.';
+
+  @override
   String get createAccount => 'Crea account';
 
   @override
@@ -192,6 +195,95 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get dangerHigh => 'alto';
+
+  @override
+  String get tabProfile => 'Profilo';
+
+  @override
+  String get editProfile => 'Modifica profilo';
+
+  @override
+  String get bio => 'Bio';
+
+  @override
+  String get profileBioEmpty =>
+      'Nessuna bio. Tocca «Modifica profilo» per aggiungerne una.';
+
+  @override
+  String get nameField => 'Nome';
+
+  @override
+  String get locationField => 'Località';
+
+  @override
+  String get experienceField => 'Livello di esperienza';
+
+  @override
+  String get experienceUnset => 'Non impostato';
+
+  @override
+  String get experienceBeginner => 'Principiante';
+
+  @override
+  String get experienceIntermediate => 'Intermedio';
+
+  @override
+  String get experienceExpert => 'Esperto';
+
+  @override
+  String get experiencePreferNotToSay => 'Preferisco non dirlo';
+
+  @override
+  String get levelBeginner => 'Principiante';
+
+  @override
+  String get levelEnthusiast => 'Appassionato';
+
+  @override
+  String get levelExpert => 'Esperto';
+
+  @override
+  String get levelMaster => 'Maestro';
+
+  @override
+  String get levelMax => 'livello massimo raggiunto';
+
+  @override
+  String levelProgress(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'ancora $count specie al prossimo livello',
+      one: 'ancora 1 specie al prossimo livello',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get removePhoto => 'Rimuovi foto';
+
+  @override
+  String get favorites => 'Uccelli preferiti';
+
+  @override
+  String get addFavorite => 'Aggiungi preferito';
+
+  @override
+  String get removeFavorite => 'Togli dai preferiti';
+
+  @override
+  String get noFavorites =>
+      'Nessun preferito. Aggiungi le specie che ami dal catalogo.';
+
+  @override
+  String get searchSpeciesHint => 'Cerca una specie…';
+
+  @override
+  String get searchSpeciesTypeHint =>
+      'Scrivi almeno 2 lettere per cercare una specie.';
+
+  @override
+  String get searchSpeciesNoResults => 'Nessuna specie trovata.';
 
   @override
   String get confirmLocationTitle => 'Conferma la posizione';
