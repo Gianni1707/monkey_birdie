@@ -153,5 +153,38 @@
   },
   "locationUnavailable": "Posizione non disponibile.",
 
+  "shareAllTitle": "Condividi i miei avvistamenti",
+  "shareAllSubtitle": "Gli amici vedranno tutti i tuoi avvistamenti sulla mappa e nel tuo profilo.",
+  "shareWithFriends": "Condividi con gli amici",
+  "sharedWithFriends": "Condiviso con gli amici",
+  "spottedBy": "Avvistato da @{username}",
+  "@spottedBy": {
+    "placeholders": { "username": { "type": "String" } }
+  },
+  "sharedSightings": "Avvistamenti condivisi",
+  "noSharedSightings": "Nessun avvistamento condiviso.",
+  "friends": "Amici",
+  "searchUsers": "Cerca utenti",
+  "searchUsersHint": "Cerca per username…",
+  "searchUsersTypeHint": "Scrivi almeno 2 lettere.",
+  "searchUsersNoResults": "Nessun utente trovato.",
+  "requests": "Richieste",
+  "requestsIncoming": "In arrivo",
+  "requestsOutgoing": "In uscita",
+  "noFriendsTitle": "Nessun amico",
+  "noFriendsSubtitle": "Cerca utenti per username e invia una richiesta.",
+  "noRequestsTitle": "Nessuna richiesta",
+  "noRequestsSubtitle": "Le richieste in arrivo e in uscita compaiono qui.",
+  "addFriend": "Aggiungi",
+  "cancelRequest": "Annulla richiesta",
+  "accept": "Accetta",
+  "reject": "Rifiuta",
+  "friendLabel": "Amico",
+  "removeFriend": "Rimuovi amico",
+  "removeFriendConfirm": "Rimuovere @{username} dagli amici?",
+  "@removeFriendConfirm": {
+    "placeholders": { "username": { "type": "String" } }
+  },
+
   "retry": "Riprova"
 }

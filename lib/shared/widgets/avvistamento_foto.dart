@@ -29,9 +29,11 @@ class AvvistamentoFoto extends ConsumerWidget {
     if (fotoUrl != null) {
       final async = ref.watch(fotoAvvistamentoUrlProvider(fotoUrl!));
       contenuto = async.maybeWhen(
+        // Se il signed URL non si carica (es. Safari/CanvasKit su cross-origin),
+        // ripiega sulla thumbnail della specie invece di restare vuoto.
         data: (url) => url == null
             ? _SpecieFallback(nomeScientifico)
-            : _rete(url),
+            : _rete(url, fallback: _SpecieFallback(nomeScientifico)),
         orElse: () => const _Placeholder(),
       );
     } else {
@@ -43,10 +45,11 @@ class AvvistamentoFoto extends ConsumerWidget {
     );
   }
 
-  static Widget _rete(String url) => Image.network(
+  static Widget _rete(String url, {Widget fallback = const _Placeholder()}) =>
+      Image.network(
         url,
         fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => const _Placeholder(),
+        errorBuilder: (_, __, ___) => fallback,
         loadingBuilder: (_, child, progress) =>
             progress == null ? child : const _Placeholder(),
       );

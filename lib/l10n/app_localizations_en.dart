@@ -417,5 +417,90 @@ class AppLocalizationsEn extends AppLocalizations {
   String get locationUnavailable => 'Location unavailable.';
 
   @override
+  String get shareAllTitle => 'Share my sightings';
+
+  @override
+  String get shareAllSubtitle =>
+      'Friends will see all your sightings on the map and your profile.';
+
+  @override
+  String get shareWithFriends => 'Share with friends';
+
+  @override
+  String get sharedWithFriends => 'Shared with friends';
+
+  @override
+  String spottedBy(String username) {
+    return 'Spotted by @$username';
+  }
+
+  @override
+  String get sharedSightings => 'Shared sightings';
+
+  @override
+  String get noSharedSightings => 'No shared sightings.';
+
+  @override
+  String get friends => 'Friends';
+
+  @override
+  String get searchUsers => 'Search users';
+
+  @override
+  String get searchUsersHint => 'Search by username…';
+
+  @override
+  String get searchUsersTypeHint => 'Type at least 2 letters.';
+
+  @override
+  String get searchUsersNoResults => 'No user found.';
+
+  @override
+  String get requests => 'Requests';
+
+  @override
+  String get requestsIncoming => 'Incoming';
+
+  @override
+  String get requestsOutgoing => 'Outgoing';
+
+  @override
+  String get noFriendsTitle => 'No friends';
+
+  @override
+  String get noFriendsSubtitle =>
+      'Search users by username and send a request.';
+
+  @override
+  String get noRequestsTitle => 'No requests';
+
+  @override
+  String get noRequestsSubtitle =>
+      'Incoming and outgoing requests show up here.';
+
+  @override
+  String get addFriend => 'Add';
+
+  @override
+  String get cancelRequest => 'Cancel request';
+
+  @override
+  String get accept => 'Accept';
+
+  @override
+  String get reject => 'Decline';
+
+  @override
+  String get friendLabel => 'Friend';
+
+  @override
+  String get removeFriend => 'Remove friend';
+
+  @override
+  String removeFriendConfirm(String username) {
+    return 'Remove @$username from friends?';
+  }
+
+  @override
   String get retry => 'Try again';
 }

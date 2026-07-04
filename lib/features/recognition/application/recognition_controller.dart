@@ -13,6 +13,7 @@ import '../../../core/permissions/permission_service.dart';
 import '../../../data/repositories/avvistamenti_repository.dart';
 import '../../../data/repositories/avvistamento_foto_repository.dart';
 import '../../../data/repositories/specie_repository.dart';
+import '../../amici/application/condivisione_providers.dart';
 import '../../../ml/recognizer/bird_image_recognizer.dart' show BirdNetPrediction, sogliaConfidenzaFoto;
 import '../../../ml/recognizer/bird_image_recognizer_factory.dart';
 import '../../../ml/recognizer/bird_recognizer_factory.dart';
@@ -276,7 +277,8 @@ class RecognitionController extends AutoDisposeNotifier<RecognitionState> {
             lng: scelta.lng,
             confidenza: corrente.candidato.predizione.confidenza,
             fotoUrl: fotoPath,
-            condiviso: false,
+            // Condivisione = impostazione unica del profilo (default: privato).
+            condiviso: ref.read(condividiTuttiProvider),
           );
       state = RecognitionSaved(id);
     } catch (e) {

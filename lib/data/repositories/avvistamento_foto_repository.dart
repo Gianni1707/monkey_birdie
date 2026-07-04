@@ -44,11 +44,13 @@ class AvvistamentoFotoRepository {
     }
   }
 
-  /// Signed URL temporaneo (1h) per leggere una foto privata. Best-effort:
+  /// Signed URL temporaneo (24h) per leggere una foto privata. Best-effort:
   /// null in caso di errore -> la UI fa fallback sulla thumbnail della specie.
+  /// 24h evita che l'URL in cache scada durante una sessione lunga (immagini
+  /// rotte).
   Future<String?> urlFirmato(String path) async {
     try {
-      return await _client.storage.from(_bucket).createSignedUrl(path, 3600);
+      return await _client.storage.from(_bucket).createSignedUrl(path, 86400);
     } catch (_) {
       return null;
     }

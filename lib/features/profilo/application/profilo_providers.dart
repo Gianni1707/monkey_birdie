@@ -13,6 +13,7 @@ import '../../collection/application/collection_controller.dart';
 abstract final class DatiProfilo {
   static const localita = 'localita';
   static const avatar = 'avatar'; // path dell'avatar nel bucket 'avatar'
+  static const condividiTutti = 'condividi_tutti'; // bool: condividi tutto
 }
 
 /// Livello "birder" ASSEGNATO DAL SISTEMA in base al numero di SPECIE DIVERSE
@@ -65,6 +66,17 @@ final badgeBirderProvider = Provider<AsyncValue<BadgeBirder>>((ref) {
 /// Profilo dell'utente loggato.
 final mioProfiloProvider = FutureProvider<Profilo>((ref) {
   return ref.watch(profiloRepositoryProvider).mioProfilo();
+});
+
+/// Profilo pubblico di un altro utente (UT08).
+final profiloDiProvider = FutureProvider.family<Profilo, String>((ref, id) {
+  return ref.watch(profiloRepositoryProvider).profiloDi(id);
+});
+
+/// Preferiti di un altro utente (visibili solo se amici, RLS 0008).
+final preferitiDiProvider =
+    FutureProvider.family<List<Specie>, String>((ref, id) {
+  return ref.watch(preferitiRepositoryProvider).preferitiDi(id);
 });
 
 /// Specie preferite (SORGENTE DI VERITA'), ordinate per nome comune.

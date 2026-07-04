@@ -31,3 +31,6 @@ spike/web_recognizer_tfjs/sample.wav
 
 # OS
 .DS_Store
+
+# Script locale con URL+key (NON pubblicare)
+tool/dev.sh

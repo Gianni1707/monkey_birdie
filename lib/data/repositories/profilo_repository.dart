@@ -26,6 +26,31 @@ class ProfiloRepository {
     }
   }
 
+  /// Profilo pubblico di un altro utente (profili a lettura pubblica).
+  Future<Profilo> profiloDi(String id) async {
+    try {
+      final row = await _client.from('profili').select().eq('id', id).single();
+      return Profilo.fromJson(row);
+    } catch (e) {
+      throw mapError(e);
+    }
+  }
+
+  /// Mappa id -> username per un insieme di utenti (profili a lettura pubblica),
+  /// per l'attribuzione "@username" degli avvistamenti condivisi sulla mappa.
+  Future<Map<String, String>> usernamePerIds(List<String> ids) async {
+    if (ids.isEmpty) return const {};
+    try {
+      final rows =
+          await _client.from('profili').select('id, username').inFilter('id', ids);
+      return {
+        for (final r in rows) r['id'] as String: r['username'] as String,
+      };
+    } catch (e) {
+      throw mapError(e);
+    }
+  }
+
   /// Aggiorna il nome account (username), la bio e i dati_personali (jsonb).
   Future<void> aggiorna({
     required String username,

@@ -9,7 +9,7 @@ import '../../../data/models/avvistamento.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/avvistamento_foto.dart';
 import '../../../shared/widgets/state_views.dart';
-import '../../collection/application/collection_controller.dart';
+import '../../amici/application/condivisione_providers.dart';
 import '../../raccolte/presentation/aggiungi_a_raccolta_sheet.dart';
 import '../application/geocoding_repository.dart';
 import 'mappa_base.dart';
@@ -67,16 +67,17 @@ class _MappaScreenState extends ConsumerState<MappaScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final asyncColl = ref.watch(collezioneProvider);
+    final asyncMappa = ref.watch(avvistamentiMappaProvider);
 
-    return asyncColl.when(
+    return asyncMappa.when(
       loading: () => const LoadingView(),
       error: (e, _) => ErrorView(
         message: '$e',
-        onRetry: () => ref.invalidate(collezioneProvider),
+        onRetry: () => ref.invalidate(avvistamentiMappaProvider),
       ),
-      data: (tutti) {
-        final conPosizione = tutti
+      data: (dati) {
+        final mioId = dati.mioId;
+        final conPosizione = dati.avvistamenti
             .where((a) => a.lat != null && a.lng != null)
             .toList(growable: false);
         // La mappa si mostra SEMPRE (anche senza avvistamenti) cosi' la ricerca
@@ -107,7 +108,13 @@ class _MappaScreenState extends ConsumerState<MappaScreen> {
                         child: RepaintBoundary(
                           child: _MarcatoreFoto(
                             avvistamento: a,
-                            onTap: () => _apriDettaglio(context, a),
+                            altrui: a.utenteId != mioId,
+                            onTap: () => _apriDettaglio(
+                              context,
+                              a,
+                              a.utenteId != mioId,
+                              dati.username[a.utenteId],
+                            ),
                           ),
                         ),
                       ),
@@ -162,40 +169,70 @@ class _MappaScreenState extends ConsumerState<MappaScreen> {
     }
   }
 
-  void _apriDettaglio(BuildContext context, AvvistamentoDettaglio a) {
+  void _apriDettaglio(
+    BuildContext context,
+    AvvistamentoDettaglio a,
+    bool altrui,
+    String? username,
+  ) {
     showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
-      builder: (_) => _DettaglioAvvistamento(a),
+      builder: (_) =>
+          _DettaglioAvvistamento(a: a, altrui: altrui, username: username),
     );
   }
 }
 
-/// Marcatore = foto dell'avvistamento in un cerchio con bordo.
+/// Marcatore = foto dell'avvistamento in un cerchio con bordo. Bordo colorato
+/// (`tertiary`) + pallino per gli avvistamenti ALTRUI (condivisi dagli amici).
 class _MarcatoreFoto extends StatelessWidget {
-  const _MarcatoreFoto({required this.avvistamento, required this.onTap});
+  const _MarcatoreFoto({
+    required this.avvistamento,
+    required this.onTap,
+    this.altrui = false,
+  });
   final AvvistamentoDettaglio avvistamento;
   final VoidCallback onTap;
+  final bool altrui;
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final bordo = altrui ? scheme.tertiary : scheme.surface;
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: scheme.surface, width: 3),
-          boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 4)],
-        ),
-        child: ClipOval(
-          child: AvvistamentoFoto(
-            fotoUrl: avvistamento.fotoUrl,
-            nomeScientifico: avvistamento.specieNomeScientifico,
-            size: 50,
-            borderRadius: 25,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: bordo, width: 3),
+              boxShadow: const [
+                BoxShadow(color: Colors.black26, blurRadius: 4),
+              ],
+            ),
+            child: ClipOval(
+              child: AvvistamentoFoto(
+                fotoUrl: avvistamento.fotoUrl,
+                nomeScientifico: avvistamento.specieNomeScientifico,
+                size: 50,
+                borderRadius: 25,
+              ),
+            ),
           ),
-        ),
+          if (altrui)
+            Positioned(
+              right: -2,
+              bottom: -2,
+              child: CircleAvatar(
+                radius: 9,
+                backgroundColor: scheme.tertiary,
+                child: Icon(Icons.people, size: 11, color: scheme.onTertiary),
+              ),
+            ),
+        ],
       ),
     );
   }
@@ -293,11 +330,19 @@ class _BarraRicerca extends StatelessWidget {
   }
 }
 
-/// Scheda che si apre toccando un marcatore: foto, specie, data + link alla
-/// scheda specie esistente.
+/// Scheda che si apre toccando un marcatore. Per i PROPRI avvistamenti:
+/// aggiungi a raccolta + scheda specie. Per gli avvistamenti ALTRUI (condivisi
+/// dagli amici): attribuzione "avvistato da @username" (niente raccolta).
+/// La condivisione e' un'impostazione UNICA nel profilo, non per-avvistamento.
 class _DettaglioAvvistamento extends StatelessWidget {
-  const _DettaglioAvvistamento(this.a);
+  const _DettaglioAvvistamento({
+    required this.a,
+    required this.altrui,
+    this.username,
+  });
   final AvvistamentoDettaglio a;
+  final bool altrui;
+  final String? username;
 
   @override
   Widget build(BuildContext context) {
@@ -335,13 +380,32 @@ class _DettaglioAvvistamento extends StatelessWidget {
               Text(_formatData(a.avvistatoIl)),
             ],
           ),
+          if (altrui) ...[
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Icon(
+                  Icons.people_outline,
+                  size: 16,
+                  color: theme.colorScheme.tertiary,
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  l10n.spottedBy(username ?? '?'),
+                  style: TextStyle(color: theme.colorScheme.tertiary),
+                ),
+              ],
+            ),
+          ],
           const SizedBox(height: 16),
-          OutlinedButton.icon(
-            onPressed: () => mostraAggiungiARaccolta(context, a.id),
-            icon: const Icon(Icons.bookmark_add_outlined),
-            label: Text(l10n.addToCollection),
-          ),
-          const SizedBox(height: 8),
+          if (!altrui) ...[
+            OutlinedButton.icon(
+              onPressed: () => mostraAggiungiARaccolta(context, a.id),
+              icon: const Icon(Icons.bookmark_add_outlined),
+              label: Text(l10n.addToCollection),
+            ),
+            const SizedBox(height: 8),
+          ],
           FilledButton.tonalIcon(
             onPressed: () {
               Navigator.of(context).pop();

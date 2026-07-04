@@ -11,6 +11,8 @@ import '../../../data/repositories/profilo_repository.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/avvistamento_foto.dart';
 import '../../../shared/widgets/state_views.dart';
+import '../../amici/application/amici_providers.dart';
+import '../../amici/application/condivisione_providers.dart';
 import '../application/profilo_providers.dart';
 import 'aggiungi_preferito_sheet.dart';
 import 'preferito_button.dart';
@@ -134,6 +136,10 @@ class _ProfiloScreenState extends ConsumerState<ProfiloScreen> {
             if (_modifica) _form(l10n) else _vista(l10n, profilo),
             const SizedBox(height: 12),
             _pulsanti(l10n, profilo),
+            const SizedBox(height: 8),
+            const _RigaAmici(),
+            const SizedBox(height: 8),
+            const _RigaCondividi(),
             const Divider(height: 32),
             _SezionePreferiti(),
           ],
@@ -513,6 +519,64 @@ class _Badge extends ConsumerWidget {
         );
       },
       orElse: () => const SizedBox.shrink(),
+    );
+  }
+}
+
+/// Riga "Amici" nel profilo proprio, con badge delle richieste in arrivo.
+class _RigaAmici extends ConsumerWidget {
+  const _RigaAmici();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final richieste = ref.watch(numeroRichiesteProvider);
+    return Card(
+      child: ListTile(
+        leading: const Icon(Icons.group_outlined),
+        title: Text(l10n.friends),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (richieste > 0)
+              Badge(label: Text('$richieste'))
+            else
+              const SizedBox.shrink(),
+            const SizedBox(width: 8),
+            const Icon(Icons.chevron_right),
+          ],
+        ),
+        onTap: () => context.push('/amici'),
+      ),
+    );
+  }
+}
+
+/// Interruttore UNICO: condividi TUTTI i miei avvistamenti con gli amici.
+class _RigaCondividi extends ConsumerWidget {
+  const _RigaCondividi();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final on = ref.watch(condividiTuttiProvider);
+    return Card(
+      child: SwitchListTile(
+        secondary: Icon(on ? Icons.public : Icons.public_off),
+        title: Text(l10n.shareAllTitle),
+        subtitle: Text(l10n.shareAllSubtitle),
+        value: on,
+        onChanged: (v) async {
+          try {
+            await ref.read(condivisioneControllerProvider).impostaTutti(v);
+          } catch (e) {
+            if (!context.mounted) return;
+            final msg = e is Failure ? e.message : e.toString();
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(msg)));
+          }
+        },
+      ),
     );
   }
 }

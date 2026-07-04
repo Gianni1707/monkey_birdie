@@ -423,5 +423,90 @@ class AppLocalizationsIt extends AppLocalizations {
   String get locationUnavailable => 'Posizione non disponibile.';
 
   @override
+  String get shareAllTitle => 'Condividi i miei avvistamenti';
+
+  @override
+  String get shareAllSubtitle =>
+      'Gli amici vedranno tutti i tuoi avvistamenti sulla mappa e nel tuo profilo.';
+
+  @override
+  String get shareWithFriends => 'Condividi con gli amici';
+
+  @override
+  String get sharedWithFriends => 'Condiviso con gli amici';
+
+  @override
+  String spottedBy(String username) {
+    return 'Avvistato da @$username';
+  }
+
+  @override
+  String get sharedSightings => 'Avvistamenti condivisi';
+
+  @override
+  String get noSharedSightings => 'Nessun avvistamento condiviso.';
+
+  @override
+  String get friends => 'Amici';
+
+  @override
+  String get searchUsers => 'Cerca utenti';
+
+  @override
+  String get searchUsersHint => 'Cerca per username…';
+
+  @override
+  String get searchUsersTypeHint => 'Scrivi almeno 2 lettere.';
+
+  @override
+  String get searchUsersNoResults => 'Nessun utente trovato.';
+
+  @override
+  String get requests => 'Richieste';
+
+  @override
+  String get requestsIncoming => 'In arrivo';
+
+  @override
+  String get requestsOutgoing => 'In uscita';
+
+  @override
+  String get noFriendsTitle => 'Nessun amico';
+
+  @override
+  String get noFriendsSubtitle =>
+      'Cerca utenti per username e invia una richiesta.';
+
+  @override
+  String get noRequestsTitle => 'Nessuna richiesta';
+
+  @override
+  String get noRequestsSubtitle =>
+      'Le richieste in arrivo e in uscita compaiono qui.';
+
+  @override
+  String get addFriend => 'Aggiungi';
+
+  @override
+  String get cancelRequest => 'Annulla richiesta';
+
+  @override
+  String get accept => 'Accetta';
+
+  @override
+  String get reject => 'Rifiuta';
+
+  @override
+  String get friendLabel => 'Amico';
+
+  @override
+  String get removeFriend => 'Rimuovi amico';
+
+  @override
+  String removeFriendConfirm(String username) {
+    return 'Rimuovere @$username dagli amici?';
+  }
+
+  @override
   String get retry => 'Riprova';
 }

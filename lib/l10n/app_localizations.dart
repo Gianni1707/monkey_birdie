@@ -830,6 +830,162 @@ abstract class AppLocalizations {
   /// **'Posizione non disponibile.'**
   String get locationUnavailable;
 
+  /// No description provided for @shareAllTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Condividi i miei avvistamenti'**
+  String get shareAllTitle;
+
+  /// No description provided for @shareAllSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Gli amici vedranno tutti i tuoi avvistamenti sulla mappa e nel tuo profilo.'**
+  String get shareAllSubtitle;
+
+  /// No description provided for @shareWithFriends.
+  ///
+  /// In it, this message translates to:
+  /// **'Condividi con gli amici'**
+  String get shareWithFriends;
+
+  /// No description provided for @sharedWithFriends.
+  ///
+  /// In it, this message translates to:
+  /// **'Condiviso con gli amici'**
+  String get sharedWithFriends;
+
+  /// No description provided for @spottedBy.
+  ///
+  /// In it, this message translates to:
+  /// **'Avvistato da @{username}'**
+  String spottedBy(String username);
+
+  /// No description provided for @sharedSightings.
+  ///
+  /// In it, this message translates to:
+  /// **'Avvistamenti condivisi'**
+  String get sharedSightings;
+
+  /// No description provided for @noSharedSightings.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessun avvistamento condiviso.'**
+  String get noSharedSightings;
+
+  /// No description provided for @friends.
+  ///
+  /// In it, this message translates to:
+  /// **'Amici'**
+  String get friends;
+
+  /// No description provided for @searchUsers.
+  ///
+  /// In it, this message translates to:
+  /// **'Cerca utenti'**
+  String get searchUsers;
+
+  /// No description provided for @searchUsersHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Cerca per username…'**
+  String get searchUsersHint;
+
+  /// No description provided for @searchUsersTypeHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Scrivi almeno 2 lettere.'**
+  String get searchUsersTypeHint;
+
+  /// No description provided for @searchUsersNoResults.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessun utente trovato.'**
+  String get searchUsersNoResults;
+
+  /// No description provided for @requests.
+  ///
+  /// In it, this message translates to:
+  /// **'Richieste'**
+  String get requests;
+
+  /// No description provided for @requestsIncoming.
+  ///
+  /// In it, this message translates to:
+  /// **'In arrivo'**
+  String get requestsIncoming;
+
+  /// No description provided for @requestsOutgoing.
+  ///
+  /// In it, this message translates to:
+  /// **'In uscita'**
+  String get requestsOutgoing;
+
+  /// No description provided for @noFriendsTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessun amico'**
+  String get noFriendsTitle;
+
+  /// No description provided for @noFriendsSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Cerca utenti per username e invia una richiesta.'**
+  String get noFriendsSubtitle;
+
+  /// No description provided for @noRequestsTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessuna richiesta'**
+  String get noRequestsTitle;
+
+  /// No description provided for @noRequestsSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Le richieste in arrivo e in uscita compaiono qui.'**
+  String get noRequestsSubtitle;
+
+  /// No description provided for @addFriend.
+  ///
+  /// In it, this message translates to:
+  /// **'Aggiungi'**
+  String get addFriend;
+
+  /// No description provided for @cancelRequest.
+  ///
+  /// In it, this message translates to:
+  /// **'Annulla richiesta'**
+  String get cancelRequest;
+
+  /// No description provided for @accept.
+  ///
+  /// In it, this message translates to:
+  /// **'Accetta'**
+  String get accept;
+
+  /// No description provided for @reject.
+  ///
+  /// In it, this message translates to:
+  /// **'Rifiuta'**
+  String get reject;
+
+  /// No description provided for @friendLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'Amico'**
+  String get friendLabel;
+
+  /// No description provided for @removeFriend.
+  ///
+  /// In it, this message translates to:
+  /// **'Rimuovi amico'**
+  String get removeFriend;
+
+  /// No description provided for @removeFriendConfirm.
+  ///
+  /// In it, this message translates to:
+  /// **'Rimuovere @{username} dagli amici?'**
+  String removeFriendConfirm(String username);
+
   /// No description provided for @retry.
   ///
   /// In it, this message translates to:

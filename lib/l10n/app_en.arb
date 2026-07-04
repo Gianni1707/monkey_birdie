@@ -147,5 +147,38 @@
   },
   "locationUnavailable": "Location unavailable.",
 
+  "shareAllTitle": "Share my sightings",
+  "shareAllSubtitle": "Friends will see all your sightings on the map and your profile.",
+  "shareWithFriends": "Share with friends",
+  "sharedWithFriends": "Shared with friends",
+  "spottedBy": "Spotted by @{username}",
+  "@spottedBy": {
+    "placeholders": { "username": { "type": "String" } }
+  },
+  "sharedSightings": "Shared sightings",
+  "noSharedSightings": "No shared sightings.",
+  "friends": "Friends",
+  "searchUsers": "Search users",
+  "searchUsersHint": "Search by username…",
+  "searchUsersTypeHint": "Type at least 2 letters.",
+  "searchUsersNoResults": "No user found.",
+  "requests": "Requests",
+  "requestsIncoming": "Incoming",
+  "requestsOutgoing": "Outgoing",
+  "noFriendsTitle": "No friends",
+  "noFriendsSubtitle": "Search users by username and send a request.",
+  "noRequestsTitle": "No requests",
+  "noRequestsSubtitle": "Incoming and outgoing requests show up here.",
+  "addFriend": "Add",
+  "cancelRequest": "Cancel request",
+  "accept": "Accept",
+  "reject": "Decline",
+  "friendLabel": "Friend",
+  "removeFriend": "Remove friend",
+  "removeFriendConfirm": "Remove @{username} from friends?",
+  "@removeFriendConfirm": {
+    "placeholders": { "username": { "type": "String" } }
+  },
+
   "retry": "Try again"
 }

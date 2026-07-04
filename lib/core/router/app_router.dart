@@ -7,8 +7,10 @@ import 'package:go_router/go_router.dart';
 import '../../data/supabase/supabase_providers.dart';
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/auth/presentation/register_screen.dart';
+import '../../features/amici/presentation/amici_screen.dart';
 import '../../features/collection/presentation/specie_detail_screen.dart';
 import '../../features/home/presentation/home_shell.dart';
+import '../../features/profilo/presentation/profilo_pubblico_screen.dart';
 import '../../features/raccolte/presentation/raccolta_dettaglio_screen.dart';
 
 /// Adatta uno Stream a Listenable per il refresh del redirect di go_router.
@@ -55,6 +57,15 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/raccolta/:id',
         builder: (_, state) =>
             RaccoltaDettaglioScreen(raccoltaId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/amici',
+        builder: (_, __) => const AmiciScreen(),
+      ),
+      GoRoute(
+        path: '/profilo/:id',
+        builder: (_, state) =>
+            ProfiloPubblicoScreen(utenteId: state.pathParameters['id']!),
       ),
     ],
   );

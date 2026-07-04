@@ -16,16 +16,30 @@ class PreferitiRepository {
     try {
       final uid = _client.auth.currentUser?.id;
       if (uid == null) throw const AuthFailure('Sessione non valida.');
-      final rows = await _client
-          .from('preferiti')
-          .select('specie:specie_id(*)')
-          .eq('utente_id', uid);
-      return rows
-          .map((j) => Specie.fromJson(j['specie'] as Map<String, dynamic>))
-          .toList(growable: false);
+      return _perUtente(uid);
     } catch (e) {
       throw mapError(e);
     }
+  }
+
+  /// Preferiti di un altro utente (profilo pubblico amico). La RLS (0008) li
+  /// restituisce solo se `sono_amici`, altrimenti lista vuota.
+  Future<List<Specie>> preferitiDi(String utenteId) async {
+    try {
+      return _perUtente(utenteId);
+    } catch (e) {
+      throw mapError(e);
+    }
+  }
+
+  Future<List<Specie>> _perUtente(String utenteId) async {
+    final rows = await _client
+        .from('preferiti')
+        .select('specie:specie_id(*)')
+        .eq('utente_id', utenteId);
+    return rows
+        .map((j) => Specie.fromJson(j['specie'] as Map<String, dynamic>))
+        .toList(growable: false);
   }
 
   /// Aggiunge ai preferiti. Idempotente (PK composita -> ignore duplicati).

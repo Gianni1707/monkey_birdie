@@ -60,6 +60,54 @@ class AvvistamentiRepository {
       throw mapError(e);
     }
   }
+
+  /// Per la MAPPA (UT08): i propri + i condivisi degli amici. Nessun filtro
+  /// utente: la RLS della view (`security_invoker`) restituisce gia' propri +
+  /// `condiviso=true` di amici accettati.
+  Future<List<AvvistamentoDettaglio>> perMappa() async {
+    try {
+      final rows = await _client
+          .from('avvistamenti_dettaglio')
+          .select()
+          .order('avvistato_il', ascending: false);
+      return rows
+          .map((j) => AvvistamentoDettaglio.fromJson(j))
+          .toList(growable: false);
+    } catch (e) {
+      throw mapError(e);
+    }
+  }
+
+  /// Avvistamenti CONDIVISI di un altro utente (profilo pubblico amico): la RLS
+  /// restituisce solo quelli con `condiviso=true` visibili.
+  Future<List<AvvistamentoDettaglio>> condivisiDi(String utenteId) async {
+    try {
+      final rows = await _client
+          .from('avvistamenti_dettaglio')
+          .select()
+          .eq('utente_id', utenteId)
+          .order('avvistato_il', ascending: false);
+      return rows
+          .map((j) => AvvistamentoDettaglio.fromJson(j))
+          .toList(growable: false);
+    } catch (e) {
+      throw mapError(e);
+    }
+  }
+
+  /// Imposta il flag `condiviso` su TUTTI i propri avvistamenti (impostazione
+  /// unica dal profilo). RLS: modifica solo i propri.
+  Future<void> impostaCondivisoTutti(bool condiviso) async {
+    try {
+      final uid = _client.auth.currentUser?.id;
+      if (uid == null) throw const AuthFailure('Sessione non valida.');
+      await _client
+          .from('avvistamenti')
+          .update({'condiviso': condiviso}).eq('utente_id', uid);
+    } catch (e) {
+      throw mapError(e);
+    }
+  }
 }
 
 final avvistamentiRepositoryProvider = Provider<AvvistamentiRepository>((ref) {
