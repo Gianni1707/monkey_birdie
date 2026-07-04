@@ -1,0 +1,71 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "Monkey Bird",
+
+  "login": "Sign in",
+  "email": "Email",
+  "emailInvalid": "Invalid email",
+  "password": "Password",
+  "passwordMin": "At least 6 characters",
+  "noAccountRegister": "No account? Sign up",
+  "register": "Sign up",
+  "username": "Username",
+  "usernameMin": "At least 3 characters",
+  "createAccount": "Create account",
+  "haveAccount": "I already have an account",
+  "registrationEmailConfirm": "Registration complete: confirm via email.",
+
+  "tabRecognize": "Recognize",
+  "tabCollection": "Collection",
+  "logout": "Log out",
+  "language": "Language",
+  "languageSystem": "Automatic (system)",
+  "languageItalian": "Italian",
+  "languageEnglish": "English",
+
+  "tapToRecord": "Tap to record a song",
+  "orFromPhoto": "or recognize from a photo",
+  "takePhoto": "Take photo",
+  "uploadPhoto": "Upload photo",
+  "recordingTapToStop": "Recording… tap to stop and analyze",
+  "analyzingSong": "Analyzing the song…",
+  "analyzingPhoto": "Analyzing the photo…",
+  "saving": "Saving…",
+  "results": "Results",
+  "chooseSpecies": "Choose the correct species to save the sighting:",
+  "uncertainPhoto": "I'm not sure: the photo may be blurry or distant. Check the candidates or try again.",
+  "locationMissing": "Location not detected: it will be saved without a precise position.",
+  "noSpecies": "No species recognized. Try again.",
+  "notInCatalog": "not in catalog",
+  "addedToCollection": "Sighting added to your collection.",
+  "restart": "Start over",
+  "sightingSaved": "Sighting saved!",
+
+  "micPermissionDenied": "Microphone permission denied.",
+  "cameraPermissionDenied": "Camera permission denied.",
+  "galleryPermissionDenied": "Gallery permission denied.",
+  "speciesNotInCatalog": "Species not in catalog: cannot save.",
+
+  "emptyCollectionTitle": "Empty collection",
+  "emptyCollectionSubtitle": "Record a bird's song to get started.",
+
+  "speciesCard": "Species card",
+  "rarityLabel": "Rarity: {value}",
+  "dangerLabel": "Danger: {value}",
+  "description": "Description",
+  "habitat": "Habitat",
+  "habitatComingSoon": "Habitat map coming in Phase 2.",
+
+  "rarityCommon": "common",
+  "rarityUncommon": "uncommon",
+  "rarityRare": "rare",
+  "rarityVeryRare": "very rare",
+
+  "dangerNone": "none",
+  "dangerLow": "low",
+  "dangerMedium": "medium",
+  "dangerHigh": "high",
+
+  "retry": "Try again"
+}

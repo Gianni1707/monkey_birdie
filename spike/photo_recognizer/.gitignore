@@ -1,0 +1,8 @@
+# Spike foto — asset pesanti/scaricati (non versionare)
+model/*.tflite
+samples/*.jpg
+samples/*.jpeg
+samples/*.png
+headless/node_modules/
+headless/*.bin
+headless/package*.json

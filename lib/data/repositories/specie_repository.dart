@@ -50,6 +50,30 @@ class SpecieRepository {
         await perNomeScientifico(nomeScientifico);
   }
 
+  /// Mapping FOTO -> catalogo per `image_label` (nome scientifico AIY, match esatto).
+  Future<Specie?> perImageLabel(String imageLabel) async {
+    try {
+      final data = await _client
+          .from('specie')
+          .select()
+          .eq('image_label', imageLabel)
+          .limit(1)
+          .maybeSingle();
+      return data == null ? null : Specie.fromJson(data);
+    } catch (e) {
+      throw mapError(e);
+    }
+  }
+
+  /// Mapping completo FOTO: prima per image_label, poi per nome scientifico.
+  Future<Specie?> perPredizioneImmagine({
+    required String imageLabel,
+    required String nomeScientifico,
+  }) async {
+    return await perImageLabel(imageLabel) ??
+        await perNomeScientifico(nomeScientifico);
+  }
+
   Future<Specie> perId(String id) async {
     try {
       final data =

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../data/models/specie.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/state_views.dart';
 import '../application/collection_controller.dart';
 
@@ -15,7 +16,7 @@ class SpecieDetailScreen extends ConsumerWidget {
     final asyncSpecie = ref.watch(specieProvider(specieId));
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Scheda specie')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context).speciesCard)),
       body: asyncSpecie.when(
         loading: () => const LoadingView(),
         error: (e, _) => ErrorView(
@@ -35,6 +36,7 @@ class _Dettaglio extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return ListView(
       padding: const EdgeInsets.all(20),
       children: [
@@ -48,32 +50,34 @@ class _Dettaglio extends StatelessWidget {
         Wrap(
           spacing: 8,
           children: [
-            Chip(label: Text('Rarità: ${_rarita(specie.rarita)}')),
-            Chip(label: Text('Pericolo: ${_pericolo(specie.livelloPericolo)}')),
+            Chip(label: Text(l10n.rarityLabel(_rarita(l10n, specie.rarita)))),
+            Chip(
+              label: Text(l10n.dangerLabel(_pericolo(l10n, specie.livelloPericolo))),
+            ),
           ],
         ),
         const SizedBox(height: 16),
         if (specie.descrizione != null) ...[
-          Text('Descrizione', style: theme.textTheme.titleMedium),
+          Text(l10n.description, style: theme.textTheme.titleMedium),
           const SizedBox(height: 4),
           Text(specie.descrizione!),
           const SizedBox(height: 16),
         ],
         if (specie.habitatDescrizione != null) ...[
-          Text('Habitat', style: theme.textTheme.titleMedium),
+          Text(l10n.habitat, style: theme.textTheme.titleMedium),
           const SizedBox(height: 4),
           Text(specie.habitatDescrizione!),
           const SizedBox(height: 16),
         ],
         Card(
           color: theme.colorScheme.surfaceContainerHighest,
-          child: const Padding(
-            padding: EdgeInsets.all(16),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
             child: Row(
               children: [
-                Icon(Icons.map_outlined),
-                SizedBox(width: 12),
-                Expanded(child: Text('Mappa dell’habitat in arrivo nella Fase 2.')),
+                const Icon(Icons.map_outlined),
+                const SizedBox(width: 12),
+                Expanded(child: Text(l10n.habitatComingSoon)),
               ],
             ),
           ),
@@ -82,18 +86,18 @@ class _Dettaglio extends StatelessWidget {
     );
   }
 
-  String _rarita(String r) => switch (r) {
-        'comune' => 'comune',
-        'poco_comune' => 'poco comune',
-        'rara' => 'rara',
-        'molto_rara' => 'molto rara',
+  String _rarita(AppLocalizations l10n, String r) => switch (r) {
+        'comune' => l10n.rarityCommon,
+        'poco_comune' => l10n.rarityUncommon,
+        'rara' => l10n.rarityRare,
+        'molto_rara' => l10n.rarityVeryRare,
         _ => r,
       };
 
-  String _pericolo(int p) => switch (p) {
-        0 => 'nessuno',
-        1 => 'basso',
-        2 => 'medio',
-        _ => 'alto',
+  String _pericolo(AppLocalizations l10n, int p) => switch (p) {
+        0 => l10n.dangerNone,
+        1 => l10n.dangerLow,
+        2 => l10n.dangerMedium,
+        _ => l10n.dangerHigh,
       };
 }

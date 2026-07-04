@@ -26,13 +26,21 @@ class RecognitionRecording extends RecognitionState {
 }
 
 class RecognitionAnalyzing extends RecognitionState {
-  const RecognitionAnalyzing();
+  const RecognitionAnalyzing({this.messaggio});
+
+  /// Messaggio mostrato durante l'analisi (null = default "Analisi del canto…").
+  final String? messaggio;
 }
 
 class RecognitionResult extends RecognitionState {
-  const RecognitionResult({required this.candidati, this.posizione});
+  const RecognitionResult({
+    required this.candidati,
+    this.posizione,
+    this.incerto = false,
+  });
   final List<CandidatoSpecie> candidati;
   final LatLng? posizione; // null = GPS non disponibile (si salva comunque)
+  final bool incerto; // true = confidenza sotto soglia (foto): "non sono sicuro"
 }
 
 class RecognitionSaving extends RecognitionState {

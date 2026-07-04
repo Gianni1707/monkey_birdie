@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../data/models/avvistamento.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/state_views.dart';
 import '../application/collection_controller.dart';
 
@@ -13,6 +14,7 @@ class CollectionScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncColl = ref.watch(collezioneProvider);
+    final l10n = AppLocalizations.of(context);
 
     return asyncColl.when(
       loading: () => const LoadingView(),
@@ -22,10 +24,10 @@ class CollectionScreen extends ConsumerWidget {
       ),
       data: (avvistamenti) {
         if (avvistamenti.isEmpty) {
-          return const EmptyState(
+          return EmptyState(
             icon: Icons.photo_camera_back_outlined,
-            title: 'Collezione vuota',
-            subtitle: 'Registra il canto di un uccello per iniziare.',
+            title: l10n.emptyCollectionTitle,
+            subtitle: l10n.emptyCollectionSubtitle,
           );
         }
         return RefreshIndicator(

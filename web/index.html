@@ -35,6 +35,10 @@
   <!-- Riconoscimento BirdNET on-device (web/PWA) via TF.js + custom layer -->
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
   <script src="birdnet/birdnet_tfjs.js" defer></script>
+
+  <!-- Riconoscimento uccelli da FOTO (web/PWA) via tfjs-tflite (WASM). Convive con TF.js 4.22. -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-tflite@0.0.1-alpha.10/dist/tf-tflite.min.js" defer></script>
+  <script src="birds_image/birds_image_tflite.js" defer></script>
 </head>
 <body>
   <!--

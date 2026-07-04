@@ -17,10 +17,12 @@ pubspec.lock        # app non pubblicata: lock non versionato per ora
 
 # Segreti / config locale Claude
 .claude/settings.local.json
+CLAUDE.md
 
-# Modelli BirdNET (grandi, non versionarli: vedi README)
+# Modelli on-device (grandi, non versionarli: vedi README)
 assets/models/*.tflite
 web/birdnet/model/
+web/birds_image/model/
 
 # Cartelle di spike (asset/modelli scaricati, pesanti)
 spike/web_recognizer/birdnet.tflite

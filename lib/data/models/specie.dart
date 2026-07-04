@@ -15,6 +15,7 @@ class Specie with _$Specie {
     @Default('comune') String rarita,
     String? habitatDescrizione,
     String? birdnetLabel,
+    String? imageLabel,
   }) = _Specie;
 
   factory Specie.fromJson(Map<String, dynamic> json) => _$SpecieFromJson(json);

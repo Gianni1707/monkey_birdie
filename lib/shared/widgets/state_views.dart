@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/app_localizations.dart';
+
 /// Vista di caricamento centrata.
 class LoadingView extends StatelessWidget {
   const LoadingView({super.key});
@@ -29,7 +31,10 @@ class ErrorView extends StatelessWidget {
             Text(message, textAlign: TextAlign.center),
             if (onRetry != null) ...[
               const SizedBox(height: 16),
-              FilledButton.tonal(onPressed: onRetry, child: const Text('Riprova')),
+              FilledButton.tonal(
+                onPressed: onRetry,
+                child: Text(AppLocalizations.of(context).retry),
+              ),
             ],
           ],
         ),

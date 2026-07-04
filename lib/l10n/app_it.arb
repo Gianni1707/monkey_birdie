@@ -1,0 +1,77 @@
+{
+  "@@locale": "it",
+
+  "appTitle": "Monkey Bird",
+
+  "login": "Accedi",
+  "email": "Email",
+  "emailInvalid": "Email non valida",
+  "password": "Password",
+  "passwordMin": "Minimo 6 caratteri",
+  "noAccountRegister": "Non hai un account? Registrati",
+  "register": "Registrati",
+  "username": "Username",
+  "usernameMin": "Minimo 3 caratteri",
+  "createAccount": "Crea account",
+  "haveAccount": "Ho già un account",
+  "registrationEmailConfirm": "Registrazione completata: conferma via email.",
+
+  "tabRecognize": "Riconosci",
+  "tabCollection": "Collezione",
+  "logout": "Esci",
+  "language": "Lingua",
+  "languageSystem": "Automatica (sistema)",
+  "languageItalian": "Italiano",
+  "languageEnglish": "Inglese",
+
+  "tapToRecord": "Tocca per registrare un canto",
+  "orFromPhoto": "oppure riconosci da una foto",
+  "takePhoto": "Scatta foto",
+  "uploadPhoto": "Carica foto",
+  "recordingTapToStop": "Registrazione… tocca per fermare e analizzare",
+  "analyzingSong": "Analisi del canto…",
+  "analyzingPhoto": "Analisi della foto…",
+  "saving": "Salvataggio…",
+  "results": "Risultati",
+  "chooseSpecies": "Scegli la specie corretta per salvare l’avvistamento:",
+  "uncertainPhoto": "Non sono sicuro: la foto potrebbe essere sfocata o lontana. Controlla i candidati o riprova.",
+  "locationMissing": "Posizione non rilevata: verrà salvato senza posizione precisa.",
+  "noSpecies": "Nessuna specie riconosciuta. Riprova.",
+  "notInCatalog": "non in catalogo",
+  "addedToCollection": "Avvistamento aggiunto alla collezione.",
+  "restart": "Ricomincia",
+  "sightingSaved": "Avvistamento salvato!",
+
+  "micPermissionDenied": "Permesso microfono negato.",
+  "cameraPermissionDenied": "Permesso fotocamera negato.",
+  "galleryPermissionDenied": "Permesso galleria negato.",
+  "speciesNotInCatalog": "Specie non presente in catalogo: impossibile salvare.",
+
+  "emptyCollectionTitle": "Collezione vuota",
+  "emptyCollectionSubtitle": "Registra il canto di un uccello per iniziare.",
+
+  "speciesCard": "Scheda specie",
+  "rarityLabel": "Rarità: {value}",
+  "@rarityLabel": {
+    "placeholders": { "value": { "type": "String" } }
+  },
+  "dangerLabel": "Pericolo: {value}",
+  "@dangerLabel": {
+    "placeholders": { "value": { "type": "String" } }
+  },
+  "description": "Descrizione",
+  "habitat": "Habitat",
+  "habitatComingSoon": "Mappa dell’habitat in arrivo nella Fase 2.",
+
+  "rarityCommon": "comune",
+  "rarityUncommon": "poco comune",
+  "rarityRare": "rara",
+  "rarityVeryRare": "molto rara",
+
+  "dangerNone": "nessuno",
+  "dangerLow": "basso",
+  "dangerMedium": "medio",
+  "dangerHigh": "alto",
+
+  "retry": "Riprova"
+}

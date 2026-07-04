@@ -1,13 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 
 import '../../../core/error/failure.dart';
+import '../../../core/locale/locale_controller.dart';
 import '../../../core/location/location_service.dart';
 import '../../../core/permissions/permission_service.dart';
 import '../../../data/repositories/avvistamenti_repository.dart';
 import '../../../data/repositories/specie_repository.dart';
+import '../../../ml/recognizer/bird_image_recognizer.dart' show BirdNetPrediction, sogliaConfidenzaFoto;
+import '../../../ml/recognizer/bird_image_recognizer_factory.dart';
 import '../../../ml/recognizer/bird_recognizer_factory.dart';
 import 'recognition_state.dart';
 
@@ -15,13 +21,22 @@ import 'recognition_state.dart';
 /// prende GPS -> salva avvistamento.
 class RecognitionController extends AutoDisposeNotifier<RecognitionState> {
   final AudioRecorder _recorder = AudioRecorder();
+  final ImagePicker _imagePicker = ImagePicker();
+
+  /// Durata massima di una registrazione: oltre, si ferma e analizza da sola
+  /// (se non riconosce bene il verso, non resta a registrare all'infinito).
+  static const Duration _maxDurataRegistrazione = Duration(minutes: 1);
+  Timer? _timeoutRegistrazione;
 
   /// Posizione richiesta all'atto del tocco (vedi avviaRegistrazione).
   Future<LatLng>? _posizioneFuture;
 
   @override
   RecognitionState build() {
-    ref.onDispose(_recorder.dispose);
+    ref.onDispose(() {
+      _timeoutRegistrazione?.cancel();
+      _recorder.dispose();
+    });
     return const RecognitionIdle();
   }
 
@@ -36,7 +51,7 @@ class RecognitionController extends AutoDisposeNotifier<RecognitionState> {
     try {
       final ok = await ref.read(permissionServiceProvider).richiediMicrofono();
       if (!ok) {
-        state = const RecognitionError('Permesso microfono negato.');
+        state = RecognitionError(ref.read(l10nProvider).micPermissionDenied);
         return;
       }
       // Sul web non esiste una cartella temporanea: `record` produce un blob
@@ -54,12 +69,18 @@ class RecognitionController extends AutoDisposeNotifier<RecognitionState> {
         path: path,
       );
       state = const RecognitionRecording();
+      // Auto-stop dopo la durata massima (se l'utente non ferma da sé).
+      _timeoutRegistrazione?.cancel();
+      _timeoutRegistrazione = Timer(_maxDurataRegistrazione, () {
+        if (state is RecognitionRecording) fermaEAnalizza();
+      });
     } catch (e) {
       state = RecognitionError(_msg(e));
     }
   }
 
   Future<void> fermaEAnalizza() async {
+    _timeoutRegistrazione?.cancel();
     try {
       final path = await _recorder.stop();
       if (path == null) {
@@ -99,6 +120,93 @@ class RecognitionController extends AutoDisposeNotifier<RecognitionState> {
     }
   }
 
+  /// Riconoscimento da FOTO: scatta con la fotocamera.
+  Future<void> scattaFoto() => _analizzaFoto(ImageSource.camera);
+
+  /// Riconoscimento da FOTO: scegli dalla galleria.
+  Future<void> caricaFoto() => _analizzaFoto(ImageSource.gallery);
+
+  /// Percorso FOTO: scatta/carica -> analizza -> mappa su catalogo (image_label)
+  /// -> GPS -> risultati. Confluisce nello stesso flusso candidati/scelta/salva
+  /// dell'audio; usa un modello e un runtime separati (BirdImageRecognizer).
+  Future<void> _analizzaFoto(ImageSource sorgente) async {
+    // GPS all'atto del tocco (iOS Safari), come per l'audio.
+    final posFuture = ref.read(locationServiceProvider).posizioneCorrente();
+    _posizioneFuture = posFuture;
+    posFuture.ignore();
+
+    try {
+      final permessi = ref.read(permissionServiceProvider);
+      final l10n = ref.read(l10nProvider);
+      final permesso = sorgente == ImageSource.camera
+          ? await permessi.richiediFotocamera()
+          : await permessi.richiediGalleria();
+      if (!permesso) {
+        state = RecognitionError(
+          sorgente == ImageSource.camera
+              ? l10n.cameraPermissionDenied
+              : l10n.galleryPermissionDenied,
+        );
+        _posizioneFuture = null;
+        return;
+      }
+
+      final file = await _imagePicker.pickImage(
+        source: sorgente,
+        maxWidth: 2048,
+        imageQuality: 90,
+      );
+      if (file == null) {
+        state = const RecognitionIdle();
+        _posizioneFuture = null;
+        return;
+      }
+      state = RecognitionAnalyzing(messaggio: l10n.analyzingPhoto);
+
+      final recognizer = ref.read(birdImageRecognizerProvider);
+      final List<BirdNetPrediction> preds;
+      if (kIsWeb) {
+        // Sul web `file.path` è un blob/object URL: lo shim JS lo carica.
+        preds = await recognizer.analyze(file.path, topK: 3);
+      } else {
+        preds = await recognizer.analyzeBytes(
+          await file.readAsBytes(),
+          topK: 3,
+        );
+      }
+
+      LatLng? posizione;
+      try {
+        posizione = await (_posizioneFuture ??
+            ref.read(locationServiceProvider).posizioneCorrente());
+      } catch (_) {
+        posizione = null;
+      } finally {
+        _posizioneFuture = null;
+      }
+
+      final specieRepo = ref.read(specieRepositoryProvider);
+      final candidati = <CandidatoSpecie>[];
+      for (final p in preds) {
+        final specie = await specieRepo.perPredizioneImmagine(
+          imageLabel: p.label,
+          nomeScientifico: p.nomeScientifico,
+        );
+        candidati.add(CandidatoSpecie(predizione: p, specie: specie));
+      }
+      final incerto = candidati.isEmpty ||
+          candidati.first.predizione.confidenza < sogliaConfidenzaFoto;
+
+      state = RecognitionResult(
+        candidati: candidati,
+        posizione: posizione,
+        incerto: incerto,
+      );
+    } catch (e) {
+      state = RecognitionError(_msg(e));
+    }
+  }
+
   /// Salva l'avvistamento per il candidato scelto (deve avere specie in catalogo).
   Future<void> salva(CandidatoSpecie candidato) async {
     final corrente = state;
@@ -106,9 +214,7 @@ class RecognitionController extends AutoDisposeNotifier<RecognitionState> {
 
     final specie = candidato.specie;
     if (specie == null) {
-      state = const RecognitionError(
-        'Specie non presente in catalogo: impossibile salvare.',
-      );
+      state = RecognitionError(ref.read(l10nProvider).speciesNotInCatalog);
       return;
     }
 

@@ -1,0 +1,20 @@
+ATTRIBUZIONI — spike foto (non parte dell'app)
+
+MODELLO
+  Google AIY Vision Classifier Birds V1 (v3)
+  Fonte: Kaggle Models — google/aiy — TfLite/vision-classifier-birds-v1
+    https://www.kaggle.com/models/google/aiy/tfLite/vision-classifier-birds-v1
+  Licenza: Apache 2.0
+  Labelmap: https://www.gstatic.com/aihub/tfhub/labelmaps/aiy_birds_V1_labelmap.csv
+  Dataset di training: sottoinsieme iNaturalist. 964 specie + 1 background.
+
+RUNTIME WEB
+  @tensorflow/tfjs e @tensorflow/tfjs-tflite (Apache 2.0), caricati da CDN jsDelivr.
+
+FOTO DI ESEMPIO (samples/ — non versionate, scaricate per il test)
+  Recuperate via Wikipedia REST (originalimage) da Wikimedia Commons:
+    robin_Erithacus_rubecula.jpg   — Erithacus rubecula (European robin)
+    greattit_Parus_major.jpg       — Parus major (Great tit)
+    blackbird_Turdus_merula.jpg    — Turdus merula (Common blackbird)
+  Le immagini su Commons hanno licenze proprie (CC BY / CC BY-SA / PD a seconda del
+  file): usate qui SOLO come input di test locale, non ridistribuite nell'app.
