@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../data/models/avvistamento.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../shared/widgets/avvistamento_foto.dart';
 import '../../../shared/widgets/state_views.dart';
 import '../application/collection_controller.dart';
 
@@ -54,12 +55,10 @@ class _AvvistamentoTile extends StatelessWidget {
         a.confidenza == null ? '' : ' · ${(a.confidenza! * 100).toStringAsFixed(0)}%';
     return Card(
       child: ListTile(
-        leading: CircleAvatar(
-          child: Text(
-            a.specieNomeComune.isEmpty
-                ? '?'
-                : a.specieNomeComune[0].toUpperCase(),
-          ),
+        leading: AvvistamentoFoto(
+          fotoUrl: a.fotoUrl,
+          nomeScientifico: a.specieNomeScientifico,
+          size: 48,
         ),
         title: Text(a.specieNomeComune),
         subtitle: Text('${a.specieNomeScientifico}\n${_formatData(a.avvistatoIl)}$conf'),

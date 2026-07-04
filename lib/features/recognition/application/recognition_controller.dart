@@ -11,6 +11,7 @@ import '../../../core/locale/locale_controller.dart';
 import '../../../core/location/location_service.dart';
 import '../../../core/permissions/permission_service.dart';
 import '../../../data/repositories/avvistamenti_repository.dart';
+import '../../../data/repositories/avvistamento_foto_repository.dart';
 import '../../../data/repositories/specie_repository.dart';
 import '../../../ml/recognizer/bird_image_recognizer.dart' show BirdNetPrediction, sogliaConfidenzaFoto;
 import '../../../ml/recognizer/bird_image_recognizer_factory.dart';
@@ -114,7 +115,14 @@ class RecognitionController extends AutoDisposeNotifier<RecognitionState> {
         candidati.add(CandidatoSpecie(predizione: p, specie: specie));
       }
 
-      state = RecognitionResult(candidati: candidati, posizione: posizione);
+      // Canto: la posizione automatica e' affidabile se il GPS ha risposto
+      // (registrazione = qui e ora). Nessuna foto da salvare.
+      state = RecognitionResult(
+        candidati: candidati,
+        posizione: posizione,
+        centroHint: await _centroMappa(posizione),
+        posizioneAffidabile: posizione != null,
+      );
     } catch (e) {
       state = RecognitionError(_msg(e));
     }
@@ -163,16 +171,17 @@ class RecognitionController extends AutoDisposeNotifier<RecognitionState> {
       }
       state = RecognitionAnalyzing(messaggio: l10n.analyzingPhoto);
 
+      // Byte pieni: servono al riconoscimento nativo E all'upload su Storage
+      // (compressione al salvataggio). Sul web `readAsBytes` funziona sul blob.
+      final fotoBytes = await file.readAsBytes();
+
       final recognizer = ref.read(birdImageRecognizerProvider);
       final List<BirdNetPrediction> preds;
       if (kIsWeb) {
         // Sul web `file.path` è un blob/object URL: lo shim JS lo carica.
         preds = await recognizer.analyze(file.path, topK: 3);
       } else {
-        preds = await recognizer.analyzeBytes(
-          await file.readAsBytes(),
-          topK: 3,
-        );
+        preds = await recognizer.analyzeBytes(fotoBytes, topK: 3);
       }
 
       LatLng? posizione;
@@ -197,9 +206,16 @@ class RecognitionController extends AutoDisposeNotifier<RecognitionState> {
       final incerto = candidati.isEmpty ||
           candidati.first.predizione.confidenza < sogliaConfidenzaFoto;
 
+      // Foto: la posizione automatica e' affidabile SOLO per lo scatto dal vivo
+      // (fotocamera) con GPS ok. Dalla galleria la foto e' stata scattata
+      // altrove -> sempre ricaduta manuale, anche col GPS acceso.
       state = RecognitionResult(
         candidati: candidati,
         posizione: posizione,
+        centroHint: await _centroMappa(posizione),
+        posizioneAffidabile:
+            sorgente == ImageSource.camera && posizione != null,
+        fotoBytes: fotoBytes,
         incerto: incerto,
       );
     } catch (e) {
@@ -207,12 +223,32 @@ class RecognitionController extends AutoDisposeNotifier<RecognitionState> {
     }
   }
 
-  /// Salva l'avvistamento per il candidato scelto (deve avere specie in catalogo).
+  /// Scelto il candidato: si passa alla CONFERMA POSIZIONE (obbligatoria, niente
+  /// placeholder). L'inserimento vero avviene in [confermaPosizione].
   Future<void> salva(CandidatoSpecie candidato) async {
     final corrente = state;
     if (corrente is! RecognitionResult) return;
 
-    final specie = candidato.specie;
+    if (candidato.specie == null) {
+      state = RecognitionError(ref.read(l10nProvider).speciesNotInCatalog);
+      return;
+    }
+    state = RecognitionConfermaPosizione(origine: corrente, candidato: candidato);
+  }
+
+  /// Torna ai risultati dal passo di conferma posizione (senza perdere il
+  /// riconoscimento).
+  void annullaConferma() {
+    final corrente = state;
+    if (corrente is RecognitionConfermaPosizione) state = corrente.origine;
+  }
+
+  /// Conferma la posizione [scelta] (auto corretta o manuale): carica la foto
+  /// su Storage (se presente) e inserisce l'avvistamento.
+  Future<void> confermaPosizione(LatLng scelta) async {
+    final corrente = state;
+    if (corrente is! RecognitionConfermaPosizione) return;
+    final specie = corrente.candidato.specie;
     if (specie == null) {
       state = RecognitionError(ref.read(l10nProvider).speciesNotInCatalog);
       return;
@@ -220,12 +256,26 @@ class RecognitionController extends AutoDisposeNotifier<RecognitionState> {
 
     state = const RecognitionSaving();
     try {
+      // Foto su Storage (bucket privato). Best-effort: se l'upload fallisce,
+      // si salva comunque l'avvistamento (foto_url null -> fallback thumbnail).
+      String? fotoPath;
+      final bytes = corrente.fotoBytes;
+      if (bytes != null) {
+        try {
+          fotoPath =
+              await ref.read(avvistamentoFotoRepositoryProvider).carica(bytes);
+        } catch (_) {
+          fotoPath = null;
+        }
+      }
+
       // MVP: audio NON caricato su Storage (free tier 1GB) -> audioUrl omesso.
       final id = await ref.read(avvistamentiRepositoryProvider).inserisci(
             specieId: specie.id,
-            lat: corrente.posizione?.lat ?? 0.0,
-            lng: corrente.posizione?.lng ?? 0.0,
-            confidenza: candidato.predizione.confidenza,
+            lat: scelta.lat,
+            lng: scelta.lng,
+            confidenza: corrente.candidato.predizione.confidenza,
+            fotoUrl: fotoPath,
             condiviso: false,
           );
       state = RecognitionSaved(id);
@@ -235,6 +285,18 @@ class RecognitionController extends AutoDisposeNotifier<RecognitionState> {
   }
 
   void reset() => state = const RecognitionIdle();
+
+  /// Centro per la mappa di conferma: posizione fresca se c'e', altrimenti
+  /// l'ultima posizione rilevata dell'utente (utile in modalita' manuale
+  /// senza GPS). Best-effort: null solo se non se n'e' mai avuta una.
+  Future<LatLng?> _centroMappa(LatLng? fresca) async {
+    if (fresca != null) return fresca;
+    try {
+      return await ref.read(locationServiceProvider).ultimaPosizioneNota();
+    } catch (_) {
+      return null;
+    }
+  }
 
   String _msg(Object e) => e is Failure ? e.message : e.toString();
 }

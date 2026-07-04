@@ -52,6 +52,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tabRecognize => 'Recognize';
 
   @override
+  String get tabMap => 'Map';
+
+  @override
   String get tabCollection => 'Collection';
 
   @override
@@ -186,6 +189,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dangerHigh => 'high';
+
+  @override
+  String get confirmLocationTitle => 'Confirm the location';
+
+  @override
+  String get confirmLocationAuto => 'Drag the pin to fine-tune the spot.';
+
+  @override
+  String get confirmLocationManual => 'Tap the map to place the sighting.';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get mapEmptyTitle => 'No sightings on the map';
+
+  @override
+  String get mapEmptySubtitle =>
+      'Save a sighting with a location to see it here.';
+
+  @override
+  String get mapUnavailable => 'Map unavailable (are you offline?).';
+
+  @override
+  String get speciesCardButton => 'Species card';
+
+  @override
+  String get searchPlaceHint => 'Search a place…';
+
+  @override
+  String get searchNoResults => 'No place found.';
+
+  @override
+  String get myLocation => 'My location';
+
+  @override
+  String get locationUnavailable => 'Location unavailable.';
 
   @override
   String get retry => 'Try again';

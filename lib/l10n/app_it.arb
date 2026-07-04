@@ -17,6 +17,7 @@
   "registrationEmailConfirm": "Registrazione completata: conferma via email.",
 
   "tabRecognize": "Riconosci",
+  "tabMap": "Mappa",
   "tabCollection": "Collezione",
   "logout": "Esci",
   "language": "Lingua",
@@ -72,6 +73,20 @@
   "dangerLow": "basso",
   "dangerMedium": "medio",
   "dangerHigh": "alto",
+
+  "confirmLocationTitle": "Conferma la posizione",
+  "confirmLocationAuto": "Trascina il segnaposto per correggere il punto.",
+  "confirmLocationManual": "Tocca la mappa per posizionare l’avvistamento.",
+  "confirm": "Conferma",
+  "cancel": "Annulla",
+  "mapEmptyTitle": "Nessun avvistamento sulla mappa",
+  "mapEmptySubtitle": "Salva un avvistamento con la posizione per vederlo qui.",
+  "mapUnavailable": "Mappa non disponibile (sei offline?).",
+  "speciesCardButton": "Scheda specie",
+  "searchPlaceHint": "Cerca un luogo…",
+  "searchNoResults": "Nessun luogo trovato.",
+  "myLocation": "La mia posizione",
+  "locationUnavailable": "Posizione non disponibile.",
 
   "retry": "Riprova"
 }

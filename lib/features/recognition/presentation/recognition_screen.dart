@@ -6,6 +6,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../collection/application/collection_controller.dart';
 import '../application/recognition_controller.dart';
 import '../application/recognition_state.dart';
+import 'conferma_posizione_view.dart';
 
 /// UT02 — cattura audio, riconoscimento on-device, conferma e salvataggio.
 class RecognitionScreen extends ConsumerWidget {
@@ -23,6 +24,10 @@ class RecognitionScreen extends ConsumerWidget {
     });
 
     final state = ref.watch(recognitionControllerProvider);
+    // Conferma posizione: mappa a schermo pieno (non centrata nel padding).
+    if (state is RecognitionConfermaPosizione) {
+      return ConfermaPosizioneView(stato: state);
+    }
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Center(child: _body(context, ref, state)),
@@ -48,13 +53,13 @@ class RecognitionScreen extends ConsumerWidget {
       RecognitionAnalyzing(:final messaggio) =>
         _Busy(label: messaggio ?? l10n.analyzingSong),
       RecognitionSaving() => _Busy(label: l10n.saving),
-      RecognitionResult(:final candidati, :final posizione, :final incerto) =>
-        _Risultati(
+      RecognitionResult(:final candidati, :final incerto) => _Risultati(
           candidati: candidati,
-          posizioneMancante: posizione == null,
           incerto: incerto,
           onScegli: ctrl.salva,
         ),
+      // Gestito a schermo pieno in build(): qui non raggiungibile.
+      RecognitionConfermaPosizione() => const SizedBox.shrink(),
       RecognitionSaved() => _Esito(
           icon: Icons.check_circle,
           message: l10n.addedToCollection,
@@ -173,12 +178,10 @@ class _Risultati extends StatelessWidget {
   const _Risultati({
     required this.candidati,
     required this.onScegli,
-    this.posizioneMancante = false,
     this.incerto = false,
   });
   final List<CandidatoSpecie> candidati;
   final void Function(CandidatoSpecie) onScegli;
-  final bool posizioneMancante;
   final bool incerto; // confidenza sotto soglia (foto): "non sono sicuro"
 
   @override
@@ -211,28 +214,6 @@ class _Risultati extends StatelessWidget {
                   child: Text(
                     l10n.uncertainPhoto,
                     style: TextStyle(color: scheme.onTertiaryContainer),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-        if (posizioneMancante) ...[
-          const SizedBox(height: 12),
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: scheme.errorContainer,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.location_off, color: scheme.onErrorContainer),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    l10n.locationMissing,
-                    style: TextStyle(color: scheme.onErrorContainer),
                   ),
                 ),
               ],

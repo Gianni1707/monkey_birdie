@@ -13,8 +13,11 @@ class AvvistamentoDettaglio with _$AvvistamentoDettaglio {
     required String specieId,
     String? fotoUrl,
     String? audioUrl,
-    required double lat,
-    required double lng,
+    // Nullabili da 0005: `posizione` puo' essere NULL (avvistamento senza punto).
+    // In pratica l'app la rende obbligatoria al salvataggio; la mappa mostra
+    // solo gli avvistamenti con lat/lng non null.
+    double? lat,
+    double? lng,
     double? confidenza,
     @Default(false) bool condiviso,
     required DateTime avvistatoIl,

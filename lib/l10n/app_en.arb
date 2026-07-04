@@ -17,6 +17,7 @@
   "registrationEmailConfirm": "Registration complete: confirm via email.",
 
   "tabRecognize": "Recognize",
+  "tabMap": "Map",
   "tabCollection": "Collection",
   "logout": "Log out",
   "language": "Language",
@@ -66,6 +67,20 @@
   "dangerLow": "low",
   "dangerMedium": "medium",
   "dangerHigh": "high",
+
+  "confirmLocationTitle": "Confirm the location",
+  "confirmLocationAuto": "Drag the pin to fine-tune the spot.",
+  "confirmLocationManual": "Tap the map to place the sighting.",
+  "confirm": "Confirm",
+  "cancel": "Cancel",
+  "mapEmptyTitle": "No sightings on the map",
+  "mapEmptySubtitle": "Save a sighting with a location to see it here.",
+  "mapUnavailable": "Map unavailable (are you offline?).",
+  "speciesCardButton": "Species card",
+  "searchPlaceHint": "Search a place…",
+  "searchNoResults": "No place found.",
+  "myLocation": "My location",
+  "locationUnavailable": "Location unavailable.",
 
   "retry": "Try again"
 }

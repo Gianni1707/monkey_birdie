@@ -182,6 +182,12 @@ abstract class AppLocalizations {
   /// **'Riconosci'**
   String get tabRecognize;
 
+  /// No description provided for @tabMap.
+  ///
+  /// In it, this message translates to:
+  /// **'Mappa'**
+  String get tabMap;
+
   /// No description provided for @tabCollection.
   ///
   /// In it, this message translates to:
@@ -439,6 +445,84 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'alto'**
   String get dangerHigh;
+
+  /// No description provided for @confirmLocationTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Conferma la posizione'**
+  String get confirmLocationTitle;
+
+  /// No description provided for @confirmLocationAuto.
+  ///
+  /// In it, this message translates to:
+  /// **'Trascina il segnaposto per correggere il punto.'**
+  String get confirmLocationAuto;
+
+  /// No description provided for @confirmLocationManual.
+  ///
+  /// In it, this message translates to:
+  /// **'Tocca la mappa per posizionare l’avvistamento.'**
+  String get confirmLocationManual;
+
+  /// No description provided for @confirm.
+  ///
+  /// In it, this message translates to:
+  /// **'Conferma'**
+  String get confirm;
+
+  /// No description provided for @cancel.
+  ///
+  /// In it, this message translates to:
+  /// **'Annulla'**
+  String get cancel;
+
+  /// No description provided for @mapEmptyTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessun avvistamento sulla mappa'**
+  String get mapEmptyTitle;
+
+  /// No description provided for @mapEmptySubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Salva un avvistamento con la posizione per vederlo qui.'**
+  String get mapEmptySubtitle;
+
+  /// No description provided for @mapUnavailable.
+  ///
+  /// In it, this message translates to:
+  /// **'Mappa non disponibile (sei offline?).'**
+  String get mapUnavailable;
+
+  /// No description provided for @speciesCardButton.
+  ///
+  /// In it, this message translates to:
+  /// **'Scheda specie'**
+  String get speciesCardButton;
+
+  /// No description provided for @searchPlaceHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Cerca un luogo…'**
+  String get searchPlaceHint;
+
+  /// No description provided for @searchNoResults.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessun luogo trovato.'**
+  String get searchNoResults;
+
+  /// No description provided for @myLocation.
+  ///
+  /// In it, this message translates to:
+  /// **'La mia posizione'**
+  String get myLocation;
+
+  /// No description provided for @locationUnavailable.
+  ///
+  /// In it, this message translates to:
+  /// **'Posizione non disponibile.'**
+  String get locationUnavailable;
 
   /// No description provided for @retry.
   ///

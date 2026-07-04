@@ -5,9 +5,10 @@ import '../../../core/locale/locale_controller.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../auth/application/auth_controller.dart';
 import '../../collection/presentation/collection_screen.dart';
+import '../../map/presentation/mappa_screen.dart';
 import '../../recognition/presentation/recognition_screen.dart';
 
-/// Contenitore principale post-login: tab Riconosci / Collezione.
+/// Contenitore principale post-login: tab Riconosci / Mappa / Collezione.
 class HomeShell extends ConsumerStatefulWidget {
   const HomeShell({super.key});
 
@@ -18,12 +19,16 @@ class HomeShell extends ConsumerStatefulWidget {
 class _HomeShellState extends ConsumerState<HomeShell> {
   int _index = 0;
 
-  static const _pagine = [RecognitionScreen(), CollectionScreen()];
+  static const _pagine = [
+    RecognitionScreen(),
+    MappaScreen(),
+    CollectionScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final titoli = [l10n.tabRecognize, l10n.tabCollection];
+    final titoli = [l10n.tabRecognize, l10n.tabMap, l10n.tabCollection];
 
     return Scaffold(
       appBar: AppBar(
@@ -61,6 +66,11 @@ class _HomeShellState extends ConsumerState<HomeShell> {
           NavigationDestination(
             icon: const Icon(Icons.mic),
             label: l10n.tabRecognize,
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.map_outlined),
+            selectedIcon: const Icon(Icons.map),
+            label: l10n.tabMap,
           ),
           NavigationDestination(
             icon: const Icon(Icons.collections_bookmark),
