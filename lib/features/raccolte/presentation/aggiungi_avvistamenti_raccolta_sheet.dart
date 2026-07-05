@@ -7,6 +7,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../../shared/nome_specie.dart';
 import '../../../shared/widgets/avvistamento_foto.dart';
 import '../../collection/application/collection_controller.dart';
+import '../../map/application/geocoding_repository.dart';
 import '../application/raccolte_providers.dart';
 
 /// Apre il foglio per aggiungere avvistamenti (dalla propria collezione) a una
@@ -23,16 +24,26 @@ Future<void> mostraAggiungiAvvistamentiARaccolta(
   );
 }
 
-/// Sottotitolo di un avvistamento nel foglio: giorno + luogo (coordinate, se
-/// presenti). Le coordinate sono l'unico "luogo" salvato (niente nome-luogo).
-String _sottotitolo(AvvistamentoDettaglio a) {
-  final d = a.avvistatoIl;
-  String due(int n) => n.toString().padLeft(2, '0');
-  final data = '${due(d.day)}/${due(d.month)}/${d.year}';
-  if (a.lat != null && a.lng != null) {
-    return '$data · ${a.lat!.toStringAsFixed(3)}, ${a.lng!.toStringAsFixed(3)}';
+/// Sottotitolo di un avvistamento nel foglio: giorno + NOME-luogo (reverse-
+/// geocoded, cachato). Mentre il luogo risolve mostra solo la data (mai le
+/// coordinate grezze).
+class _SottotitoloLuogo extends ConsumerWidget {
+  const _SottotitoloLuogo(this.a);
+  final AvvistamentoDettaglio a;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final d = a.avvistatoIl;
+    String due(int n) => n.toString().padLeft(2, '0');
+    var testo = '${due(d.day)}/${due(d.month)}/${d.year}';
+    if (a.lat != null && a.lng != null) {
+      final luogo = ref
+          .watch(nomeLuogoProvider((lat: a.lat!, lng: a.lng!)))
+          .valueOrNull;
+      if (luogo != null) testo = '$testo · $luogo';
+    }
+    return Text(testo, maxLines: 1, overflow: TextOverflow.ellipsis);
   }
-  return data;
 }
 
 /// Elenca gli avvistamenti dell'utente NON ancora nella raccolta; selezione
@@ -128,14 +139,10 @@ class _AggiungiAvvistamentiSheetState
                           ),
                         ),
                         title: Text(a.specieNomeDaMostrare),
-                        // Giorno + luogo (coordinate) dell'avvistamento: più utili
-                        // del nome scientifico per distinguere scatti della stessa
-                        // specie.
-                        subtitle: Text(
-                          _sottotitolo(a),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        // Giorno + luogo (nome, reverse-geocoded) dell'avvistamento:
+                        // più utili del nome scientifico per distinguere scatti
+                        // della stessa specie.
+                        subtitle: _SottotitoloLuogo(a),
                         onChanged: (v) => setState(() {
                           if (v == true) {
                             _scelti.add(a.id);

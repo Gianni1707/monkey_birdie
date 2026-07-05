@@ -55,6 +55,10 @@ class AvvistamentoFoto extends ConsumerWidget {
       Image.network(
         url,
         fit: BoxFit.cover,
+        // Su web: se il canvas non può disegnare l'immagine cross-origin (host
+        // senza header CORS, es. iNaturalist/Storage), ripiega su un <img> HTML.
+        // Ignorato su nativo.
+        webHtmlElementStrategy: WebHtmlElementStrategy.fallback,
         errorBuilder: (_, __, ___) => fallback,
         loadingBuilder: (_, child, progress) =>
             progress == null ? child : const _Placeholder(),

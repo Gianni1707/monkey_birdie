@@ -532,6 +532,12 @@ class _BarraRisultati extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    // Etichette su UNA riga: FittedBox rimpicciolisce se lo spazio è poco
+    // (niente più "Non sono sicuro" a capo su 3 righe).
+    Widget unaRiga(String testo) => FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(testo, maxLines: 1, softWrap: false),
+        );
     return Row(
       children: [
         Expanded(
@@ -539,20 +545,21 @@ class _BarraRisultati extends StatelessWidget {
             onPressed: onAnnulla,
             style: OutlinedButton.styleFrom(
               minimumSize: const Size.fromHeight(52),
+              padding: const EdgeInsets.symmetric(horizontal: 12),
             ),
-            child: Text(l10n.notSure),
+            child: unaRiga(l10n.notSure),
           ),
         ),
         const SizedBox(width: 12),
         Expanded(
-          flex: 2,
           child: FilledButton.icon(
             onPressed: onConferma,
             icon: const Icon(Icons.check_circle_outline),
             style: FilledButton.styleFrom(
               minimumSize: const Size.fromHeight(52),
+              padding: const EdgeInsets.symmetric(horizontal: 12),
             ),
-            label: Text(l10n.confirmAndSave),
+            label: unaRiga(l10n.confirmAndSave),
           ),
         ),
       ],
@@ -575,6 +582,7 @@ class _HeroImmagine extends ConsumerWidget {
           : Image.network(
               url,
               fit: BoxFit.cover,
+              webHtmlElementStrategy: WebHtmlElementStrategy.fallback,
               errorBuilder: (_, __, ___) => const _HeroPlaceholder(),
               loadingBuilder: (_, child, progress) =>
                   progress == null ? child : const _HeroPlaceholder(),
@@ -696,6 +704,7 @@ class _SpecieThumb extends ConsumerWidget {
               : Image.network(
                   url,
                   fit: BoxFit.cover,
+                  webHtmlElementStrategy: WebHtmlElementStrategy.fallback,
                   errorBuilder: (_, __, ___) => const _ThumbPlaceholder(),
                   loadingBuilder: (_, child, progress) =>
                       progress == null ? child : const _ThumbPlaceholder(),

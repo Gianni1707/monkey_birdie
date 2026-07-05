@@ -50,7 +50,9 @@ class ProfiloScreen extends ConsumerWidget {
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
           children: [
             _Intestazione(profilo),
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
+            const _BadgesBirder(),
+            const SizedBox(height: 16),
             const _CardIdentificati(),
             const SizedBox(height: 24),
             _SezionePreferiti(),
@@ -98,7 +100,9 @@ class _Intestazione extends StatelessWidget {
   }
 }
 
-/// Card "Identificati": specie distinte in collezione + badge birder.
+/// Card "Identificati" COMPATTA: specie distinte in collezione, su una riga
+/// (numero grande + etichetta). Il badge birder vive ora sotto la bio
+/// ([_BadgesBirder]).
 class _CardIdentificati extends ConsumerWidget {
   const _CardIdentificati();
 
@@ -107,60 +111,104 @@ class _CardIdentificati extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final t = Theme.of(context).textTheme;
     final scheme = Theme.of(context).colorScheme;
-    final badge = ref.watch(badgeBirderProvider).valueOrNull;
-    final specie = badge?.specie ?? 0;
+    final specie = ref.watch(badgeBirderProvider).valueOrNull?.specie ?? 0;
     return Card(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 22, horizontal: 20),
-        child: Column(
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+        child: Row(
           children: [
             Text(
-              l10n.identified.toUpperCase(),
-              style: t.labelLarge?.copyWith(
-                color: scheme.onSurfaceVariant,
-                letterSpacing: 0.5,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
               '$specie',
-              style: t.displayMedium?.copyWith(color: scheme.primary),
+              style: t.headlineMedium?.copyWith(color: scheme.primary),
             ),
-            const SizedBox(height: 4),
-            Text(
-              l10n.identifiedSubtitle,
-              textAlign: TextAlign.center,
-              style: t.bodyMedium?.copyWith(color: scheme.onSurfaceVariant),
-            ),
-            if (badge != null) ...[
-              const SizedBox(height: 14),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: scheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      badge.livello.emoji,
-                      style: const TextStyle(fontSize: 18),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.identified.toUpperCase(),
+                    style: t.labelMedium?.copyWith(
+                      color: scheme.onSurfaceVariant,
+                      letterSpacing: 0.5,
                     ),
-                    const SizedBox(width: 8),
-                    Text(
-                      etichettaLivello(l10n, badge.livello),
-                      style: t.labelLarge?.copyWith(
-                        color: scheme.onPrimaryContainer,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                  Text(
+                    l10n.identifiedSubtitle,
+                    style: t.bodySmall?.copyWith(color: scheme.onSurfaceVariant),
+                  ),
+                ],
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Badge dell'utente (attuale: livello birder; in futuro altri) sotto la bio,
+/// in una riga ORIZZONTALE scorrevole: centrata se pochi, scorre se sforano.
+class _BadgesBirder extends ConsumerWidget {
+  const _BadgesBirder();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final badge = ref.watch(badgeBirderProvider).valueOrNull;
+    if (badge == null) return const SizedBox.shrink();
+
+    final badges = <Widget>[
+      _BadgeChip(
+        emoji: badge.livello.emoji,
+        testo: etichettaLivello(l10n, badge.livello),
+      ),
+      // Badge futuri: aggiungerli qui (la riga scorre se sforano).
+    ];
+
+    return Center(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (var i = 0; i < badges.length; i++) ...[
+              if (i > 0) const SizedBox(width: 8),
+              badges[i],
             ],
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Pill di un badge (emoji + etichetta), tono primario tenue.
+class _BadgeChip extends StatelessWidget {
+  const _BadgeChip({required this.emoji, required this.testo});
+  final String emoji;
+  final String testo;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Theme.of(context).textTheme;
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: scheme.primaryContainer,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(emoji, style: const TextStyle(fontSize: 18)),
+          const SizedBox(width: 8),
+          Text(
+            testo,
+            style: t.labelLarge?.copyWith(color: scheme.onPrimaryContainer),
+          ),
+        ],
       ),
     );
   }
@@ -351,6 +399,7 @@ class _AvatarProfiloState extends ConsumerState<_AvatarProfilo> {
           width: size,
           height: size,
           fit: BoxFit.cover,
+          webHtmlElementStrategy: WebHtmlElementStrategy.fallback,
           errorBuilder: (_, __, ___) => _iniziale(scheme),
         ),
       );

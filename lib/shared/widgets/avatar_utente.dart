@@ -24,6 +24,7 @@ class AvatarUtente extends ConsumerWidget {
           width: size,
           height: size,
           fit: BoxFit.cover,
+          webHtmlElementStrategy: WebHtmlElementStrategy.fallback,
           errorBuilder: (_, __, ___) => _iniziale(scheme),
         ),
       );

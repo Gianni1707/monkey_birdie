@@ -10,6 +10,7 @@ import '../../../shared/widgets/avvistamento_foto.dart';
 import '../../../shared/widgets/state_views.dart';
 import '../../desideri/presentation/desideri_screen.dart';
 import '../../home/application/home_tab_provider.dart';
+import '../../map/application/geocoding_repository.dart';
 import '../../map/application/mappa_focus_provider.dart';
 import '../../raccolte/presentation/aggiungi_a_raccolta_sheet.dart';
 import '../../raccolte/presentation/raccolte_screen.dart';
@@ -84,7 +85,7 @@ class _ListaAvvistamenti extends ConsumerWidget {
               crossAxisCount: 2,
               mainAxisSpacing: 14,
               crossAxisSpacing: 14,
-              childAspectRatio: 0.72,
+              childAspectRatio: 0.66,
             ),
             itemCount: avvistamenti.length,
             itemBuilder: (_, i) => _AvvistamentoGridCard(a: avvistamenti[i]),
@@ -157,6 +158,11 @@ class _AvvistamentoGridCard extends StatelessWidget {
                           Text(_formatData(a.avvistatoIl), style: t.labelSmall),
                         ],
                       ),
+                      // Luogo (nome, reverse-geocoded): riga con icona GPS.
+                      if (a.lat != null && a.lng != null) ...[
+                        const SizedBox(height: 4),
+                        _LuogoRiga(a),
+                      ],
                     ],
                   ),
                 ),
@@ -182,6 +188,36 @@ class _AvvistamentoGridCard extends StatelessWidget {
   static String _formatData(DateTime d) {
     String due(int n) => n.toString().padLeft(2, '0');
     return '${due(d.day)}/${due(d.month)}/${d.year}';
+  }
+}
+
+/// Riga luogo della card: icona GPS + NOME-luogo (reverse-geocoded, cachato).
+/// Mentre risolve mostra "…"; se non risolve, riga vuota (niente coordinate).
+class _LuogoRiga extends ConsumerWidget {
+  const _LuogoRiga(this.a);
+  final AvvistamentoDettaglio a;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = Theme.of(context).textTheme;
+    final scheme = Theme.of(context).colorScheme;
+    final async = ref.watch(nomeLuogoProvider((lat: a.lat!, lng: a.lng!)));
+    final luogo = async.valueOrNull;
+    if (!async.isLoading && luogo == null) return const SizedBox.shrink();
+    return Row(
+      children: [
+        Icon(Icons.gps_fixed, size: 13, color: scheme.onSurfaceVariant),
+        const SizedBox(width: 4),
+        Expanded(
+          child: Text(
+            luogo ?? '…',
+            style: t.labelSmall,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
   }
 }
 

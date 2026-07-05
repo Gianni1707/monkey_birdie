@@ -488,6 +488,7 @@ class _Hero extends ConsumerWidget {
                 : Image.network(
                     url,
                     fit: BoxFit.cover,
+                    webHtmlElementStrategy: WebHtmlElementStrategy.fallback,
                     errorBuilder: (_, __, ___) => const _HeroPlaceholder(),
                     loadingBuilder: (_, child, progress) =>
                         progress == null ? child : const _HeroPlaceholder(),

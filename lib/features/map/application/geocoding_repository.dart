@@ -84,7 +84,69 @@ class GeocodingRepository {
     }
     return parti.isEmpty ? '?' : parti.join(', ');
   }
+
+  /// Reverse-geocoding: da coordinate a nome-luogo leggibile (es. "Bari,
+  /// Puglia"), via Photon `/reverse`. Best-effort: `null` su errore/timeout o se
+  /// non c'è un nome. Usato per mostrare il luogo degli avvistamenti.
+  Future<String?> reverse(double lat, double lng) async {
+    try {
+      final uri = Uri.https('photon.komoot.io', '/reverse', {
+        'lat': '$lat',
+        'lon': '$lng',
+      });
+      final resp = await http
+          .get(uri, headers: {'User-Agent': 'MonkeyBird/1.0 (birdwatching)'})
+          .timeout(const Duration(seconds: 8));
+      if (resp.statusCode != 200) return null;
+      final data = jsonDecode(resp.body) as Map<String, dynamic>;
+      final features = data['features'] as List<dynamic>? ?? const [];
+      if (features.isEmpty) return null;
+      final props =
+          ((features.first as Map<String, dynamic>)['properties']
+                  as Map<String, dynamic>?) ??
+              const {};
+      return _etichettaLuogo(props);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Nome-luogo conciso: località popolata (città/paese) + regione, altrimenti
+  /// paese. Salta i duplicati e i null.
+  static String? _etichettaLuogo(Map<String, dynamic> p) {
+    String? primo(List<String> chiavi) {
+      for (final c in chiavi) {
+        final v = p[c];
+        if (v is String && v.trim().isNotEmpty) return v.trim();
+      }
+      return null;
+    }
+
+    final locale = primo([
+      'city',
+      'town',
+      'village',
+      'locality',
+      'district',
+      'name',
+      'county',
+    ]);
+    final regione = primo(['state']);
+    final parti = <String>[];
+    if (locale != null) parti.add(locale);
+    if (regione != null && !parti.contains(regione)) parti.add(regione);
+    if (parti.isEmpty) return primo(['country']);
+    return parti.join(', ');
+  }
 }
 
 final geocodingRepositoryProvider =
     Provider<GeocodingRepository>((ref) => GeocodingRepository());
+
+/// Nome-luogo (reverse-geocoded) per una coppia di coordinate, cachato per
+/// chiave (stesse coordinate → una sola chiamata). `null` mentre carica o se non
+/// risolto → la UI ripiega su altro (es. la data).
+final nomeLuogoProvider =
+    FutureProvider.family<String?, ({double lat, double lng})>((ref, p) {
+  return ref.read(geocodingRepositoryProvider).reverse(p.lat, p.lng);
+});
