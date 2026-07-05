@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../../data/models/avvistamento.dart';
 import '../../../l10n/app_localizations.dart';
@@ -8,6 +9,8 @@ import '../../../shared/nome_specie.dart';
 import '../../../shared/widgets/avvistamento_foto.dart';
 import '../../../shared/widgets/state_views.dart';
 import '../../desideri/presentation/desideri_screen.dart';
+import '../../home/application/home_tab_provider.dart';
+import '../../map/application/mappa_focus_provider.dart';
 import '../../raccolte/presentation/aggiungi_a_raccolta_sheet.dart';
 import '../../raccolte/presentation/raccolte_screen.dart';
 import '../application/collection_controller.dart';
@@ -203,6 +206,11 @@ class _MenuAvvistamento extends ConsumerWidget {
         switch (v) {
           case 'raccolta':
             mostraAggiungiARaccolta(context, a.id);
+          case 'mappa':
+            // Centra la mappa sul punto dell'avvistamento e passa alla tab Mappa.
+            ref.read(mappaFocusProvider.notifier).state =
+                LatLng(a.lat!, a.lng!);
+            ref.read(homeTabProvider.notifier).state = 1;
           case 'elimina':
             confermaEliminaAvvistamento(context, ref, a);
         }
@@ -216,6 +224,16 @@ class _MenuAvvistamento extends ConsumerWidget {
             title: Text(l10n.addToCollection),
           ),
         ),
+        // "Mostra sulla mappa": solo se l'avvistamento ha una posizione.
+        if (a.lat != null && a.lng != null)
+          PopupMenuItem(
+            value: 'mappa',
+            child: ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.place_outlined),
+              title: Text(l10n.showOnMap),
+            ),
+          ),
         PopupMenuItem(
           value: 'elimina',
           child: ListTile(

@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../data/models/avvistamento.dart';
+import '../../../data/models/profilo.dart';
 import '../../../data/repositories/avvistamenti_repository.dart';
 import '../../../data/repositories/profilo_repository.dart';
 import '../../../data/supabase/supabase_providers.dart';
@@ -12,6 +13,7 @@ import '../../profilo/application/profilo_providers.dart';
 typedef DatiMappa = ({
   List<AvvistamentoDettaglio> avvistamenti,
   Map<String, String> username,
+  Map<String, Profilo> profili,
   String? mioId,
 });
 
@@ -24,11 +26,21 @@ final avvistamentiMappaProvider = FutureProvider<DatiMappa>((ref) async {
     for (final a in tutti)
       if (a.utenteId != mioId) a.utenteId,
   }.toList();
-  final username = await ref
+  // Profilo completo degli altri utenti: serve username (attribuzione) E avatar
+  // (marcatori condivisi). Lo username si deriva dai profili (una sola query).
+  final profili = await ref
       .read(profiloRepositoryProvider)
-      .usernamePerIds(altruiIds);
+      .profiliPerIds(altruiIds);
+  final username = {
+    for (final e in profili.entries) e.key: e.value.username,
+  };
 
-  return (avvistamenti: tutti, username: username, mioId: mioId);
+  return (
+    avvistamenti: tutti,
+    username: username,
+    profili: profili,
+    mioId: mioId,
+  );
 });
 
 /// Avvistamenti condivisi di un altro utente (per il profilo pubblico).

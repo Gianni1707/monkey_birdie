@@ -93,13 +93,14 @@ class _RaccoltaCard extends ConsumerWidget {
                 ],
               ),
               const SizedBox(height: 10),
-              Row(
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
                 children: [
                   _ChipInfo(
                     icon: Icons.pets_outlined,
                     testo: l10n.speciesCount(anteprima.numeroSpecie),
                   ),
-                  const SizedBox(width: 8),
                   _ChipInfo(
                     icon: Icons.visibility_outlined,
                     testo: l10n.sightingsCount(anteprima.totale),

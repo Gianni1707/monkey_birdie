@@ -64,6 +64,7 @@ class RecognitionScreen extends ConsumerWidget {
           candidati: candidati,
           incerto: incerto,
           onScegli: ctrl.salva,
+          onAnnulla: ctrl.reset,
         ),
       // Gestito a schermo pieno in build(): qui non raggiungibile.
       RecognitionConfermaPosizione() => const SizedBox.shrink(),
@@ -275,37 +276,328 @@ class _Busy extends StatelessWidget {
   }
 }
 
-class _Risultati extends StatelessWidget {
+/// Risultati del riconoscimento: card HERO del candidato selezionato (default =
+/// migliore) + "Altre possibilità" (toccabili per selezionarle) + barra "Non
+/// sono sicuro" / "Conferma e salva". Il salvataggio (posizione + foto utente)
+/// resta invariato: "Conferma e salva" chiama [onScegli] sul selezionato.
+class _Risultati extends StatefulWidget {
   const _Risultati({
     required this.candidati,
     required this.onScegli,
+    required this.onAnnulla,
     this.incerto = false,
   });
   final List<CandidatoSpecie> candidati;
   final void Function(CandidatoSpecie) onScegli;
+  final VoidCallback onAnnulla;
   final bool incerto; // confidenza sotto soglia (foto): "non sono sicuro"
+
+  @override
+  State<_Risultati> createState() => _RisultatiState();
+}
+
+class _RisultatiState extends State<_Risultati> {
+  late int _sel = _primoSalvabile();
+
+  int _primoSalvabile() {
+    final i = widget.candidati.indexWhere((c) => c.salvabile);
+    return i < 0 ? 0 : i;
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final t = Theme.of(context).textTheme;
+    final scheme = Theme.of(context).colorScheme;
+    final candidati = widget.candidati;
     if (candidati.isEmpty) {
       return Center(child: Text(l10n.noSpecies));
     }
-    return ListView(
+    final selezionato = candidati[_sel];
+    final altri = [
+      for (var i = 0; i < candidati.length; i++)
+        if (i != _sel) i,
+    ];
+
+    return Column(
       children: [
-        Text(l10n.results, style: t.headlineSmall),
-        const SizedBox(height: 4),
-        Text(l10n.chooseSpecies, style: t.bodyMedium),
-        if (incerto) ...[
-          const SizedBox(height: 14),
-          _BannerIncerto(testo: l10n.uncertainPhoto),
-        ],
-        const SizedBox(height: 16),
-        ...candidati.map(
-          (c) => _CandidatoCard(candidato: c, onScegli: onScegli),
+        Expanded(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              Text(
+                l10n.resultsIntro,
+                style: t.bodyMedium?.copyWith(color: scheme.onSurfaceVariant),
+              ),
+              if (widget.incerto) ...[
+                const SizedBox(height: 14),
+                _BannerIncerto(testo: l10n.uncertainPhoto),
+              ],
+              const SizedBox(height: 16),
+              _HeroCandidato(candidato: selezionato, migliore: _sel == 0),
+              if (altri.isNotEmpty) ...[
+                const SizedBox(height: 24),
+                Text(l10n.otherPossibilities, style: t.titleLarge),
+                const SizedBox(height: 12),
+                for (final i in altri)
+                  _RigaPossibilita(
+                    candidato: candidati[i],
+                    onTap: () => setState(() => _sel = i),
+                  ),
+              ],
+            ],
+          ),
+        ),
+        const SizedBox(height: 8),
+        _BarraRisultati(
+          onAnnulla: widget.onAnnulla,
+          onConferma: selezionato.salvabile
+              ? () => widget.onScegli(selezionato)
+              : null,
         ),
       ],
+    );
+  }
+}
+
+/// Card grande del candidato selezionato: foto di riferimento + chip "Migliore
+/// corrispondenza" (solo se è il top) + % + nome + scientifico + descrizione.
+class _HeroCandidato extends StatelessWidget {
+  const _HeroCandidato({required this.candidato, required this.migliore});
+  final CandidatoSpecie candidato;
+  final bool migliore;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Theme.of(context).textTheme;
+    final scheme = Theme.of(context).colorScheme;
+    final c = candidato;
+    final l10n = AppLocalizations.of(context);
+    final perc = (c.predizione.confidenza * 100).toStringAsFixed(0);
+    final nome = c.specie?.nomeDaMostrare ?? c.predizione.nomeComune;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: scheme.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: scheme.outlineVariant),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 200,
+            width: double.infinity,
+            child: _HeroImmagine(c.predizione.nomeScientifico),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    if (migliore)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: scheme.primary,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.stars,
+                              size: 16,
+                              color: scheme.onPrimary,
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              l10n.bestMatch,
+                              style: t.labelMedium?.copyWith(
+                                color: scheme.onPrimary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    const Spacer(),
+                    Text('$perc%', style: t.titleMedium),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Text(nome, style: t.headlineSmall),
+                Text(
+                  c.predizione.nomeScientifico,
+                  style: t.titleSmall?.copyWith(
+                    fontStyle: FontStyle.italic,
+                    color: scheme.onSurfaceVariant,
+                  ),
+                ),
+                if (c.specie?.descrizione != null) ...[
+                  const SizedBox(height: 10),
+                  Text(
+                    c.specie!.descrizione!,
+                    style: t.bodyMedium?.copyWith(height: 1.4),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+                if (!c.salvabile) ...[
+                  const SizedBox(height: 10),
+                  Text(
+                    l10n.notInCatalog,
+                    style: t.bodySmall?.copyWith(color: scheme.error),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Riga di una possibilità alternativa: miniatura + nome + scientifico + %.
+/// Tap → diventa il candidato selezionato (hero).
+class _RigaPossibilita extends StatelessWidget {
+  const _RigaPossibilita({required this.candidato, required this.onTap});
+  final CandidatoSpecie candidato;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Theme.of(context).textTheme;
+    final scheme = Theme.of(context).colorScheme;
+    final c = candidato;
+    final perc = (c.predizione.confidenza * 100).toStringAsFixed(0);
+    final nome = c.specie?.nomeDaMostrare ?? c.predizione.nomeComune;
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 10),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(18),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            children: [
+              _SpecieThumb(c.predizione.nomeScientifico),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      nome,
+                      style: t.titleMedium,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      c.predizione.nomeScientifico,
+                      style: t.bodySmall?.copyWith(
+                        fontStyle: FontStyle.italic,
+                        color: scheme.onSurfaceVariant,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text('$perc%', style: t.labelLarge),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Barra azioni dei risultati: "Non sono sicuro" (annulla) + "Conferma e salva".
+class _BarraRisultati extends StatelessWidget {
+  const _BarraRisultati({required this.onAnnulla, required this.onConferma});
+  final VoidCallback onAnnulla;
+  final VoidCallback? onConferma;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return Row(
+      children: [
+        Expanded(
+          child: OutlinedButton(
+            onPressed: onAnnulla,
+            style: OutlinedButton.styleFrom(
+              minimumSize: const Size.fromHeight(52),
+            ),
+            child: Text(l10n.notSure),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          flex: 2,
+          child: FilledButton.icon(
+            onPressed: onConferma,
+            icon: const Icon(Icons.check_circle_outline),
+            style: FilledButton.styleFrom(
+              minimumSize: const Size.fromHeight(52),
+            ),
+            label: Text(l10n.confirmAndSave),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Immagine hero grande della specie (thumbnail iNaturalist). Placeholder mentre
+/// carica / se assente.
+class _HeroImmagine extends ConsumerWidget {
+  const _HeroImmagine(this.nomeScientifico);
+  final String nomeScientifico;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final async = ref.watch(specieThumbnailProvider(nomeScientifico));
+    return async.maybeWhen(
+      data: (url) => url == null
+          ? const _HeroPlaceholder()
+          : Image.network(
+              url,
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => const _HeroPlaceholder(),
+              loadingBuilder: (_, child, progress) =>
+                  progress == null ? child : const _HeroPlaceholder(),
+            ),
+      orElse: () => const _HeroPlaceholder(),
+    );
+  }
+}
+
+class _HeroPlaceholder extends StatelessWidget {
+  const _HeroPlaceholder();
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      color: scheme.primaryContainer,
+      alignment: Alignment.center,
+      child: Icon(
+        Icons.photo_camera_back_outlined,
+        size: 40,
+        color: scheme.onPrimaryContainer,
+      ),
     );
   }
 }
@@ -338,77 +630,6 @@ class _BannerIncerto extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-/// Card di una specie candidata: miniatura, nome comune serif, scientifico in
-/// corsivo, confidenza come metadato leggero. Tap → scelta (se salvabile).
-class _CandidatoCard extends StatelessWidget {
-  const _CandidatoCard({required this.candidato, required this.onScegli});
-  final CandidatoSpecie candidato;
-  final void Function(CandidatoSpecie) onScegli;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = candidato;
-    final t = Theme.of(context).textTheme;
-    final scheme = Theme.of(context).colorScheme;
-    final perc = (c.predizione.confidenza * 100).toStringAsFixed(0);
-    final nome = c.specie?.nomeDaMostrare ?? c.predizione.nomeComune;
-
-    final riga = Padding(
-      padding: const EdgeInsets.all(10),
-      child: Row(
-        children: [
-          _SpecieThumb(c.predizione.nomeScientifico),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  nome,
-                  style: t.titleMedium,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  c.predizione.nomeScientifico,
-                  style: t.bodySmall?.copyWith(
-                    fontStyle: FontStyle.italic,
-                    color: scheme.onSurfaceVariant,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  c.salvabile
-                      ? '$perc%'
-                      : '$perc% · ${AppLocalizations.of(context).notInCatalog}',
-                  style: t.labelSmall,
-                ),
-              ],
-            ),
-          ),
-          Icon(
-            c.salvabile ? Icons.add_circle_outline : Icons.block,
-            color: c.salvabile ? scheme.primary : scheme.onSurfaceVariant,
-          ),
-        ],
-      ),
-    );
-
-    return Card(
-      child: c.salvabile
-          ? InkWell(
-              borderRadius: BorderRadius.circular(18),
-              onTap: () => onScegli(c),
-              child: riga,
-            )
-          : Opacity(opacity: 0.55, child: riga),
     );
   }
 }

@@ -24,8 +24,12 @@ class CatturaScreen extends ConsumerWidget {
       }
     });
 
+    final l10n = AppLocalizations.of(context);
+    final stato = ref.watch(recognitionControllerProvider);
+    final titolo =
+        stato is RecognitionResult ? l10n.results : l10n.tabRecognize;
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context).tabRecognize)),
+      appBar: AppBar(title: Text(titolo)),
       body: const RecognitionScreen(),
     );
   }

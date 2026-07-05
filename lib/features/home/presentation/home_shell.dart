@@ -5,24 +5,21 @@ import '../../../l10n/app_localizations.dart';
 import '../../collection/presentation/collection_screen.dart';
 import '../../map/presentation/mappa_screen.dart';
 import '../../profilo/presentation/profilo_screen.dart';
+import '../application/home_tab_provider.dart';
 import 'home_screen.dart';
 
 /// Contenitore principale post-login: tab Home / Mappa / Collezione / Profilo.
-/// Il riconoscimento non è più una tab: si avvia dai comandi Audio/Foto in Home
-/// (flusso di cattura esistente, pushato su una schermata dedicata).
-class HomeShell extends ConsumerStatefulWidget {
+/// La tab attiva vive in `homeTabProvider` così altre schermate possono
+/// cambiarla (es. "Mostra sulla mappa" dalla collezione).
+class HomeShell extends ConsumerWidget {
   const HomeShell({super.key});
 
   @override
-  ConsumerState<HomeShell> createState() => _HomeShellState();
-}
-
-class _HomeShellState extends ConsumerState<HomeShell> {
-  int _index = 0;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    final index = ref.watch(homeTabProvider);
+    void vaiA(int i) => ref.read(homeTabProvider.notifier).state = i;
+
     final titoli = [
       l10n.tabHome,
       l10n.tabMap,
@@ -30,20 +27,20 @@ class _HomeShellState extends ConsumerState<HomeShell> {
       l10n.tabProfile,
     ];
     final pagine = [
-      HomeScreen(onVediCollezione: () => setState(() => _index = 2)),
+      HomeScreen(onVediCollezione: () => vaiA(2)),
       const MappaScreen(),
       const CollectionScreen(),
       const ProfiloScreen(),
     ];
 
     return Scaffold(
-      // Lingua e logout ora vivono nel foglio Impostazioni del Profilo:
-      // l'AppBar resta pulita (solo il titolo della tab).
-      appBar: AppBar(title: Text(titoli[_index])),
-      body: IndexedStack(index: _index, children: pagine),
+      // Lingua e logout vivono nella schermata Impostazioni: l'AppBar resta
+      // pulita (solo il titolo della tab).
+      appBar: AppBar(title: Text(titoli[index])),
+      body: IndexedStack(index: index, children: pagine),
       bottomNavigationBar: NavigationBar(
-        selectedIndex: _index,
-        onDestinationSelected: (i) => setState(() => _index = i),
+        selectedIndex: index,
+        onDestinationSelected: vaiA,
         destinations: [
           NavigationDestination(
             icon: const Icon(Icons.home_outlined),

@@ -368,6 +368,36 @@ abstract class AppLocalizations {
   /// **'Risultati'**
   String get results;
 
+  /// No description provided for @resultsIntro.
+  ///
+  /// In it, this message translates to:
+  /// **'Ecco i risultati più probabili del riconoscimento.'**
+  String get resultsIntro;
+
+  /// No description provided for @bestMatch.
+  ///
+  /// In it, this message translates to:
+  /// **'Migliore corrispondenza'**
+  String get bestMatch;
+
+  /// No description provided for @otherPossibilities.
+  ///
+  /// In it, this message translates to:
+  /// **'Altre possibilità'**
+  String get otherPossibilities;
+
+  /// No description provided for @notSure.
+  ///
+  /// In it, this message translates to:
+  /// **'Non sono sicuro'**
+  String get notSure;
+
+  /// No description provided for @confirmAndSave.
+  ///
+  /// In it, this message translates to:
+  /// **'Conferma e salva'**
+  String get confirmAndSave;
+
   /// No description provided for @chooseSpecies.
   ///
   /// In it, this message translates to:
@@ -1064,11 +1094,41 @@ abstract class AppLocalizations {
   /// **'Aggiungi a una raccolta'**
   String get addToCollection;
 
+  /// No description provided for @showOnMap.
+  ///
+  /// In it, this message translates to:
+  /// **'Mostra sulla mappa'**
+  String get showOnMap;
+
+  /// No description provided for @addSightings.
+  ///
+  /// In it, this message translates to:
+  /// **'Aggiungi avvistamenti'**
+  String get addSightings;
+
+  /// No description provided for @addSelectedCount.
+  ///
+  /// In it, this message translates to:
+  /// **'Aggiungi ({count})'**
+  String addSelectedCount(int count);
+
+  /// No description provided for @allSightingsInCollection.
+  ///
+  /// In it, this message translates to:
+  /// **'Tutti i tuoi avvistamenti sono già in questa raccolta.'**
+  String get allSightingsInCollection;
+
   /// No description provided for @removeFromCollection.
   ///
   /// In it, this message translates to:
   /// **'Togli dalla raccolta'**
   String get removeFromCollection;
+
+  /// No description provided for @removeFromCollectionConfirm.
+  ///
+  /// In it, this message translates to:
+  /// **'Togliere questo avvistamento dalla raccolta? Resta comunque nella tua collezione.'**
+  String get removeFromCollectionConfirm;
 
   /// No description provided for @noCollectionsYet.
   ///
@@ -1105,6 +1165,60 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Impostazioni'**
   String get settings;
+
+  /// No description provided for @settingsSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Gestisci le preferenze del tuo diario di campo.'**
+  String get settingsSubtitle;
+
+  /// No description provided for @accountTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Account'**
+  String get accountTitle;
+
+  /// No description provided for @accountSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Gestisci profilo e condivisione'**
+  String get accountSubtitle;
+
+  /// No description provided for @aboutTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Informazioni'**
+  String get aboutTitle;
+
+  /// No description provided for @aboutSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Versione dell\'app'**
+  String get aboutSubtitle;
+
+  /// No description provided for @languageSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Seleziona la lingua dell\'interfaccia'**
+  String get languageSubtitle;
+
+  /// No description provided for @languageAutoShort.
+  ///
+  /// In it, this message translates to:
+  /// **'Auto'**
+  String get languageAutoShort;
+
+  /// No description provided for @versionLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'Versione'**
+  String get versionLabel;
+
+  /// No description provided for @nonCommercialNote.
+  ///
+  /// In it, this message translates to:
+  /// **'Monkey Bird è un progetto non commerciale, a costo zero.'**
+  String get nonCommercialNote;
 
   /// No description provided for @profileSaved.
   ///

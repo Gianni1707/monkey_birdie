@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../data/supabase/supabase_providers.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../shared/widgets/selettore_lingua.dart';
 import '../application/auth_controller.dart';
 import 'auth_widgets.dart';
 

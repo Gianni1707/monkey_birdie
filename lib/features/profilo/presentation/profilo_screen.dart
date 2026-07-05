@@ -13,10 +13,9 @@ import '../../../shared/nome_specie.dart';
 import '../../../shared/widgets/avvistamento_foto.dart';
 import '../../../shared/widgets/state_views.dart';
 import '../../amici/application/amici_providers.dart';
-import '../../auth/application/auth_controller.dart';
 import '../application/profilo_providers.dart';
 import 'aggiungi_preferito_sheet.dart';
-import 'impostazioni_profilo_sheet.dart';
+import 'impostazioni_screen.dart';
 
 /// Etichetta localizzata del livello (badge) assegnato dal sistema.
 String etichettaLivello(AppLocalizations l10n, LivelloBirder l) => switch (l) {
@@ -34,7 +33,6 @@ class ProfiloScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context);
     final async = ref.watch(mioProfiloProvider);
 
     return async.when(
@@ -60,22 +58,6 @@ class ProfiloScreen extends ConsumerWidget {
             const _RigaAmici(),
             const SizedBox(height: 8),
             _RigaImpostazioni(),
-            const SizedBox(height: 16),
-            OutlinedButton.icon(
-              onPressed: () => ref.read(authControllerProvider.notifier).esci(),
-              icon: Icon(
-                Icons.logout,
-                color: Theme.of(context).colorScheme.error,
-              ),
-              label: Text(
-                l10n.logout,
-                style: TextStyle(color: Theme.of(context).colorScheme.error),
-              ),
-              style: OutlinedButton.styleFrom(
-                minimumSize: const Size.fromHeight(52),
-                side: BorderSide(color: Theme.of(context).colorScheme.error),
-              ),
-            ),
           ],
         ),
       ),
@@ -197,11 +179,16 @@ class _SezionePreferiti extends ConsumerWidget {
         Row(
           children: [
             Expanded(child: Text(l10n.favoriteBirds, style: t.titleMedium)),
-            IconButton.filledTonal(
+            IconButton.filled(
               onPressed: () => mostraAggiungiPreferito(context),
               icon: const Icon(Icons.add),
               tooltip: l10n.addFavorite,
               visualDensity: VisualDensity.compact,
+              // Forza icona chiara su sfondo verde (di default restava scura).
+              style: IconButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              ),
             ),
           ],
         ),
@@ -323,7 +310,9 @@ class _RigaImpostazioni extends StatelessWidget {
         leading: const Icon(Icons.settings_outlined),
         title: Text(l10n.settings),
         trailing: const Icon(Icons.chevron_right),
-        onTap: () => mostraImpostazioni(context),
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute<void>(builder: (_) => const ImpostazioniScreen()),
+        ),
       ),
     );
   }

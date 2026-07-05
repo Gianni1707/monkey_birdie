@@ -51,6 +51,21 @@ class ProfiloRepository {
     }
   }
 
+  /// Mappa id -> [Profilo] completo per un insieme di utenti (lettura pubblica),
+  /// per mostrare l'AVATAR degli amici sui marcatori condivisi in mappa.
+  Future<Map<String, Profilo>> profiliPerIds(List<String> ids) async {
+    if (ids.isEmpty) return const {};
+    try {
+      final rows = await _client.from('profili').select().inFilter('id', ids);
+      return {
+        for (final r in rows)
+          r['id'] as String: Profilo.fromJson(r),
+      };
+    } catch (e) {
+      throw mapError(e);
+    }
+  }
+
   /// Aggiorna il nome account (username), la bio e i dati_personali (jsonb).
   Future<void> aggiorna({
     required String username,

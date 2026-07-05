@@ -6,14 +6,17 @@ import 'package:latlong2/latlong.dart';
 
 import '../../../core/location/location_service.dart' as loc;
 import '../../../data/models/avvistamento.dart';
+import '../../../data/models/profilo.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/nome_specie.dart';
+import '../../../shared/widgets/avatar_utente.dart';
 import '../../../shared/widgets/avvistamento_foto.dart';
 import '../../../shared/widgets/state_views.dart';
 import '../../amici/application/condivisione_providers.dart';
 import '../../collection/presentation/elimina_avvistamento.dart';
 import '../../raccolte/presentation/aggiungi_a_raccolta_sheet.dart';
 import '../application/geocoding_repository.dart';
+import '../application/mappa_focus_provider.dart';
 import 'mappa_base.dart';
 
 /// UT03 — mappa degli avvistamenti dell'utente. Un marcatore (foto reale, o
@@ -71,6 +74,17 @@ class _MappaScreenState extends ConsumerState<MappaScreen> {
     final l10n = AppLocalizations.of(context);
     final asyncMappa = ref.watch(avvistamentiMappaProvider);
 
+    // Richiesta "Mostra sulla mappa" (da un avvistamento in collezione): centra
+    // la camera sul punto e riazzera. Post-frame: la mappa è già montata
+    // (IndexedStack tiene vive tutte le tab).
+    ref.listen<LatLng?>(mappaFocusProvider, (_, target) {
+      if (target == null) return;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _controller.move(target, 15);
+        ref.read(mappaFocusProvider.notifier).state = null;
+      });
+    });
+
     return asyncMappa.when(
       loading: () => const LoadingView(),
       error: (e, _) => ErrorView(
@@ -111,6 +125,7 @@ class _MappaScreenState extends ConsumerState<MappaScreen> {
                           child: _MarcatoreFoto(
                             avvistamento: a,
                             altrui: a.utenteId != mioId,
+                            profiloAltrui: dati.profili[a.utenteId],
                             onTap: () => _apriDettaglio(
                               context,
                               a,
@@ -147,6 +162,8 @@ class _MappaScreenState extends ConsumerState<MappaScreen> {
               child: FloatingActionButton.small(
                 heroTag: 'miaPosizione',
                 tooltip: l10n.myLocation,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 onPressed: _vaiAllaMiaPosizione,
                 child: const Icon(Icons.my_location),
               ),
@@ -192,10 +209,15 @@ class _MarcatoreFoto extends StatelessWidget {
     required this.avvistamento,
     required this.onTap,
     this.altrui = false,
+    this.profiloAltrui,
   });
   final AvvistamentoDettaglio avvistamento;
   final VoidCallback onTap;
   final bool altrui;
+
+  /// Profilo del proprietario per gli avvistamenti ALTRUI: il suo avatar compare
+  /// come badge in basso a sinistra. Se assente -> fallback icona amici.
+  final Profilo? profiloAltrui;
 
   @override
   Widget build(BuildContext context) {
@@ -223,14 +245,33 @@ class _MarcatoreFoto extends StatelessWidget {
               ),
             ),
           ),
+          // Badge in basso a SINISTRA: avatar dell'amico (o icona di ripiego).
           if (altrui)
             Positioned(
-              right: -2,
+              left: -2,
               bottom: -2,
-              child: CircleAvatar(
-                radius: 9,
-                backgroundColor: scheme.tertiary,
-                child: Icon(Icons.people, size: 11, color: scheme.onTertiary),
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: scheme.surface,
+                  border: Border.all(color: scheme.tertiary, width: 2),
+                  boxShadow: const [
+                    BoxShadow(color: Colors.black26, blurRadius: 3),
+                  ],
+                ),
+                child: ClipOval(
+                  child: profiloAltrui != null
+                      ? AvatarUtente(profilo: profiloAltrui!, size: 22)
+                      : CircleAvatar(
+                          radius: 11,
+                          backgroundColor: scheme.tertiary,
+                          child: Icon(
+                            Icons.people,
+                            size: 12,
+                            color: scheme.onTertiary,
+                          ),
+                        ),
+                ),
               ),
             ),
         ],

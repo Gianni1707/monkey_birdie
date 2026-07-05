@@ -148,6 +148,22 @@ class AppLocalizationsIt extends AppLocalizations {
   String get results => 'Risultati';
 
   @override
+  String get resultsIntro =>
+      'Ecco i risultati più probabili del riconoscimento.';
+
+  @override
+  String get bestMatch => 'Migliore corrispondenza';
+
+  @override
+  String get otherPossibilities => 'Altre possibilità';
+
+  @override
+  String get notSure => 'Non sono sicuro';
+
+  @override
+  String get confirmAndSave => 'Conferma e salva';
+
+  @override
   String get chooseSpecies =>
       'Scegli la specie corretta per salvare l’avvistamento:';
 
@@ -528,7 +544,26 @@ class AppLocalizationsIt extends AppLocalizations {
   String get addToCollection => 'Aggiungi a una raccolta';
 
   @override
+  String get showOnMap => 'Mostra sulla mappa';
+
+  @override
+  String get addSightings => 'Aggiungi avvistamenti';
+
+  @override
+  String addSelectedCount(int count) {
+    return 'Aggiungi ($count)';
+  }
+
+  @override
+  String get allSightingsInCollection =>
+      'Tutti i tuoi avvistamenti sono già in questa raccolta.';
+
+  @override
   String get removeFromCollection => 'Togli dalla raccolta';
+
+  @override
+  String get removeFromCollectionConfirm =>
+      'Togliere questo avvistamento dalla raccolta? Resta comunque nella tua collezione.';
 
   @override
   String get noCollectionsYet => 'Non hai ancora raccolte.';
@@ -549,6 +584,35 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get settings => 'Impostazioni';
+
+  @override
+  String get settingsSubtitle =>
+      'Gestisci le preferenze del tuo diario di campo.';
+
+  @override
+  String get accountTitle => 'Account';
+
+  @override
+  String get accountSubtitle => 'Gestisci profilo e condivisione';
+
+  @override
+  String get aboutTitle => 'Informazioni';
+
+  @override
+  String get aboutSubtitle => 'Versione dell\'app';
+
+  @override
+  String get languageSubtitle => 'Seleziona la lingua dell\'interfaccia';
+
+  @override
+  String get languageAutoShort => 'Auto';
+
+  @override
+  String get versionLabel => 'Versione';
+
+  @override
+  String get nonCommercialNote =>
+      'Monkey Bird è un progetto non commerciale, a costo zero.';
 
   @override
   String get profileSaved => 'Profilo aggiornato.';

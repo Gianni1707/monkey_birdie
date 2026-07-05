@@ -84,8 +84,10 @@ class SpecieRepository {
     }
   }
 
-  /// Ricerca testuale nel catalogo per nome comune o scientifico (per scegliere
-  /// una specie preferita). Best-effort: lista vuota se query < 2 caratteri.
+  /// Ricerca testuale nel catalogo per nome comune (IT + EN) o scientifico (per
+  /// scegliere una specie preferita/desiderata). Best-effort: lista vuota se
+  /// query < 2 caratteri. Include `nome_comune_it` così i nomi ITALIANI (es.
+  /// "colomba", "codibugnolo") si trovano, non solo l'inglese/scientifico.
   Future<List<Specie>> cercaCatalogo(String query, {int limite = 25}) async {
     final q = query.trim();
     if (q.length < 2) return const [];
@@ -94,7 +96,8 @@ class SpecieRepository {
       final rows = await _client
           .from('specie')
           .select()
-          .or('nome_comune.ilike.$like,nome_scientifico.ilike.$like')
+          .or('nome_comune.ilike.$like,nome_scientifico.ilike.$like,'
+              'nome_comune_it.ilike.$like')
           .order('nome_comune')
           .limit(limite);
       return rows.map((j) => Specie.fromJson(j)).toList(growable: false);

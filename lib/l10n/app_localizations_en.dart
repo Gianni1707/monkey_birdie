@@ -147,6 +147,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get results => 'Results';
 
   @override
+  String get resultsIntro => 'Here are the most likely recognition results.';
+
+  @override
+  String get bestMatch => 'Best match';
+
+  @override
+  String get otherPossibilities => 'Other possibilities';
+
+  @override
+  String get notSure => 'I\'m not sure';
+
+  @override
+  String get confirmAndSave => 'Confirm and save';
+
+  @override
   String get chooseSpecies =>
       'Choose the correct species to save the sighting:';
 
@@ -520,7 +535,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addToCollection => 'Add to a collection';
 
   @override
+  String get showOnMap => 'Show on map';
+
+  @override
+  String get addSightings => 'Add sightings';
+
+  @override
+  String addSelectedCount(int count) {
+    return 'Add ($count)';
+  }
+
+  @override
+  String get allSightingsInCollection =>
+      'All your sightings are already in this collection.';
+
+  @override
   String get removeFromCollection => 'Remove from collection';
+
+  @override
+  String get removeFromCollectionConfirm =>
+      'Remove this sighting from the collection? It stays in your collection.';
 
   @override
   String get noCollectionsYet => 'You don\'t have any collections yet.';
@@ -541,6 +575,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settings => 'Settings';
+
+  @override
+  String get settingsSubtitle => 'Manage your field journal preferences.';
+
+  @override
+  String get accountTitle => 'Account';
+
+  @override
+  String get accountSubtitle => 'Manage profile and sharing';
+
+  @override
+  String get aboutTitle => 'About';
+
+  @override
+  String get aboutSubtitle => 'App version';
+
+  @override
+  String get languageSubtitle => 'Choose the interface language';
+
+  @override
+  String get languageAutoShort => 'Auto';
+
+  @override
+  String get versionLabel => 'Version';
+
+  @override
+  String get nonCommercialNote =>
+      'Monkey Bird is a non-commercial, zero-cost project.';
 
   @override
   String get profileSaved => 'Profile updated.';
