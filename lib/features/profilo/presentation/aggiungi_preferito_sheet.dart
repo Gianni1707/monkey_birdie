@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../l10n/app_localizations.dart';
+import '../../../shared/nome_specie.dart';
 import '../../../shared/widgets/avvistamento_foto.dart';
 import '../application/profilo_providers.dart';
 import 'preferito_button.dart';
@@ -100,7 +101,7 @@ class _AggiungiPreferitoSheetState
                 nomeScientifico: s.nomeScientifico,
                 size: 44,
               ),
-              title: Text(s.nomeComune),
+              title: Text(s.nomeDaMostrare),
               subtitle: Text(
                 s.nomeScientifico,
                 style: const TextStyle(fontStyle: FontStyle.italic),

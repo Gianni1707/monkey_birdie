@@ -7,6 +7,7 @@ import '../../../data/models/specie.dart';
 import '../../../data/repositories/preferiti_repository.dart';
 import '../../../data/repositories/profilo_repository.dart';
 import '../../../data/repositories/specie_repository.dart';
+import '../../../shared/nome_specie.dart';
 import '../../collection/application/collection_controller.dart';
 
 /// Chiavi dei campi liberi in `profili.dati_personali` (jsonb).
@@ -83,8 +84,9 @@ final preferitiDiProvider =
 final preferitiProvider = FutureProvider<List<Specie>>((ref) async {
   final lista = await ref.watch(preferitiRepositoryProvider).preferiti();
   return [...lista]..sort(
-      (a, b) =>
-          a.nomeComune.toLowerCase().compareTo(b.nomeComune.toLowerCase()),
+      (a, b) => a.nomeDaMostrare.toLowerCase().compareTo(
+            b.nomeDaMostrare.toLowerCase(),
+          ),
     );
 });
 

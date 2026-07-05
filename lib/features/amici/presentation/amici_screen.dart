@@ -153,6 +153,7 @@ class _UtenteTile extends StatelessWidget {
         trailing: PulsanteAmicizia(
           utenteId: profilo.id,
           username: profilo.username,
+          compatto: true,
         ),
         onTap: () => context.push('/profilo/${profilo.id}'),
       ),
@@ -249,7 +250,11 @@ class _CercaUtentiSheetState extends ConsumerState<_CercaUtentiSheet> {
             return ListTile(
               leading: AvatarUtente(profilo: p),
               title: Text(p.username),
-              trailing: PulsanteAmicizia(utenteId: p.id, username: p.username),
+              trailing: PulsanteAmicizia(
+                utenteId: p.id,
+                username: p.username,
+                compatto: true,
+              ),
               onTap: () => context.push('/profilo/${p.id}'),
             );
           },

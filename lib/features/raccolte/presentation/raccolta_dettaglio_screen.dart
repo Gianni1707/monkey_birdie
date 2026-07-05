@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../data/models/avvistamento.dart';
 import '../../../data/models/raccolta.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../shared/widgets/avvistamento_tile.dart';
+import '../../../shared/nome_specie.dart';
+import '../../../shared/widgets/avvistamento_foto.dart';
 import '../../../shared/widgets/state_views.dart';
 import '../application/raccolte_providers.dart';
 import 'raccolta_dialoghi.dart';
 
-/// Contenuto di una raccolta: riusa le tile della Collezione. Da qui si
-/// rinomina/elimina la raccolta e si tolgono avvistamenti (senza cancellarli).
+/// Contenuto di una raccolta. Azioni rinomina (matita) / elimina (cestino rosso)
+/// in alto; card avvistamento grandi. "Togli dalla raccolta" NON è distruttivo
+/// (l'avvistamento resta in collezione).
 class RaccoltaDettaglioScreen extends ConsumerWidget {
   const RaccoltaDettaglioScreen({super.key, required this.raccoltaId});
   final String raccoltaId;
@@ -18,6 +21,8 @@ class RaccoltaDettaglioScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    final t = Theme.of(context).textTheme;
+    final scheme = Theme.of(context).colorScheme;
     final raccolte = ref.watch(mieRaccolteProvider).valueOrNull ?? const [];
     Raccolta? r;
     for (final x in raccolte) {
@@ -32,27 +37,21 @@ class RaccoltaDettaglioScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text(r?.nome ?? l10n.collections),
         actions: [
-          if (r != null)
-            PopupMenuButton<String>(
-              onSelected: (v) async {
-                if (v == 'rinomina') {
-                  await mostraRinominaRaccolta(context, ref, r!);
-                } else if (v == 'elimina') {
-                  final fatto = await mostraEliminaRaccolta(context, ref, r!);
-                  if (fatto && context.mounted) context.pop();
-                }
-              },
-              itemBuilder: (_) => [
-                PopupMenuItem(
-                  value: 'rinomina',
-                  child: Text(l10n.renameCollection),
-                ),
-                PopupMenuItem(
-                  value: 'elimina',
-                  child: Text(l10n.deleteCollection),
-                ),
-              ],
+          if (r != null) ...[
+            IconButton(
+              tooltip: l10n.renameCollection,
+              icon: const Icon(Icons.edit_outlined),
+              onPressed: () => mostraRinominaRaccolta(context, ref, r!),
             ),
+            IconButton(
+              tooltip: l10n.deleteCollection,
+              icon: Icon(Icons.delete_outline, color: scheme.error),
+              onPressed: () async {
+                final fatto = await mostraEliminaRaccolta(context, ref, r!);
+                if (fatto && context.mounted) context.pop();
+              },
+            ),
+          ],
         ],
       ),
       body: contenuto.when(
@@ -69,27 +68,111 @@ class RaccoltaDettaglioScreen extends ConsumerWidget {
               subtitle: l10n.collectionDetailEmptySubtitle,
             );
           }
-          return ListView.separated(
-            padding: const EdgeInsets.all(12),
-            itemCount: avvistamenti.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 4),
-            itemBuilder: (_, i) {
-              final a = avvistamenti[i];
-              return AvvistamentoTile(
-                a,
-                trailing: IconButton(
-                  tooltip: l10n.removeFromCollection,
-                  icon: const Icon(Icons.remove_circle_outline),
-                  onPressed: () => ref.read(raccolteControllerProvider).rimuovi(
+          return ListView(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 4, bottom: 8),
+                child: Text(
+                  l10n.sightingsCount(avvistamenti.length),
+                  style: t.bodyMedium?.copyWith(color: scheme.onSurfaceVariant),
+                ),
+              ),
+              for (final a in avvistamenti)
+                _AvvistamentoCardRaccolta(
+                  a: a,
+                  onTogli: () => ref.read(raccolteControllerProvider).rimuovi(
                         raccoltaId: raccoltaId,
                         avvistamentoId: a.id,
                       ),
                 ),
-              );
-            },
+            ],
           );
         },
       ),
     );
+  }
+}
+
+/// Card grande: foto in alto, nome comune serif, scientifico corsivo, data.
+/// In alto a destra il pulsante "togli dalla raccolta" (non distruttivo).
+class _AvvistamentoCardRaccolta extends StatelessWidget {
+  const _AvvistamentoCardRaccolta({required this.a, required this.onTogli});
+  final AvvistamentoDettaglio a;
+  final VoidCallback onTogli;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final t = Theme.of(context).textTheme;
+    final scheme = Theme.of(context).colorScheme;
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Stack(
+            children: [
+              InkWell(
+                onTap: () => context.push('/specie/${a.specieId}'),
+                child: SizedBox(
+                  height: 170,
+                  child: AvvistamentoFoto(
+                    fotoUrl: a.fotoUrl,
+                    nomeScientifico: a.specieNomeScientifico,
+                    size: null,
+                    borderRadius: 0,
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 8,
+                right: 8,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: scheme.surface.withValues(alpha: 0.9),
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    tooltip: l10n.removeFromCollection,
+                    icon: const Icon(Icons.remove_circle_outline),
+                    onPressed: onTogli,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(a.specieNomeDaMostrare, style: t.titleMedium),
+                Text(
+                  a.specieNomeScientifico,
+                  style: t.bodySmall?.copyWith(
+                    fontStyle: FontStyle.italic,
+                    color: scheme.onSurfaceVariant,
+                  ),
+                ),
+                const Divider(height: 20),
+                Row(
+                  children: [
+                    Icon(Icons.event, size: 15, color: scheme.onSurfaceVariant),
+                    const SizedBox(width: 6),
+                    Text(_formatData(a.avvistatoIl), style: t.labelMedium),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static String _formatData(DateTime d) {
+    String due(int n) => n.toString().padLeft(2, '0');
+    return '${due(d.day)}/${due(d.month)}/${d.year}';
   }
 }

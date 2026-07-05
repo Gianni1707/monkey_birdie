@@ -9,13 +9,16 @@ import '../../../shared/widgets/state_views.dart';
 import '../application/raccolte_providers.dart';
 import 'raccolta_dialoghi.dart';
 
-/// Elenco delle raccolte dell'utente (dentro la tab Collezione).
+/// Elenco delle raccolte dell'utente (dentro la tab Collezione). Impaginazione
+/// "guida da campo": intestazione, card con chip specie/avvistamenti e miniature,
+/// card "inizia una nuova raccolta" e FAB "+".
 class RaccolteScreen extends ConsumerWidget {
   const RaccolteScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    final t = Theme.of(context).textTheme;
     final async = ref.watch(raccolteAnteprimaProvider);
 
     return async.when(
@@ -25,148 +28,242 @@ class RaccolteScreen extends ConsumerWidget {
         onRetry: () => ref.invalidate(raccolteAnteprimaProvider),
       ),
       data: (raccolte) {
-        if (raccolte.isEmpty) {
-          return _VuotoConAzione(
-            onCrea: () => mostraNuovaRaccolta(context, ref),
-          );
-        }
-        return RefreshIndicator(
-          onRefresh: () async => ref.invalidate(raccolteAnteprimaProvider),
-          child: ListView(
-            padding: const EdgeInsets.all(12),
-            children: [
-              Card(
-                child: ListTile(
-                  leading: const Icon(Icons.create_new_folder_outlined),
-                  title: Text(l10n.newCollection),
-                  onTap: () => mostraNuovaRaccolta(context, ref),
-                ),
+        return Stack(
+          children: [
+            RefreshIndicator(
+              onRefresh: () async => ref.invalidate(raccolteAnteprimaProvider),
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 96),
+                children: [
+                  Text(l10n.collectionsHeading, style: t.headlineSmall),
+                  const SizedBox(height: 2),
+                  Text(
+                    l10n.collectionsHeadingSub,
+                    style: t.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  for (final a in raccolte) _RaccoltaCard(a),
+                  const SizedBox(height: 4),
+                  _NuovaRaccoltaCard(
+                    onCrea: () => mostraNuovaRaccolta(context, ref),
+                  ),
+                ],
               ),
-              const SizedBox(height: 4),
-              for (final a in raccolte) _RaccoltaTile(a),
-            ],
-          ),
+            ),
+            Positioned(
+              right: 16,
+              bottom: 16,
+              child: FloatingActionButton(
+                heroTag: 'nuovaRaccolta',
+                onPressed: () => mostraNuovaRaccolta(context, ref),
+                child: const Icon(Icons.add),
+              ),
+            ),
+          ],
         );
       },
     );
   }
 }
 
-class _RaccoltaTile extends ConsumerWidget {
-  const _RaccoltaTile(this.anteprima);
+class _RaccoltaCard extends ConsumerWidget {
+  const _RaccoltaCard(this.anteprima);
+  final RaccoltaAnteprima anteprima;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final t = Theme.of(context).textTheme;
+    final r = anteprima.raccolta;
+    return Card(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(18),
+        onTap: () => context.push('/raccolta/${r.id}'),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(child: Text(r.nome, style: t.titleMedium)),
+                  _MenuRaccolta(anteprima: anteprima),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  _ChipInfo(
+                    icon: Icons.pets_outlined,
+                    testo: l10n.speciesCount(anteprima.numeroSpecie),
+                  ),
+                  const SizedBox(width: 8),
+                  _ChipInfo(
+                    icon: Icons.visibility_outlined,
+                    testo: l10n.sightingsCount(anteprima.totale),
+                  ),
+                ],
+              ),
+              if (anteprima.campioni.isNotEmpty) ...[
+                const SizedBox(height: 14),
+                _Miniature(
+                  campioni: anteprima.campioni,
+                  totale: anteprima.totale,
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Pillola informativa (icona + testo), es. "12 specie" / "45 avvistamenti".
+class _ChipInfo extends StatelessWidget {
+  const _ChipInfo({required this.icon, required this.testo});
+  final IconData icon;
+  final String testo;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 15, color: scheme.onSurfaceVariant),
+          const SizedBox(width: 6),
+          Text(testo, style: Theme.of(context).textTheme.labelMedium),
+        ],
+      ),
+    );
+  }
+}
+
+/// Riga di miniature (fino a 3 celle), con "+N" se ci sono più avvistamenti.
+class _Miniature extends StatelessWidget {
+  const _Miniature({required this.campioni, required this.totale});
+  final List<AvvistamentoDettaglio> campioni;
+  final int totale;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = Theme.of(context).textTheme;
+    final scheme = Theme.of(context).colorScheme;
+    // Con più di 3 avvistamenti: 2 miniature + cella "+N".
+    final nThumb = totale > 3 ? 2 : campioni.length.clamp(0, 3);
+    final thumbs = campioni.take(nThumb).toList(growable: false);
+    final resto = totale - thumbs.length;
+
+    Widget cella(Widget child) => Expanded(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: SizedBox(height: 84, child: child),
+          ),
+        );
+
+    return Row(
+      children: [
+        for (var i = 0; i < thumbs.length; i++) ...[
+          if (i > 0) const SizedBox(width: 8),
+          cella(
+            AvvistamentoFoto(
+              fotoUrl: thumbs[i].fotoUrl,
+              nomeScientifico: thumbs[i].specieNomeScientifico,
+              size: null,
+              borderRadius: 0,
+            ),
+          ),
+        ],
+        if (resto > 0) ...[
+          const SizedBox(width: 8),
+          cella(
+            ColoredBox(
+              color: scheme.surfaceContainerHigh,
+              child: Center(
+                child: Text('+$resto', style: t.titleMedium),
+              ),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+/// Menu ⋮ della card raccolta: rinomina / elimina raccolta.
+class _MenuRaccolta extends ConsumerWidget {
+  const _MenuRaccolta({required this.anteprima});
   final RaccoltaAnteprima anteprima;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final r = anteprima.raccolta;
-    return Card(
-      child: ListTile(
-        leading: _Miniature(anteprima.campioni),
-        title: Text(r.nome),
-        subtitle: Text(
-          '${l10n.speciesCount(anteprima.numeroSpecie)} · '
-          '${l10n.sightingsCount(anteprima.totale)}',
-        ),
-        trailing: PopupMenuButton<String>(
-          onSelected: (v) async {
-            if (v == 'rinomina') {
-              await mostraRinominaRaccolta(context, ref, r);
-            } else if (v == 'elimina') {
-              await mostraEliminaRaccolta(context, ref, r);
-            }
-          },
-          itemBuilder: (_) => [
-            PopupMenuItem(value: 'rinomina', child: Text(l10n.renameCollection)),
-            PopupMenuItem(value: 'elimina', child: Text(l10n.deleteCollection)),
-          ],
-        ),
-        onTap: () => context.push('/raccolta/${r.id}'),
-      ),
+    return PopupMenuButton<String>(
+      icon: const Icon(Icons.more_vert),
+      onSelected: (v) async {
+        if (v == 'rinomina') {
+          await mostraRinominaRaccolta(context, ref, r);
+        } else if (v == 'elimina') {
+          await mostraEliminaRaccolta(context, ref, r);
+        }
+      },
+      itemBuilder: (_) => [
+        PopupMenuItem(value: 'rinomina', child: Text(l10n.renameCollection)),
+        PopupMenuItem(value: 'elimina', child: Text(l10n.deleteCollection)),
+      ],
     );
   }
 }
 
-/// Fino a 3 miniature affiancate (o icona cartella se la raccolta e' vuota).
-class _Miniature extends StatelessWidget {
-  const _Miniature(this.campioni);
-  final List<AvvistamentoDettaglio> campioni;
-
-  @override
-  Widget build(BuildContext context) {
-    if (campioni.isEmpty) {
-      return const SizedBox(
-        width: 48,
-        height: 48,
-        child: Icon(Icons.folder_outlined, size: 32),
-      );
-    }
-    return SizedBox(
-      width: 48,
-      height: 48,
-      child: Stack(
-        children: [
-          for (var i = 0; i < campioni.length && i < 3; i++)
-            Positioned(
-              left: i * 10.0,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(
-                    color: Theme.of(context).colorScheme.surface,
-                    width: 1.5,
-                  ),
-                ),
-                child: AvvistamentoFoto(
-                  fotoUrl: campioni[i].fotoUrl,
-                  nomeScientifico: campioni[i].specieNomeScientifico,
-                  size: 34,
-                  borderRadius: 6,
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _VuotoConAzione extends StatelessWidget {
-  const _VuotoConAzione({required this.onCrea});
+/// Card tratteggiata "Inizia una nuova raccolta".
+class _NuovaRaccoltaCard extends StatelessWidget {
+  const _NuovaRaccoltaCard({required this.onCrea});
   final VoidCallback onCrea;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.folder_special_outlined,
-            size: 64,
-            color: Theme.of(context).colorScheme.outline,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            l10n.collectionsEmptyTitle,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: 4),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
-            child: Text(
-              l10n.collectionsEmptySubtitle,
-              textAlign: TextAlign.center,
+    final t = Theme.of(context).textTheme;
+    final scheme = Theme.of(context).colorScheme;
+    return InkWell(
+      borderRadius: BorderRadius.circular(18),
+      onTap: onCrea,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: scheme.outline),
+        ),
+        child: Column(
+          children: [
+            CircleAvatar(
+              radius: 26,
+              backgroundColor: scheme.primaryContainer,
+              child: Icon(
+                Icons.add_photo_alternate_outlined,
+                color: scheme.onPrimaryContainer,
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-          FilledButton.icon(
-            onPressed: onCrea,
-            icon: const Icon(Icons.add),
-            label: Text(l10n.newCollection),
-          ),
-        ],
+            const SizedBox(height: 12),
+            Text(l10n.startNewCollection, style: t.titleMedium),
+            const SizedBox(height: 4),
+            Text(
+              l10n.startNewCollectionSub,
+              textAlign: TextAlign.center,
+              style: t.bodySmall?.copyWith(color: scheme.onSurfaceVariant),
+            ),
+          ],
+        ),
       ),
     );
   }

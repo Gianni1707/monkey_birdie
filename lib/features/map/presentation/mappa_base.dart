@@ -41,7 +41,9 @@ class MappaBase extends ConsumerWidget {
         dio: Dio(BaseOptions(headers: const {'User-Agent': tileUserAgent})),
       ),
       orElse: () => NetworkTileProvider(
-        headers: const {'User-Agent': tileUserAgent},
+        // NB: mappa NON const. TileLayer inietta lo user-agent via
+        // headers.putIfAbsent(...), che su una mappa immutabile lancia sempre.
+        headers: {'User-Agent': tileUserAgent},
       ),
     );
 

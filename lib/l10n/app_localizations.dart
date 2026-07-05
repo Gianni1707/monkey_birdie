@@ -140,6 +140,36 @@ abstract class AppLocalizations {
   /// **'Non hai un account? Registrati'**
   String get noAccountRegister;
 
+  /// No description provided for @noAccountQuestion.
+  ///
+  /// In it, this message translates to:
+  /// **'Non hai un account?'**
+  String get noAccountQuestion;
+
+  /// No description provided for @haveAccountQuestion.
+  ///
+  /// In it, this message translates to:
+  /// **'Hai già un account?'**
+  String get haveAccountQuestion;
+
+  /// No description provided for @loginSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Il tuo diario di campo alato'**
+  String get loginSubtitle;
+
+  /// No description provided for @registerSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Inizia la tua avventura ornitologica'**
+  String get registerSubtitle;
+
+  /// No description provided for @emailHint.
+  ///
+  /// In it, this message translates to:
+  /// **'esempio@email.it'**
+  String get emailHint;
+
   /// No description provided for @register.
   ///
   /// In it, this message translates to:
@@ -188,6 +218,12 @@ abstract class AppLocalizations {
   /// **'Riconosci'**
   String get tabRecognize;
 
+  /// No description provided for @tabHome.
+  ///
+  /// In it, this message translates to:
+  /// **'Home'**
+  String get tabHome;
+
   /// No description provided for @tabMap.
   ///
   /// In it, this message translates to:
@@ -199,6 +235,54 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Collezione'**
   String get tabCollection;
+
+  /// No description provided for @homeWelcome.
+  ///
+  /// In it, this message translates to:
+  /// **'Benvenuto {name}'**
+  String homeWelcome(String name);
+
+  /// No description provided for @homeSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Pronto per una nuova scoperta?'**
+  String get homeSubtitle;
+
+  /// No description provided for @homeAudioTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Audio'**
+  String get homeAudioTitle;
+
+  /// No description provided for @homeAudioHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Ascolta il canto'**
+  String get homeAudioHint;
+
+  /// No description provided for @homePhotoTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Foto'**
+  String get homePhotoTitle;
+
+  /// No description provided for @homePhotoHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Cattura l’istante'**
+  String get homePhotoHint;
+
+  /// No description provided for @homeLatestSightings.
+  ///
+  /// In it, this message translates to:
+  /// **'I tuoi ultimi avvistamenti'**
+  String get homeLatestSightings;
+
+  /// No description provided for @seeAll.
+  ///
+  /// In it, this message translates to:
+  /// **'Vedi tutti'**
+  String get seeAll;
 
   /// No description provided for @logout.
   ///
@@ -403,6 +487,90 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Mappa dell’habitat in arrivo nella Fase 2.'**
   String get habitatComingSoon;
+
+  /// No description provided for @whereItLives.
+  ///
+  /// In it, this message translates to:
+  /// **'Dove vive'**
+  String get whereItLives;
+
+  /// No description provided for @morphology.
+  ///
+  /// In it, this message translates to:
+  /// **'Morfologia'**
+  String get morphology;
+
+  /// No description provided for @lengthLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'Lunghezza'**
+  String get lengthLabel;
+
+  /// No description provided for @weightLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'Peso'**
+  String get weightLabel;
+
+  /// No description provided for @eggsLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'Uova'**
+  String get eggsLabel;
+
+  /// No description provided for @nestLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'Nido'**
+  String get nestLabel;
+
+  /// No description provided for @notAvailable.
+  ///
+  /// In it, this message translates to:
+  /// **'n/d'**
+  String get notAvailable;
+
+  /// No description provided for @morphologySource.
+  ///
+  /// In it, this message translates to:
+  /// **'Dati morfologici: BIRDBASE'**
+  String get morphologySource;
+
+  /// No description provided for @descriptionSource.
+  ///
+  /// In it, this message translates to:
+  /// **'Fonte: {fonte}'**
+  String descriptionSource(String fonte);
+
+  /// No description provided for @share.
+  ///
+  /// In it, this message translates to:
+  /// **'Condividi'**
+  String get share;
+
+  /// No description provided for @habitatDistribution.
+  ///
+  /// In it, this message translates to:
+  /// **'Habitat e distribuzione'**
+  String get habitatDistribution;
+
+  /// No description provided for @distributionSource.
+  ///
+  /// In it, this message translates to:
+  /// **'Dati di distribuzione: GBIF'**
+  String get distributionSource;
+
+  /// No description provided for @distributionUnavailable.
+  ///
+  /// In it, this message translates to:
+  /// **'Dati di distribuzione non disponibili.'**
+  String get distributionUnavailable;
+
+  /// No description provided for @tapToExpand.
+  ///
+  /// In it, this message translates to:
+  /// **'Tocca per ingrandire'**
+  String get tapToExpand;
 
   /// No description provided for @rarityCommon.
   ///
@@ -683,7 +851,7 @@ abstract class AppLocalizations {
   /// No description provided for @tabSightings.
   ///
   /// In it, this message translates to:
-  /// **'Avvistamenti'**
+  /// **'Avvistati'**
   String get tabSightings;
 
   /// No description provided for @tabCollections.
@@ -691,6 +859,126 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Raccolte'**
   String get tabCollections;
+
+  /// No description provided for @deleteSighting.
+  ///
+  /// In it, this message translates to:
+  /// **'Elimina avvistamento'**
+  String get deleteSighting;
+
+  /// No description provided for @deleteSightingTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Eliminare l’avvistamento?'**
+  String get deleteSightingTitle;
+
+  /// No description provided for @deleteSightingBody.
+  ///
+  /// In it, this message translates to:
+  /// **'L’azione è irreversibile.'**
+  String get deleteSightingBody;
+
+  /// No description provided for @deleteAction.
+  ///
+  /// In it, this message translates to:
+  /// **'Elimina'**
+  String get deleteAction;
+
+  /// No description provided for @sightingDeleted.
+  ///
+  /// In it, this message translates to:
+  /// **'Avvistamento eliminato.'**
+  String get sightingDeleted;
+
+  /// No description provided for @tabWishlist.
+  ///
+  /// In it, this message translates to:
+  /// **'Desideri'**
+  String get tabWishlist;
+
+  /// No description provided for @addToWishlist.
+  ///
+  /// In it, this message translates to:
+  /// **'Voglio avvistarlo'**
+  String get addToWishlist;
+
+  /// No description provided for @removeFromWishlist.
+  ///
+  /// In it, this message translates to:
+  /// **'Togli dai desideri'**
+  String get removeFromWishlist;
+
+  /// No description provided for @emptyWishlistTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessun desiderio'**
+  String get emptyWishlistTitle;
+
+  /// No description provided for @emptyWishlistSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Aggiungi le specie che vuoi ancora avvistare.'**
+  String get emptyWishlistSubtitle;
+
+  /// No description provided for @alreadySpotted.
+  ///
+  /// In it, this message translates to:
+  /// **'Già avvistata 🎉'**
+  String get alreadySpotted;
+
+  /// No description provided for @wishlistNote.
+  ///
+  /// In it, this message translates to:
+  /// **'Nota'**
+  String get wishlistNote;
+
+  /// No description provided for @wishlistNoteHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Nota (opzionale)'**
+  String get wishlistNoteHint;
+
+  /// No description provided for @dangerNotReported.
+  ///
+  /// In it, this message translates to:
+  /// **'non segnalato'**
+  String get dangerNotReported;
+
+  /// No description provided for @difficultyEstimateLabel.
+  ///
+  /// In it, this message translates to:
+  /// **'Difficoltà (stima): {value}'**
+  String difficultyEstimateLabel(String value);
+
+  /// No description provided for @difficultyCommon.
+  ///
+  /// In it, this message translates to:
+  /// **'comune'**
+  String get difficultyCommon;
+
+  /// No description provided for @difficultyUncommon.
+  ///
+  /// In it, this message translates to:
+  /// **'poco comune'**
+  String get difficultyUncommon;
+
+  /// No description provided for @difficultyHard.
+  ///
+  /// In it, this message translates to:
+  /// **'difficile'**
+  String get difficultyHard;
+
+  /// No description provided for @difficultyVeryRare.
+  ///
+  /// In it, this message translates to:
+  /// **'molto raro'**
+  String get difficultyVeryRare;
+
+  /// No description provided for @difficultyNA.
+  ///
+  /// In it, this message translates to:
+  /// **'n/d'**
+  String get difficultyNA;
 
   /// No description provided for @collections.
   ///
@@ -799,6 +1087,108 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Crea raccolte per organizzare i tuoi avvistamenti in gruppi.'**
   String get collectionsEmptySubtitle;
+
+  /// No description provided for @identified.
+  ///
+  /// In it, this message translates to:
+  /// **'Identificati'**
+  String get identified;
+
+  /// No description provided for @identifiedSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Specie avvistate e documentate nei tuoi viaggi.'**
+  String get identifiedSubtitle;
+
+  /// No description provided for @settings.
+  ///
+  /// In it, this message translates to:
+  /// **'Impostazioni'**
+  String get settings;
+
+  /// No description provided for @profileSaved.
+  ///
+  /// In it, this message translates to:
+  /// **'Profilo aggiornato.'**
+  String get profileSaved;
+
+  /// No description provided for @statSharedSightings.
+  ///
+  /// In it, this message translates to:
+  /// **'Avvistamenti condivisi'**
+  String get statSharedSightings;
+
+  /// No description provided for @statSpecies.
+  ///
+  /// In it, this message translates to:
+  /// **'Specie'**
+  String get statSpecies;
+
+  /// No description provided for @favoriteBirds.
+  ///
+  /// In it, this message translates to:
+  /// **'Uccelli preferiti'**
+  String get favoriteBirds;
+
+  /// No description provided for @recentSightings.
+  ///
+  /// In it, this message translates to:
+  /// **'Avvistamenti recenti'**
+  String get recentSightings;
+
+  /// No description provided for @collectionsHeading.
+  ///
+  /// In it, this message translates to:
+  /// **'Le mie Raccolte'**
+  String get collectionsHeading;
+
+  /// No description provided for @collectionsHeadingSub.
+  ///
+  /// In it, this message translates to:
+  /// **'Il tuo archivio di osservazioni.'**
+  String get collectionsHeadingSub;
+
+  /// No description provided for @startNewCollection.
+  ///
+  /// In it, this message translates to:
+  /// **'Inizia una nuova raccolta'**
+  String get startNewCollection;
+
+  /// No description provided for @startNewCollectionSub.
+  ///
+  /// In it, this message translates to:
+  /// **'Raggruppa le tue osservazioni per viaggio, stagione o habitat.'**
+  String get startNewCollectionSub;
+
+  /// No description provided for @wishlistHeading.
+  ///
+  /// In it, this message translates to:
+  /// **'Lista dei desideri'**
+  String get wishlistHeading;
+
+  /// No description provided for @wishlistHeadingSub.
+  ///
+  /// In it, this message translates to:
+  /// **'Specie che vorresti avvistare o che hai già incontrato.'**
+  String get wishlistHeadingSub;
+
+  /// No description provided for @addSpecies.
+  ///
+  /// In it, this message translates to:
+  /// **'Aggiungi specie'**
+  String get addSpecies;
+
+  /// No description provided for @statusToSpot.
+  ///
+  /// In it, this message translates to:
+  /// **'Da avvistare'**
+  String get statusToSpot;
+
+  /// No description provided for @statusSpotted.
+  ///
+  /// In it, this message translates to:
+  /// **'Già avvistata'**
+  String get statusSpotted;
 
   /// No description provided for @collectionDetailEmptyTitle.
   ///

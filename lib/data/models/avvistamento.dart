@@ -22,6 +22,9 @@ class AvvistamentoDettaglio with _$AvvistamentoDettaglio {
     @Default(false) bool condiviso,
     required DateTime avvistatoIl,
     required String specieNomeComune,
+    // Nome comune ITALIANO dalla view (0009). Null finche' non c'e' traduzione
+    // o la migrazione non e' applicata -> la UI ripiega sull'inglese.
+    String? specieNomeComuneIt,
     required String specieNomeScientifico,
     @Default('comune') String specieRarita,
     @Default(0) int specieLivelloPericolo,

@@ -20,7 +20,9 @@ class AvvistamentoFoto extends ConsumerWidget {
 
   final String? fotoUrl; // path nel bucket (o null)
   final String nomeScientifico;
-  final double size;
+
+  /// Lato del quadrato. `null` = riempi il genitore (per griglie/hero).
+  final double? size;
   final double borderRadius;
 
   @override
@@ -39,10 +41,14 @@ class AvvistamentoFoto extends ConsumerWidget {
     } else {
       contenuto = _SpecieFallback(nomeScientifico);
     }
-    return ClipRRect(
+    final clip = ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius),
-      child: SizedBox(width: size, height: size, child: contenuto),
+      child: contenuto,
     );
+    // size null -> riempie il genitore (il chiamante fornisce i vincoli).
+    return size == null
+        ? SizedBox.expand(child: clip)
+        : SizedBox(width: size, height: size, child: clip);
   }
 
   static Widget _rete(String url, {Widget fallback = const _Placeholder()}) =>
@@ -64,9 +70,8 @@ class _SpecieFallback extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final async = ref.watch(specieThumbnailProvider(nomeScientifico));
     return async.maybeWhen(
-      data: (url) => url == null
-          ? const _Placeholder()
-          : AvvistamentoFoto._rete(url),
+      data: (url) =>
+          url == null ? const _Placeholder() : AvvistamentoFoto._rete(url),
       orElse: () => const _Placeholder(),
     );
   }

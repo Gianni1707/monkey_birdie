@@ -30,6 +30,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noAccountRegister => 'No account? Sign up';
 
   @override
+  String get noAccountQuestion => 'Don\'t have an account?';
+
+  @override
+  String get haveAccountQuestion => 'Already have an account?';
+
+  @override
+  String get loginSubtitle => 'Your winged field journal';
+
+  @override
+  String get registerSubtitle => 'Start your birding adventure';
+
+  @override
+  String get emailHint => 'example@email.com';
+
+  @override
   String get register => 'Sign up';
 
   @override
@@ -55,10 +70,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tabRecognize => 'Recognize';
 
   @override
+  String get tabHome => 'Home';
+
+  @override
   String get tabMap => 'Map';
 
   @override
   String get tabCollection => 'Collection';
+
+  @override
+  String homeWelcome(String name) {
+    return 'Welcome $name';
+  }
+
+  @override
+  String get homeSubtitle => 'Ready for a new discovery?';
+
+  @override
+  String get homeAudioTitle => 'Audio';
+
+  @override
+  String get homeAudioHint => 'Listen to the song';
+
+  @override
+  String get homePhotoTitle => 'Photo';
+
+  @override
+  String get homePhotoHint => 'Capture the moment';
+
+  @override
+  String get homeLatestSightings => 'Your latest sightings';
+
+  @override
+  String get seeAll => 'See all';
 
   @override
   String get logout => 'Log out';
@@ -168,6 +212,50 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get habitatComingSoon => 'Habitat map coming in Phase 2.';
+
+  @override
+  String get whereItLives => 'Where it lives';
+
+  @override
+  String get morphology => 'Morphology';
+
+  @override
+  String get lengthLabel => 'Length';
+
+  @override
+  String get weightLabel => 'Weight';
+
+  @override
+  String get eggsLabel => 'Eggs';
+
+  @override
+  String get nestLabel => 'Nest';
+
+  @override
+  String get notAvailable => 'N/A';
+
+  @override
+  String get morphologySource => 'Morphology data: BIRDBASE';
+
+  @override
+  String descriptionSource(String fonte) {
+    return 'Source: $fonte';
+  }
+
+  @override
+  String get share => 'Share';
+
+  @override
+  String get habitatDistribution => 'Habitat & distribution';
+
+  @override
+  String get distributionSource => 'Distribution data: GBIF';
+
+  @override
+  String get distributionUnavailable => 'Distribution data not available.';
+
+  @override
+  String get tapToExpand => 'Tap to expand';
 
   @override
   String get rarityCommon => 'common';
@@ -325,6 +413,68 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tabCollections => 'Collections';
 
   @override
+  String get deleteSighting => 'Delete sighting';
+
+  @override
+  String get deleteSightingTitle => 'Delete this sighting?';
+
+  @override
+  String get deleteSightingBody => 'This action is irreversible.';
+
+  @override
+  String get deleteAction => 'Delete';
+
+  @override
+  String get sightingDeleted => 'Sighting deleted.';
+
+  @override
+  String get tabWishlist => 'Wishlist';
+
+  @override
+  String get addToWishlist => 'I want to spot it';
+
+  @override
+  String get removeFromWishlist => 'Remove from wishlist';
+
+  @override
+  String get emptyWishlistTitle => 'Your wishlist is empty';
+
+  @override
+  String get emptyWishlistSubtitle => 'Add the species you still want to spot.';
+
+  @override
+  String get alreadySpotted => 'Already spotted 🎉';
+
+  @override
+  String get wishlistNote => 'Note';
+
+  @override
+  String get wishlistNoteHint => 'Note (optional)';
+
+  @override
+  String get dangerNotReported => 'not reported';
+
+  @override
+  String difficultyEstimateLabel(String value) {
+    return 'Difficulty (estimate): $value';
+  }
+
+  @override
+  String get difficultyCommon => 'common';
+
+  @override
+  String get difficultyUncommon => 'uncommon';
+
+  @override
+  String get difficultyHard => 'hard';
+
+  @override
+  String get difficultyVeryRare => 'very rare';
+
+  @override
+  String get difficultyNA => 'n/a';
+
+  @override
   String get collections => 'Collections';
 
   @override
@@ -381,6 +531,60 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get collectionsEmptySubtitle =>
       'Create collections to organize your sightings into groups.';
+
+  @override
+  String get identified => 'Identified';
+
+  @override
+  String get identifiedSubtitle =>
+      'Species spotted and documented on your trips.';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get profileSaved => 'Profile updated.';
+
+  @override
+  String get statSharedSightings => 'Shared sightings';
+
+  @override
+  String get statSpecies => 'Species';
+
+  @override
+  String get favoriteBirds => 'Favourite birds';
+
+  @override
+  String get recentSightings => 'Recent sightings';
+
+  @override
+  String get collectionsHeading => 'My collections';
+
+  @override
+  String get collectionsHeadingSub => 'Your observation archive.';
+
+  @override
+  String get startNewCollection => 'Start a new collection';
+
+  @override
+  String get startNewCollectionSub =>
+      'Group your observations by trip, season or habitat.';
+
+  @override
+  String get wishlistHeading => 'Wishlist';
+
+  @override
+  String get wishlistHeadingSub =>
+      'Species you\'d like to spot or have already met.';
+
+  @override
+  String get addSpecies => 'Add species';
+
+  @override
+  String get statusToSpot => 'To spot';
+
+  @override
+  String get statusSpotted => 'Spotted';
 
   @override
   String get collectionDetailEmptyTitle => 'Empty collection';

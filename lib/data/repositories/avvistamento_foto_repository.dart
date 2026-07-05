@@ -44,6 +44,17 @@ class AvvistamentoFotoRepository {
     }
   }
 
+  /// Elimina il file foto dal bucket (path = `foto_url`). Best-effort: la
+  /// policy "avvist foto: elimina le proprie" consente solo i propri; un errore
+  /// non deve bloccare l'eliminazione dell'avvistamento (al piu' un file orfano).
+  Future<void> eliminaFile(String path) async {
+    try {
+      await _client.storage.from(_bucket).remove([path]);
+    } catch (_) {
+      // best-effort: ignora (file gia' assente / rete).
+    }
+  }
+
   /// Signed URL temporaneo (24h) per leggere una foto privata. Best-effort:
   /// null in caso di errore -> la UI fa fallback sulla thumbnail della specie.
   /// 24h evita che l'URL in cache scada durante una sessione lunga (immagini

@@ -1,3 +1,7 @@
+# Segreti (connessione DB, chiavi) — MAI versionare
+.env
+.env.*
+
 # Flutter / Dart
 .dart_tool/
 .packages
@@ -34,3 +38,4 @@ spike/web_recognizer_tfjs/sample.wav
 
 # Script locale con URL+key (NON pubblicare)
 tool/dev.sh
+restyle_preview/

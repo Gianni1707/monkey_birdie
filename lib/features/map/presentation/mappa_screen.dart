@@ -7,9 +7,11 @@ import 'package:latlong2/latlong.dart';
 import '../../../core/location/location_service.dart' as loc;
 import '../../../data/models/avvistamento.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../shared/nome_specie.dart';
 import '../../../shared/widgets/avvistamento_foto.dart';
 import '../../../shared/widgets/state_views.dart';
 import '../../amici/application/condivisione_providers.dart';
+import '../../collection/presentation/elimina_avvistamento.dart';
 import '../../raccolte/presentation/aggiungi_a_raccolta_sheet.dart';
 import '../application/geocoding_repository.dart';
 import 'mappa_base.dart';
@@ -133,8 +135,7 @@ class _MappaScreenState extends ConsumerState<MappaScreen> {
                   controller: _ricercaCtrl,
                   cercando: _cercando,
                   risultati: _risultati,
-                  nessunRisultato:
-                      _cercato && !_cercando && _risultati.isEmpty,
+                  nessunRisultato: _cercato && !_cercando && _risultati.isEmpty,
                   onSubmit: _cercaLuogo,
                   onScegli: _vaiAlLuogo,
                 ),
@@ -348,61 +349,108 @@ class _DettaglioAvvistamento extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
-    return Padding(
+    // Scrollabile: il contenuto (foto + azioni) può superare l'altezza del
+    // bottom sheet su schermi piccoli senza andare in overflow.
+    return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: AvvistamentoFoto(
-              fotoUrl: a.fotoUrl,
-              nomeScientifico: a.specieNomeScientifico,
-              size: 160,
-              borderRadius: 12,
+          Center(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: AvvistamentoFoto(
+                fotoUrl: a.fotoUrl,
+                nomeScientifico: a.specieNomeScientifico,
+                size: 150,
+                borderRadius: 16,
+              ),
             ),
           ),
-          const SizedBox(height: 12),
-          Text(a.specieNomeComune, style: theme.textTheme.titleLarge),
+          const SizedBox(height: 14),
+          Text(a.specieNomeDaMostrare, style: theme.textTheme.titleLarge),
           Text(
             a.specieNomeScientifico,
-            style: theme.textTheme.titleSmall?.copyWith(
+            style: theme.textTheme.bodyMedium?.copyWith(
               fontStyle: FontStyle.italic,
-              color: theme.colorScheme.outline,
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 8),
           Row(
             children: [
-              Icon(Icons.event, size: 16, color: theme.colorScheme.outline),
+              Icon(
+                Icons.event,
+                size: 16,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
               const SizedBox(width: 6),
-              Text(_formatData(a.avvistatoIl)),
+              Text(
+                _formatData(a.avvistatoIl),
+                style: theme.textTheme.bodyMedium,
+              ),
             ],
           ),
           if (altrui) ...[
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Icon(
-                  Icons.people_outline,
-                  size: 16,
-                  color: theme.colorScheme.tertiary,
+            const SizedBox(height: 10),
+            // Attribuzione "avvistato da @amico": chip tono terziario (stesso
+            // codice colore del bordo dei marcatori altrui).
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.tertiaryContainer,
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                const SizedBox(width: 6),
-                Text(
-                  l10n.spottedBy(username ?? '?'),
-                  style: TextStyle(color: theme.colorScheme.tertiary),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.people_outline,
+                      size: 16,
+                      color: theme.colorScheme.onTertiaryContainer,
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      l10n.spottedBy(username ?? '?'),
+                      style: theme.textTheme.labelMedium?.copyWith(
+                        color: theme.colorScheme.onTertiaryContainer,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ],
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           if (!altrui) ...[
             OutlinedButton.icon(
               onPressed: () => mostraAggiungiARaccolta(context, a.id),
               icon: const Icon(Icons.bookmark_add_outlined),
               label: Text(l10n.addToCollection),
+            ),
+            const SizedBox(height: 8),
+            // Elimina avvistamento (DISTRUTTIVO): rosso + cestino, con conferma.
+            // Solo per i propri; al successo chiude il bottom sheet.
+            Consumer(
+              builder: (context, ref, _) => TextButton.icon(
+                onPressed: () async {
+                  final eliminato =
+                      await confermaEliminaAvvistamento(context, ref, a);
+                  if (eliminato && context.mounted) {
+                    Navigator.of(context).pop();
+                  }
+                },
+                icon:
+                    Icon(Icons.delete_outline, color: theme.colorScheme.error),
+                label: Text(
+                  l10n.deleteSighting,
+                  style: TextStyle(color: theme.colorScheme.error),
+                ),
+              ),
             ),
             const SizedBox(height: 8),
           ],

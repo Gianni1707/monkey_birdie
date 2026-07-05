@@ -84,8 +84,7 @@ class _AggiungiARaccoltaSheetState
     } catch (e) {
       if (!mounted) return;
       setState(() => _salvando = false);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('$e')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
     }
   }
 

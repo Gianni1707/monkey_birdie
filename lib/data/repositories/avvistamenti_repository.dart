@@ -95,6 +95,24 @@ class AvvistamentiRepository {
     }
   }
 
+  /// Elimina un avvistamento. La RLS ("avvistamenti: elimina propri") consente
+  /// di cancellare solo i propri; le righe-ponte in `raccolte_avvistamenti`
+  /// spariscono per ON DELETE CASCADE. Idempotente: se la riga non c'e' piu'
+  /// (gia' eliminata altrove) non e' un errore.
+  Future<void> elimina(String id) async {
+    try {
+      final uid = _client.auth.currentUser?.id;
+      if (uid == null) throw const AuthFailure('Sessione non valida.');
+      await _client
+          .from('avvistamenti')
+          .delete()
+          .eq('id', id)
+          .eq('utente_id', uid);
+    } catch (e) {
+      throw mapError(e);
+    }
+  }
+
   /// Imposta il flag `condiviso` su TUTTI i propri avvistamenti (impostazione
   /// unica dal profilo). RLS: modifica solo i propri.
   Future<void> impostaCondivisoTutti(bool condiviso) async {

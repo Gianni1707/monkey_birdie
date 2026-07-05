@@ -11,11 +11,15 @@ import '../application/raccolte_providers.dart';
 /// solo posto. Riusati da elenco, dettaglio e foglio "aggiungi a raccolta".
 
 /// Crea una nuova raccolta; ritorna quella creata (o null se annullato/errore).
-Future<Raccolta?> mostraNuovaRaccolta(BuildContext context, WidgetRef ref) async {
+Future<Raccolta?> mostraNuovaRaccolta(
+  BuildContext context,
+  WidgetRef ref,
+) async {
   final l10n = AppLocalizations.of(context);
   final dati = await showDialog<({String nome, String? descrizione})>(
     context: context,
-    builder: (_) => _DialogoNome(titolo: l10n.newCollection, azione: l10n.create),
+    builder: (_) =>
+        _DialogoNome(titolo: l10n.newCollection, azione: l10n.create),
   );
   if (dati == null) return null;
   try {

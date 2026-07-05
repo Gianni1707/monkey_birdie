@@ -18,6 +18,7 @@ dependencies:
   supabase_flutter: ^2.5.6      # auth + Postgres/PostgREST + storage
   http: ^1.2.0                  # thumbnail specie (API iNaturalist) per i candidati
   shared_preferences: ^2.3.0    # persistenza scelta lingua
+  share_plus: ^10.0.0           # condividi la scheda specie (web Web Share API + Android)
 
   # --- State management / navigazione ---
   flutter_riverpod: ^2.5.1
@@ -67,3 +68,12 @@ flutter:
   assets:
     - assets/models/
     - assets/labels/
+  # Font bundlati (offline/PWA-safe, nessuna dipendenza runtime). Variabili:
+  # il peso si seleziona via fontWeight nel tema. Titoli=serif, corpo=Inter.
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter.ttf
+    - family: SourceSerif4
+      fonts:
+        - asset: assets/fonts/SourceSerif4.ttf

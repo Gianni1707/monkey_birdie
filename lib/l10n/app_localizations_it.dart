@@ -30,6 +30,21 @@ class AppLocalizationsIt extends AppLocalizations {
   String get noAccountRegister => 'Non hai un account? Registrati';
 
   @override
+  String get noAccountQuestion => 'Non hai un account?';
+
+  @override
+  String get haveAccountQuestion => 'Hai già un account?';
+
+  @override
+  String get loginSubtitle => 'Il tuo diario di campo alato';
+
+  @override
+  String get registerSubtitle => 'Inizia la tua avventura ornitologica';
+
+  @override
+  String get emailHint => 'esempio@email.it';
+
+  @override
   String get register => 'Registrati';
 
   @override
@@ -55,10 +70,39 @@ class AppLocalizationsIt extends AppLocalizations {
   String get tabRecognize => 'Riconosci';
 
   @override
+  String get tabHome => 'Home';
+
+  @override
   String get tabMap => 'Mappa';
 
   @override
   String get tabCollection => 'Collezione';
+
+  @override
+  String homeWelcome(String name) {
+    return 'Benvenuto $name';
+  }
+
+  @override
+  String get homeSubtitle => 'Pronto per una nuova scoperta?';
+
+  @override
+  String get homeAudioTitle => 'Audio';
+
+  @override
+  String get homeAudioHint => 'Ascolta il canto';
+
+  @override
+  String get homePhotoTitle => 'Foto';
+
+  @override
+  String get homePhotoHint => 'Cattura l’istante';
+
+  @override
+  String get homeLatestSightings => 'I tuoi ultimi avvistamenti';
+
+  @override
+  String get seeAll => 'Vedi tutti';
 
   @override
   String get logout => 'Esci';
@@ -171,6 +215,51 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get habitatComingSoon => 'Mappa dell’habitat in arrivo nella Fase 2.';
+
+  @override
+  String get whereItLives => 'Dove vive';
+
+  @override
+  String get morphology => 'Morfologia';
+
+  @override
+  String get lengthLabel => 'Lunghezza';
+
+  @override
+  String get weightLabel => 'Peso';
+
+  @override
+  String get eggsLabel => 'Uova';
+
+  @override
+  String get nestLabel => 'Nido';
+
+  @override
+  String get notAvailable => 'n/d';
+
+  @override
+  String get morphologySource => 'Dati morfologici: BIRDBASE';
+
+  @override
+  String descriptionSource(String fonte) {
+    return 'Fonte: $fonte';
+  }
+
+  @override
+  String get share => 'Condividi';
+
+  @override
+  String get habitatDistribution => 'Habitat e distribuzione';
+
+  @override
+  String get distributionSource => 'Dati di distribuzione: GBIF';
+
+  @override
+  String get distributionUnavailable =>
+      'Dati di distribuzione non disponibili.';
+
+  @override
+  String get tapToExpand => 'Tocca per ingrandire';
 
   @override
   String get rarityCommon => 'comune';
@@ -325,10 +414,73 @@ class AppLocalizationsIt extends AppLocalizations {
   String get myLocation => 'La mia posizione';
 
   @override
-  String get tabSightings => 'Avvistamenti';
+  String get tabSightings => 'Avvistati';
 
   @override
   String get tabCollections => 'Raccolte';
+
+  @override
+  String get deleteSighting => 'Elimina avvistamento';
+
+  @override
+  String get deleteSightingTitle => 'Eliminare l’avvistamento?';
+
+  @override
+  String get deleteSightingBody => 'L’azione è irreversibile.';
+
+  @override
+  String get deleteAction => 'Elimina';
+
+  @override
+  String get sightingDeleted => 'Avvistamento eliminato.';
+
+  @override
+  String get tabWishlist => 'Desideri';
+
+  @override
+  String get addToWishlist => 'Voglio avvistarlo';
+
+  @override
+  String get removeFromWishlist => 'Togli dai desideri';
+
+  @override
+  String get emptyWishlistTitle => 'Nessun desiderio';
+
+  @override
+  String get emptyWishlistSubtitle =>
+      'Aggiungi le specie che vuoi ancora avvistare.';
+
+  @override
+  String get alreadySpotted => 'Già avvistata 🎉';
+
+  @override
+  String get wishlistNote => 'Nota';
+
+  @override
+  String get wishlistNoteHint => 'Nota (opzionale)';
+
+  @override
+  String get dangerNotReported => 'non segnalato';
+
+  @override
+  String difficultyEstimateLabel(String value) {
+    return 'Difficoltà (stima): $value';
+  }
+
+  @override
+  String get difficultyCommon => 'comune';
+
+  @override
+  String get difficultyUncommon => 'poco comune';
+
+  @override
+  String get difficultyHard => 'difficile';
+
+  @override
+  String get difficultyVeryRare => 'molto raro';
+
+  @override
+  String get difficultyNA => 'n/d';
 
   @override
   String get collections => 'Raccolte';
@@ -387,6 +539,60 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get collectionsEmptySubtitle =>
       'Crea raccolte per organizzare i tuoi avvistamenti in gruppi.';
+
+  @override
+  String get identified => 'Identificati';
+
+  @override
+  String get identifiedSubtitle =>
+      'Specie avvistate e documentate nei tuoi viaggi.';
+
+  @override
+  String get settings => 'Impostazioni';
+
+  @override
+  String get profileSaved => 'Profilo aggiornato.';
+
+  @override
+  String get statSharedSightings => 'Avvistamenti condivisi';
+
+  @override
+  String get statSpecies => 'Specie';
+
+  @override
+  String get favoriteBirds => 'Uccelli preferiti';
+
+  @override
+  String get recentSightings => 'Avvistamenti recenti';
+
+  @override
+  String get collectionsHeading => 'Le mie Raccolte';
+
+  @override
+  String get collectionsHeadingSub => 'Il tuo archivio di osservazioni.';
+
+  @override
+  String get startNewCollection => 'Inizia una nuova raccolta';
+
+  @override
+  String get startNewCollectionSub =>
+      'Raggruppa le tue osservazioni per viaggio, stagione o habitat.';
+
+  @override
+  String get wishlistHeading => 'Lista dei desideri';
+
+  @override
+  String get wishlistHeadingSub =>
+      'Specie che vorresti avvistare o che hai già incontrato.';
+
+  @override
+  String get addSpecies => 'Aggiungi specie';
+
+  @override
+  String get statusToSpot => 'Da avvistare';
+
+  @override
+  String get statusSpotted => 'Già avvistata';
 
   @override
   String get collectionDetailEmptyTitle => 'Raccolta vuota';

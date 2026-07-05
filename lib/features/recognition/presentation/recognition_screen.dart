@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../data/repositories/specie_immagine_repository.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../shared/nome_specie.dart';
 import '../../collection/application/collection_controller.dart';
 import '../application/recognition_controller.dart';
 import '../application/recognition_state.dart';
@@ -28,9 +29,15 @@ class RecognitionScreen extends ConsumerWidget {
     if (state is RecognitionConfermaPosizione) {
       return ConfermaPosizioneView(stato: state);
     }
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Center(child: _body(context, ref, state)),
+    // I risultati scorrono; gli altri stati sono centrati con respiro.
+    final centrato = state is! RecognitionResult;
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: centrato
+            ? Center(child: _body(context, ref, state))
+            : _body(context, ref, state),
+      ),
     );
   }
 
@@ -62,11 +69,13 @@ class RecognitionScreen extends ConsumerWidget {
       RecognitionConfermaPosizione() => const SizedBox.shrink(),
       RecognitionSaved() => _Esito(
           icon: Icons.check_circle,
+          ok: true,
           message: l10n.addedToCollection,
           onAgain: ctrl.reset,
         ),
       RecognitionError(:final message) => _Esito(
           icon: Icons.error_outline,
+          ok: false,
           message: message,
           onAgain: ctrl.reset,
         ),
@@ -74,6 +83,8 @@ class RecognitionScreen extends ConsumerWidget {
   }
 }
 
+/// Grande pulsante di cattura del canto (hero): cerchio verde (o mattone mentre
+/// registra), ombra tenue, etichetta serif sotto.
 class _MicButton extends StatelessWidget {
   const _MicButton({
     required this.label,
@@ -90,25 +101,48 @@ class _MicButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final bg = pulsing ? scheme.error : scheme.primary;
+    final fg = pulsing ? scheme.onError : scheme.onPrimary;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        GestureDetector(
-          onTap: onTap,
-          child: CircleAvatar(
-            radius: 72,
-            backgroundColor: pulsing ? scheme.error : scheme.primary,
-            child: Icon(icon, size: 64, color: scheme.onPrimary),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: bg.withValues(alpha: 0.35),
+                blurRadius: 24,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Material(
+            color: bg,
+            shape: const CircleBorder(),
+            child: InkWell(
+              customBorder: const CircleBorder(),
+              onTap: onTap,
+              child: SizedBox(
+                width: 164,
+                height: 164,
+                child: Icon(icon, size: 68, color: fg),
+              ),
+            ),
           ),
         ),
-        const SizedBox(height: 24),
-        Text(label, textAlign: TextAlign.center),
+        const SizedBox(height: 22),
+        Text(
+          label,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
       ],
     );
   }
 }
 
-/// Stato iniziale: pulsante canto (mic) + pulsanti foto (scatta/carica).
+/// Stato iniziale: pulsante canto (mic) + due comandi foto ampi (scatta/carica).
 class _IdleView extends StatelessWidget {
   const _IdleView({
     required this.onCanto,
@@ -130,28 +164,95 @@ class _IdleView extends StatelessWidget {
           icon: Icons.mic_none,
           onTap: onCanto,
         ),
-        const SizedBox(height: 28),
-        Text(
-          l10n.orFromPhoto,
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 36),
+        _DivisoreOppure(testo: l10n.orFromPhoto),
+        const SizedBox(height: 16),
         Row(
-          mainAxisSize: MainAxisSize.min,
           children: [
-            OutlinedButton.icon(
-              onPressed: onScatta,
-              icon: const Icon(Icons.photo_camera_outlined),
-              label: Text(l10n.takePhoto),
+            Expanded(
+              child: _ComandoFoto(
+                icon: Icons.photo_camera_outlined,
+                label: l10n.takePhoto,
+                onTap: onScatta,
+              ),
             ),
             const SizedBox(width: 12),
-            OutlinedButton.icon(
-              onPressed: onCarica,
-              icon: const Icon(Icons.photo_library_outlined),
-              label: Text(l10n.uploadPhoto),
+            Expanded(
+              child: _ComandoFoto(
+                icon: Icons.photo_library_outlined,
+                label: l10n.uploadPhoto,
+                onTap: onCarica,
+              ),
             ),
           ],
         ),
+      ],
+    );
+  }
+}
+
+/// Comando foto ampio (icona sopra, etichetta sotto), tinta "mattone" tenue.
+class _ComandoFoto extends StatelessWidget {
+  const _ComandoFoto({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Material(
+      color: scheme.secondaryContainer,
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 18),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 30, color: scheme.onSecondaryContainer),
+              const SizedBox(height: 8),
+              Text(
+                label,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      color: scheme.onSecondaryContainer,
+                    ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Divisore "oppure da foto" con linee ai lati.
+class _DivisoreOppure extends StatelessWidget {
+  const _DivisoreOppure({required this.testo});
+  final String testo;
+
+  @override
+  Widget build(BuildContext context) {
+    final muted = Theme.of(context).colorScheme.onSurfaceVariant;
+    return Row(
+      children: [
+        const Expanded(child: Divider()),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Text(
+            testo,
+            style:
+                Theme.of(context).textTheme.labelMedium?.copyWith(color: muted),
+          ),
+        ),
+        const Expanded(child: Divider()),
       ],
     );
   }
@@ -167,8 +268,8 @@ class _Busy extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         const CircularProgressIndicator(),
-        const SizedBox(height: 16),
-        Text(label),
+        const SizedBox(height: 20),
+        Text(label, textAlign: TextAlign.center),
       ],
     );
   }
@@ -187,83 +288,165 @@ class _Risultati extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final t = Theme.of(context).textTheme;
     if (candidati.isEmpty) {
-      return Text(l10n.noSpecies);
+      return Center(child: Text(l10n.noSpecies));
     }
-    final scheme = Theme.of(context).colorScheme;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return ListView(
       children: [
-        Text(l10n.results, style: Theme.of(context).textTheme.titleLarge),
+        Text(l10n.results, style: t.headlineSmall),
         const SizedBox(height: 4),
-        Text(l10n.chooseSpecies),
+        Text(l10n.chooseSpecies, style: t.bodyMedium),
         if (incerto) ...[
-          const SizedBox(height: 12),
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: scheme.tertiaryContainer,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.help_outline, color: scheme.onTertiaryContainer),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    l10n.uncertainPhoto,
-                    style: TextStyle(color: scheme.onTertiaryContainer),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          const SizedBox(height: 14),
+          _BannerIncerto(testo: l10n.uncertainPhoto),
         ],
         const SizedBox(height: 16),
-        ...candidati.map((c) {
-          final perc = (c.predizione.confidenza * 100).toStringAsFixed(0);
-          return Card(
-            child: ListTile(
-              leading: _SpecieThumb(c.predizione.nomeScientifico),
-              title: Text(c.specie?.nomeComune ?? c.predizione.nomeComune),
-              subtitle: Text(
-                '${c.predizione.nomeScientifico} · $perc%'
-                '${c.salvabile ? '' : ' · ${l10n.notInCatalog}'}',
-              ),
-              trailing: c.salvabile
-                  ? const Icon(Icons.add_circle_outline)
-                  : const Icon(Icons.block),
-              enabled: c.salvabile,
-              onTap: c.salvabile ? () => onScegli(c) : null,
-            ),
-          );
-        }),
+        ...candidati.map(
+          (c) => _CandidatoCard(candidato: c, onScegli: onScegli),
+        ),
       ],
     );
   }
 }
 
+/// Banner "non sono sicuro" (foto sotto soglia), tono terziario tenue.
+class _BannerIncerto extends StatelessWidget {
+  const _BannerIncerto({required this.testo});
+  final String testo;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: scheme.tertiaryContainer,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.help_outline, color: scheme.onTertiaryContainer),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              testo,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: scheme.onTertiaryContainer,
+                  ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Card di una specie candidata: miniatura, nome comune serif, scientifico in
+/// corsivo, confidenza come metadato leggero. Tap → scelta (se salvabile).
+class _CandidatoCard extends StatelessWidget {
+  const _CandidatoCard({required this.candidato, required this.onScegli});
+  final CandidatoSpecie candidato;
+  final void Function(CandidatoSpecie) onScegli;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = candidato;
+    final t = Theme.of(context).textTheme;
+    final scheme = Theme.of(context).colorScheme;
+    final perc = (c.predizione.confidenza * 100).toStringAsFixed(0);
+    final nome = c.specie?.nomeDaMostrare ?? c.predizione.nomeComune;
+
+    final riga = Padding(
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        children: [
+          _SpecieThumb(c.predizione.nomeScientifico),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  nome,
+                  style: t.titleMedium,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  c.predizione.nomeScientifico,
+                  style: t.bodySmall?.copyWith(
+                    fontStyle: FontStyle.italic,
+                    color: scheme.onSurfaceVariant,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  c.salvabile
+                      ? '$perc%'
+                      : '$perc% · ${AppLocalizations.of(context).notInCatalog}',
+                  style: t.labelSmall,
+                ),
+              ],
+            ),
+          ),
+          Icon(
+            c.salvabile ? Icons.add_circle_outline : Icons.block,
+            color: c.salvabile ? scheme.primary : scheme.onSurfaceVariant,
+          ),
+        ],
+      ),
+    );
+
+    return Card(
+      child: c.salvabile
+          ? InkWell(
+              borderRadius: BorderRadius.circular(18),
+              onTap: () => onScegli(c),
+              child: riga,
+            )
+          : Opacity(opacity: 0.55, child: riga),
+    );
+  }
+}
+
+/// Esito (salvato / errore): icona in cerchio colorato + messaggio + riprova.
 class _Esito extends StatelessWidget {
   const _Esito({
     required this.icon,
     required this.message,
     required this.onAgain,
+    required this.ok,
   });
   final IconData icon;
   final String message;
   final VoidCallback onAgain;
+  final bool ok;
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final bg = ok ? scheme.primaryContainer : scheme.errorContainer;
+    final fg = ok ? scheme.onPrimaryContainer : scheme.onErrorContainer;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 64),
-        const SizedBox(height: 16),
-        Text(message, textAlign: TextAlign.center),
+        CircleAvatar(
+          radius: 44,
+          backgroundColor: bg,
+          child: Icon(icon, size: 44, color: fg),
+        ),
+        const SizedBox(height: 20),
+        Text(
+          message,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
         const SizedBox(height: 24),
-        FilledButton.tonal(
+        FilledButton(
           onPressed: onAgain,
           child: Text(AppLocalizations.of(context).restart),
         ),
@@ -282,10 +465,10 @@ class _SpecieThumb extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final async = ref.watch(specieThumbnailProvider(nomeScientifico));
     return ClipRRect(
-      borderRadius: BorderRadius.circular(6),
+      borderRadius: BorderRadius.circular(14),
       child: SizedBox(
-        width: 52,
-        height: 52,
+        width: 60,
+        height: 60,
         child: async.maybeWhen(
           data: (url) => url == null
               ? const _ThumbPlaceholder()
