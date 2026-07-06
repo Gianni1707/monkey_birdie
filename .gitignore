@@ -39,3 +39,9 @@ spike/web_recognizer_tfjs/sample.wav
 # Script locale con URL+key (NON pubblicare)
 tool/dev.sh
 restyle_preview/
+
+# Firma APK release — MAI versionare (perdere il keystore = niente aggiornamenti)
+**/key.properties
+*.jks
+*.keystore
+*.apk
