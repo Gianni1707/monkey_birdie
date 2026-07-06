@@ -314,6 +314,60 @@ abstract class AppLocalizations {
   /// **'Scarica'**
   String get updateDownload;
 
+  /// No description provided for @nearbyTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Specie presenti in questa zona'**
+  String get nearbyTitle;
+
+  /// No description provided for @nearbySeenRecently.
+  ///
+  /// In it, this message translates to:
+  /// **'Avvistato qui di recente'**
+  String get nearbySeenRecently;
+
+  /// No description provided for @nearbyPresentInArea.
+  ///
+  /// In it, this message translates to:
+  /// **'Presente in zona'**
+  String get nearbyPresentInArea;
+
+  /// No description provided for @nearbyEnableLocation.
+  ///
+  /// In it, this message translates to:
+  /// **'Attiva la posizione per scoprire le specie della tua zona.'**
+  String get nearbyEnableLocation;
+
+  /// No description provided for @nearbyEnableButton.
+  ///
+  /// In it, this message translates to:
+  /// **'Attiva posizione'**
+  String get nearbyEnableButton;
+
+  /// No description provided for @nearbyNoData.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessun dato per questa zona.'**
+  String get nearbyNoData;
+
+  /// No description provided for @nearbyGbifNote.
+  ///
+  /// In it, this message translates to:
+  /// **'Osservazioni storiche (GBIF), non una previsione.'**
+  String get nearbyGbifNote;
+
+  /// No description provided for @listenCall.
+  ///
+  /// In it, this message translates to:
+  /// **'Ascolta il verso'**
+  String get listenCall;
+
+  /// No description provided for @recordingCredit.
+  ///
+  /// In it, this message translates to:
+  /// **'Registrazione di {autore} · XC{id} · xeno-canto'**
+  String recordingCredit(String autore, String id);
+
   /// No description provided for @tabRecognize.
   ///
   /// In it, this message translates to:

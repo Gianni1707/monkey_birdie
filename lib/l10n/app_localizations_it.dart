@@ -123,6 +123,37 @@ class AppLocalizationsIt extends AppLocalizations {
   String get updateDownload => 'Scarica';
 
   @override
+  String get nearbyTitle => 'Specie presenti in questa zona';
+
+  @override
+  String get nearbySeenRecently => 'Avvistato qui di recente';
+
+  @override
+  String get nearbyPresentInArea => 'Presente in zona';
+
+  @override
+  String get nearbyEnableLocation =>
+      'Attiva la posizione per scoprire le specie della tua zona.';
+
+  @override
+  String get nearbyEnableButton => 'Attiva posizione';
+
+  @override
+  String get nearbyNoData => 'Nessun dato per questa zona.';
+
+  @override
+  String get nearbyGbifNote =>
+      'Osservazioni storiche (GBIF), non una previsione.';
+
+  @override
+  String get listenCall => 'Ascolta il verso';
+
+  @override
+  String recordingCredit(String autore, String id) {
+    return 'Registrazione di $autore · XC$id · xeno-canto';
+  }
+
+  @override
   String get tabRecognize => 'Riconosci';
 
   @override

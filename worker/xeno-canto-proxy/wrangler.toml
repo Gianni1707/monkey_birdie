@@ -1,0 +1,11 @@
+# Proxy xeno-canto: nasconde la API key (v3) e serve /api/xc sul dominio.
+# La key NON sta qui: si imposta come secret ->  wrangler secret put XC_KEY
+name = "monkeybirdie-xc"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# Gira SOLO sul path /api/xc* del dominio (Pages serve tutto il resto).
+# Same-origin per la PWA → niente problemi di CORS lato web.
+routes = [
+  { pattern = "monkeybirdie.com/api/xc*", zone_name = "monkeybirdie.com" }
+]

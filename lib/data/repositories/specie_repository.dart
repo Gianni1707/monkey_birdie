@@ -74,6 +74,26 @@ class SpecieRepository {
         await perNomeScientifico(nomeScientifico);
   }
 
+  /// Batch: specie del catalogo che corrispondono a una lista di nomi scientifici
+  /// (una sola query). Usato da "Uccelli nei dintorni" per mappare gli esiti GBIF
+  /// al catalogo (solo le specie presenti hanno scheda/nome IT/thumbnail).
+  Future<List<Specie>> perNomiScientifici(List<String> nomiScientifici) async {
+    final nomi = nomiScientifici
+        .map((n) => n.trim())
+        .where((n) => n.isNotEmpty)
+        .toList(growable: false);
+    if (nomi.isEmpty) return const [];
+    try {
+      final rows = await _client
+          .from('specie')
+          .select()
+          .inFilter('nome_scientifico', nomi);
+      return rows.map((j) => Specie.fromJson(j)).toList(growable: false);
+    } catch (e) {
+      throw mapError(e);
+    }
+  }
+
   Future<Specie> perId(String id) async {
     try {
       final data =

@@ -12,6 +12,7 @@ import '../../features/auth/presentation/recupera_password_screen.dart';
 import '../../features/auth/presentation/register_screen.dart';
 import '../../features/amici/presentation/amici_screen.dart';
 import '../../features/collection/presentation/specie_detail_screen.dart';
+import '../../features/dintorni/presentation/dintorni_screen.dart';
 import '../../features/home/presentation/home_shell.dart';
 import '../../features/profilo/presentation/profilo_pubblico_screen.dart';
 import '../../features/raccolte/presentation/raccolta_dettaglio_screen.dart';
@@ -89,6 +90,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/profilo/:id',
         builder: (_, state) =>
             ProfiloPubblicoScreen(utenteId: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/dintorni',
+        builder: (_, __) => const DintorniScreen(),
       ),
     ],
   );

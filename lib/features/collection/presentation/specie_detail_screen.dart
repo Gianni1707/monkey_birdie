@@ -10,7 +10,10 @@ import '../../../shared/nome_specie.dart';
 import '../../../shared/ordine_tassonomico.dart';
 import '../../../shared/widgets/state_views.dart';
 import '../../desideri/application/desideri_providers.dart';
+import '../../desideri/presentation/desiderio_button.dart';
 import '../../map/presentation/habitat_mappa.dart';
+import '../../versi/application/xeno_canto_repository.dart';
+import '../../versi/presentation/verso_player.dart';
 import '../../profilo/presentation/preferito_button.dart';
 import '../application/collection_controller.dart';
 
@@ -91,6 +94,7 @@ class _Dettaglio extends ConsumerWidget {
                     _Badge(icona: Icons.account_tree_outlined, testo: ordineIt),
                 ],
               ),
+              _Verso(specie.nomeScientifico),
               if (specie.descrizione != null)
                 _SezioneCard(
                   icona: Icons.description_outlined,
@@ -501,9 +505,16 @@ class _Hero extends ConsumerWidget {
             child: DecoratedBox(
               decoration: BoxDecoration(
                 color: scheme.surface.withValues(alpha: 0.9),
-                shape: BoxShape.circle,
+                borderRadius: BorderRadius.circular(28),
               ),
-              child: PreferitoIconButton(specieId: specieId),
+              // Desiderio ("Voglio avvistarlo") accanto al cuore preferiti.
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DesiderioIconButton(specieId: specieId),
+                  PreferitoIconButton(specieId: specieId),
+                ],
+              ),
             ),
           ),
         ],
@@ -526,6 +537,23 @@ class _HeroPlaceholder extends StatelessWidget {
         size: 44,
         color: scheme.onPrimaryContainer,
       ),
+    );
+  }
+}
+
+/// Player "Ascolta il verso" (xeno-canto). Mostrato SOLO se c'è una
+/// registrazione; altrimenti niente (nessuno spazio vuoto). Best-effort.
+class _Verso extends ConsumerWidget {
+  const _Verso(this.nomeScientifico);
+  final String nomeScientifico;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final verso = ref.watch(versoSpecieProvider(nomeScientifico)).valueOrNull;
+    if (verso == null) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+      child: VersoPlayer(verso: verso),
     );
   }
 }

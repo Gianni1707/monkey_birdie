@@ -44,6 +44,20 @@
   "updateLater": "Later",
   "updateDownload": "Download",
 
+  "nearbyTitle": "Species found in this area",
+  "nearbySeenRecently": "Seen here recently",
+  "nearbyPresentInArea": "Present in the area",
+  "nearbyEnableLocation": "Enable location to discover the species in your area.",
+  "nearbyEnableButton": "Enable location",
+  "nearbyNoData": "No data for this area.",
+  "nearbyGbifNote": "Historical observations (GBIF), not a forecast.",
+
+  "listenCall": "Listen to the call",
+  "recordingCredit": "Recording by {autore} · XC{id} · xeno-canto",
+  "@recordingCredit": {
+    "placeholders": { "autore": { "type": "String" }, "id": { "type": "String" } }
+  },
+
   "tabRecognize": "Recognize",
   "tabHome": "Home",
   "tabMap": "Map",

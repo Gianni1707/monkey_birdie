@@ -30,6 +30,9 @@ se si attiva l'apposito interruttore.
   nome comune in italiano.
 - Raccolte, lista dei desideri, preferiti.
 - Profilo con avatar e badge; amici e condivisione.
+- "Uccelli nei dintorni": specie presenti nella zona dalla posizione (dati GBIF +
+  avvistamenti condivisi da te e dagli amici).
+- Ascolto del verso nella scheda specie (registrazioni da xeno-canto, con attribuzione).
 - Recupero password e, sulla versione Android, avviso quando esce un aggiornamento.
 - Interfaccia in italiano e inglese.
 
@@ -108,4 +111,5 @@ flutter build apk --release --dart-define-from-file=config/supabase.json
 
 Modelli di riconoscimento: BirdNET (CC BY-NC-SA 4.0) e AIY Vision Birds V1 (Apache 2.0).
 Foto delle specie da iNaturalist, mappe da OpenStreetMap, distribuzione e tassonomia da
-GBIF, dati morfologici da BIRDBASE, descrizioni da Wikipedia. Progetto non commerciale.
+GBIF, dati morfologici da BIRDBASE, descrizioni da Wikipedia, registrazioni dei versi da
+xeno-canto (Creative Commons, con attribuzione all'autore). Progetto non commerciale.

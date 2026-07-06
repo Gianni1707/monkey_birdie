@@ -122,6 +122,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String get updateDownload => 'Download';
 
   @override
+  String get nearbyTitle => 'Species found in this area';
+
+  @override
+  String get nearbySeenRecently => 'Seen here recently';
+
+  @override
+  String get nearbyPresentInArea => 'Present in the area';
+
+  @override
+  String get nearbyEnableLocation =>
+      'Enable location to discover the species in your area.';
+
+  @override
+  String get nearbyEnableButton => 'Enable location';
+
+  @override
+  String get nearbyNoData => 'No data for this area.';
+
+  @override
+  String get nearbyGbifNote =>
+      'Historical observations (GBIF), not a forecast.';
+
+  @override
+  String get listenCall => 'Listen to the call';
+
+  @override
+  String recordingCredit(String autore, String id) {
+    return 'Recording by $autore · XC$id · xeno-canto';
+  }
+
+  @override
   String get tabRecognize => 'Recognize';
 
   @override

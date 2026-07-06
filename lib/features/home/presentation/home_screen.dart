@@ -5,6 +5,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/avvistamento_tile.dart';
 import '../../../shared/widgets/contenuto_centrato.dart';
 import '../../collection/application/collection_controller.dart';
+import '../../dintorni/presentation/dintorni_home_section.dart';
 import '../../guide/presentation/guide_home_section.dart';
 import '../../profilo/application/profilo_providers.dart';
 import '../../recognition/application/recognition_controller.dart';
@@ -82,6 +83,8 @@ class HomeScreen extends ConsumerWidget {
         ),
         const SizedBox(height: 4),
         const _UltimiAvvistamenti(),
+        const SizedBox(height: 28),
+        const DintorniHomeSection(),
       ],
       ),
     );

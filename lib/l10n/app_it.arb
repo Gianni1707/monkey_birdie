@@ -44,6 +44,20 @@
   "updateLater": "Più tardi",
   "updateDownload": "Scarica",
 
+  "nearbyTitle": "Specie presenti in questa zona",
+  "nearbySeenRecently": "Avvistato qui di recente",
+  "nearbyPresentInArea": "Presente in zona",
+  "nearbyEnableLocation": "Attiva la posizione per scoprire le specie della tua zona.",
+  "nearbyEnableButton": "Attiva posizione",
+  "nearbyNoData": "Nessun dato per questa zona.",
+  "nearbyGbifNote": "Osservazioni storiche (GBIF), non una previsione.",
+
+  "listenCall": "Ascolta il verso",
+  "recordingCredit": "Registrazione di {autore} · XC{id} · xeno-canto",
+  "@recordingCredit": {
+    "placeholders": { "autore": { "type": "String" }, "id": { "type": "String" } }
+  },
+
   "tabRecognize": "Riconosci",
   "tabHome": "Home",
   "tabMap": "Mappa",
