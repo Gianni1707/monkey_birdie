@@ -4,7 +4,7 @@ import '../../../l10n/app_localizations.dart';
 
 /// Versione dell'app mostrata nelle Informazioni. Tenuta allineata a mano a
 /// `pubspec.yaml` (niente package_info_plus per non aggiungere un plugin).
-const String kVersioneApp = '0.1.0';
+const String kVersioneApp = '1.0.0';
 
 /// Sotto-schermata "Informazioni" (da Impostazioni). Per ora SOLO versione app
 /// + nota sul progetto: Termini/Privacy verranno alla pubblicazione (non
