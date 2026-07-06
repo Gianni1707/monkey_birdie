@@ -7,6 +7,7 @@ import '../../../data/models/avvistamento.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/nome_specie.dart';
 import '../../../shared/widgets/avvistamento_foto.dart';
+import '../../../shared/widgets/contenuto_centrato.dart';
 import '../../../shared/widgets/state_views.dart';
 import '../../desideri/presentation/desideri_screen.dart';
 import '../../home/application/home_tab_provider.dart';
@@ -40,9 +41,9 @@ class CollectionScreen extends ConsumerWidget {
           const Expanded(
             child: TabBarView(
               children: [
-                _ListaAvvistamenti(),
-                RaccolteScreen(),
-                DesideriScreen(),
+                ContenutoCentrato(child: _ListaAvvistamenti()),
+                ContenutoCentrato(child: RaccolteScreen()),
+                ContenutoCentrato(child: DesideriScreen()),
               ],
             ),
           ),

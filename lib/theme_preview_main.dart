@@ -11,7 +11,7 @@ void main() {
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Monkey Bird — Design system',
+      title: 'MonkeyBirdie — Design system',
       theme: AppTheme.light(),
       home: const ThemePreviewScreen(),
     ),

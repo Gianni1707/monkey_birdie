@@ -99,8 +99,10 @@ class _DesiderioCard extends ConsumerWidget {
           children: [
             Stack(
               children: [
-                SizedBox(
-                  height: 150,
+                // Rapporto 16:9 (invece di altezza fissa): su schermi larghi il
+                // banner non diventa una striscia che taglia l'uccello.
+                AspectRatio(
+                  aspectRatio: 16 / 9,
                   child: AvvistamentoFoto(
                     fotoUrl: null,
                     nomeScientifico: s.nomeScientifico,

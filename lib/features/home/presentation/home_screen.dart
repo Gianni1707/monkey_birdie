@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/avvistamento_tile.dart';
+import '../../../shared/widgets/contenuto_centrato.dart';
 import '../../collection/application/collection_controller.dart';
+import '../../guide/presentation/guide_home_section.dart';
 import '../../profilo/application/profilo_providers.dart';
 import '../../recognition/application/recognition_controller.dart';
 import '../../recognition/application/recognition_state.dart';
@@ -38,7 +40,8 @@ class HomeScreen extends ConsumerWidget {
       }
     });
 
-    return ListView(
+    return ContenutoCentrato(
+      child: ListView(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
       children: [
         Text(
@@ -68,6 +71,8 @@ class HomeScreen extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 28),
+        const GuideHomeSection(),
+        const SizedBox(height: 28),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -78,6 +83,7 @@ class HomeScreen extends ConsumerWidget {
         const SizedBox(height: 4),
         const _UltimiAvvistamenti(),
       ],
+      ),
     );
   }
 

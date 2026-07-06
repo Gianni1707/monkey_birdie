@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Monkey Bird';
+  String get appTitle => 'MonkeyBirdie';
 
   @override
   String get login => 'Sign in';
@@ -103,6 +103,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get seeAll => 'See all';
+
+  @override
+  String get newsAndGuides => 'News & guides';
+
+  @override
+  String get tipOfTheDay => 'Tip of the day';
+
+  @override
+  String get inThisPeriod => 'This time of year';
+
+  @override
+  String get birdOfTheDay => 'Bird of the day';
+
+  @override
+  String get guidesTitle => 'Guides & tips';
 
   @override
   String get logout => 'Log out';
@@ -602,7 +617,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nonCommercialNote =>
-      'Monkey Bird is a non-commercial, zero-cost project.';
+      'MonkeyBirdie is a non-commercial, zero-cost project.';
 
   @override
   String get profileSaved => 'Profile updated.';

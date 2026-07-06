@@ -1,4 +1,4 @@
-# Monkey Bird 🐦
+# MonkeyBirdie 🐦
 
 App di bird watching: riconoscimento **on-device** del canto, collezione, mappa e
 social. Backend **Supabase** (Postgres + PostGIS, Auth, Storage), client **Flutter**.

@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In it, this message translates to:
-  /// **'Monkey Bird'**
+  /// **'MonkeyBirdie'**
   String get appTitle;
 
   /// No description provided for @login.
@@ -283,6 +283,36 @@ abstract class AppLocalizations {
   /// In it, this message translates to:
   /// **'Vedi tutti'**
   String get seeAll;
+
+  /// No description provided for @newsAndGuides.
+  ///
+  /// In it, this message translates to:
+  /// **'News e guide'**
+  String get newsAndGuides;
+
+  /// No description provided for @tipOfTheDay.
+  ///
+  /// In it, this message translates to:
+  /// **'Consiglio del giorno'**
+  String get tipOfTheDay;
+
+  /// No description provided for @inThisPeriod.
+  ///
+  /// In it, this message translates to:
+  /// **'In questo periodo'**
+  String get inThisPeriod;
+
+  /// No description provided for @birdOfTheDay.
+  ///
+  /// In it, this message translates to:
+  /// **'Uccello del giorno'**
+  String get birdOfTheDay;
+
+  /// No description provided for @guidesTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Guide e consigli'**
+  String get guidesTitle;
 
   /// No description provided for @logout.
   ///
@@ -1217,7 +1247,7 @@ abstract class AppLocalizations {
   /// No description provided for @nonCommercialNote.
   ///
   /// In it, this message translates to:
-  /// **'Monkey Bird è un progetto non commerciale, a costo zero.'**
+  /// **'MonkeyBirdie è un progetto non commerciale, a costo zero.'**
   String get nonCommercialNote;
 
   /// No description provided for @profileSaved.

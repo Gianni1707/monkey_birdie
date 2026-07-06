@@ -1,7 +1,7 @@
 {
   "@@locale": "en",
 
-  "appTitle": "Monkey Bird",
+  "appTitle": "MonkeyBirdie",
 
   "login": "Sign in",
   "email": "Email",
@@ -37,6 +37,11 @@
   "homePhotoHint": "Capture the moment",
   "homeLatestSightings": "Your latest sightings",
   "seeAll": "See all",
+  "newsAndGuides": "News & guides",
+  "tipOfTheDay": "Tip of the day",
+  "inThisPeriod": "This time of year",
+  "birdOfTheDay": "Bird of the day",
+  "guidesTitle": "Guides & tips",
   "logout": "Log out",
   "language": "Language",
   "languageSystem": "Automatic (system)",
@@ -216,7 +221,7 @@
   "languageSubtitle": "Choose the interface language",
   "languageAutoShort": "Auto",
   "versionLabel": "Version",
-  "nonCommercialNote": "Monkey Bird is a non-commercial, zero-cost project.",
+  "nonCommercialNote": "MonkeyBirdie is a non-commercial, zero-cost project.",
   "profileSaved": "Profile updated.",
   "statSharedSightings": "Shared sightings",
   "statSpecies": "Species",

@@ -70,7 +70,7 @@ class GbifRepository {
   }
 
   static const String _userAgent =
-      'MonkeyBird/1.0 (birdwatching; non-commercial)';
+      'MonkeyBirdie/1.0 (birdwatching; non-commercial)';
 }
 
 final gbifRepositoryProvider =

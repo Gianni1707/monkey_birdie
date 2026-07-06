@@ -47,7 +47,7 @@ class GeocodingRepository {
         'limit': '6',
       });
       final resp = await http
-          .get(uri, headers: {'User-Agent': 'MonkeyBird/1.0 (birdwatching)'})
+          .get(uri, headers: {'User-Agent': 'MonkeyBirdie/1.0 (birdwatching)'})
           .timeout(const Duration(seconds: 8));
       if (resp.statusCode != 200) return const [];
 
@@ -95,7 +95,7 @@ class GeocodingRepository {
         'lon': '$lng',
       });
       final resp = await http
-          .get(uri, headers: {'User-Agent': 'MonkeyBird/1.0 (birdwatching)'})
+          .get(uri, headers: {'User-Agent': 'MonkeyBirdie/1.0 (birdwatching)'})
           .timeout(const Duration(seconds: 8));
       if (resp.statusCode != 200) return null;
       final data = jsonDecode(resp.body) as Map<String, dynamic>;

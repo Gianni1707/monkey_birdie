@@ -10,7 +10,7 @@ const String osmTileUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 
 /// User-Agent identificativo: richiesto dalla usage policy delle tile OSM.
 const String tileUserAgent =
-    'MonkeyBird/1.0 (birdwatching; non-commercial)';
+    'MonkeyBirdie/1.0 (birdwatching; non-commercial)';
 
 /// Store persistente su disco per la cache delle tile = il "mini offline":
 /// una tile gia' vista NON si riscarica e resta anche tra le sessioni. Su web

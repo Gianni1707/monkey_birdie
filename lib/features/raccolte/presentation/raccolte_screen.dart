@@ -164,11 +164,11 @@ class _Miniature extends StatelessWidget {
     final thumbs = campioni.take(nThumb).toList(growable: false);
     final resto = totale - thumbs.length;
 
-    Widget cella(Widget child) => Expanded(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: SizedBox(height: 84, child: child),
-          ),
+    // Quadratini fissi (non stirati a tutta larghezza): con 1 solo campione
+    // la foto resta un quadrato, non una striscia che taglia l'uccello.
+    Widget cella(Widget child) => ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: SizedBox(width: 84, height: 84, child: child),
         );
 
     return Row(

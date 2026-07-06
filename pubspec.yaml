@@ -56,6 +56,10 @@ dev_dependencies:
   freezed: ^2.5.7
   json_serializable: ^6.8.0
 
+  # generazione icone app (Android adaptive + web/PWA) da assets/branding/
+  flutter_launcher_icons: ^0.14.1
+
+
 # record_linux 0.7.2 (impl desktop Linux, mai usata: target = Android+Web) non compila
 # su Dart 3.12 e blocca il build Android perché il registrant compila TUTTE le impl.
 # La forziamo a una versione compilabile senza toccare `record` (web audio invariato).
@@ -68,6 +72,7 @@ flutter:
   assets:
     - assets/models/
     - assets/labels/
+    - assets/branding/logo_uccello.png
   # Font bundlati (offline/PWA-safe, nessuna dipendenza runtime). Variabili:
   # il peso si seleziona via fontWeight nel tema. Titoli=serif, corpo=Inter.
   fonts:
@@ -77,3 +82,18 @@ flutter:
     - family: SourceSerif4
       fonts:
         - asset: assets/fonts/SourceSerif4.ttf
+
+# Icone app (Android adaptive + web/PWA) generate da flutter_launcher_icons.
+# Sorgente: quadrato crema a filo (assets/branding/app_icon_prepared.png).
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/branding/app_icon_prepared.png"
+  min_sdk_android: 21
+  adaptive_icon_background: "#FCF5E1"
+  adaptive_icon_foreground: "assets/branding/app_icon_foreground.png"
+  web:
+    generate: true
+    image_path: "assets/branding/app_icon_prepared.png"
+    background_color: "#FCF5E1"
+    theme_color: "#234F3E"

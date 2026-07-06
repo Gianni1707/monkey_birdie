@@ -1,7 +1,7 @@
 {
   "@@locale": "it",
 
-  "appTitle": "Monkey Bird",
+  "appTitle": "MonkeyBirdie",
 
   "login": "Accedi",
   "email": "Email",
@@ -37,6 +37,11 @@
   "homePhotoHint": "Cattura l’istante",
   "homeLatestSightings": "I tuoi ultimi avvistamenti",
   "seeAll": "Vedi tutti",
+  "newsAndGuides": "News e guide",
+  "tipOfTheDay": "Consiglio del giorno",
+  "inThisPeriod": "In questo periodo",
+  "birdOfTheDay": "Uccello del giorno",
+  "guidesTitle": "Guide e consigli",
   "logout": "Esci",
   "language": "Lingua",
   "languageSystem": "Automatica (sistema)",
@@ -222,7 +227,7 @@
   "languageSubtitle": "Seleziona la lingua dell'interfaccia",
   "languageAutoShort": "Auto",
   "versionLabel": "Versione",
-  "nonCommercialNote": "Monkey Bird è un progetto non commerciale, a costo zero.",
+  "nonCommercialNote": "MonkeyBirdie è un progetto non commerciale, a costo zero.",
   "profileSaved": "Profilo aggiornato.",
   "statSharedSightings": "Avvistamenti condivisi",
   "statSpecies": "Specie",

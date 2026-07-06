@@ -105,6 +105,42 @@ class SpecieRepository {
       throw mapError(e);
     }
   }
+
+  /// "Uccello del giorno": una specie PRESENTABILE (nome comune IT + descrizione
+  /// non nulli) scelta in modo DETERMINISTICO da [giornoAnno] (0-365). Bias sulle
+  /// comuni (`rarita = 'comune'`); se quell'insieme è vuoto, ricade su tutte le
+  /// presentabili. Selezione via count + offset (niente fetch dell'intero
+  /// catalogo). `null` solo se non c'è alcuna specie presentabile.
+  Future<Specie?> specieDelGiorno(int giornoAnno) async {
+    try {
+      Future<Specie?> pesca({required bool soloComuni}) async {
+        var conteggio = _client
+            .from('specie')
+            .count()
+            .not('nome_comune_it', 'is', null)
+            .not('descrizione', 'is', null);
+        if (soloComuni) conteggio = conteggio.eq('rarita', 'comune');
+        final n = await conteggio;
+        if (n == 0) return null;
+        final offset = giornoAnno % n;
+
+        var query = _client
+            .from('specie')
+            .select()
+            .not('nome_comune_it', 'is', null)
+            .not('descrizione', 'is', null);
+        if (soloComuni) query = query.eq('rarita', 'comune');
+        final rows = await query
+            .order('nome_scientifico')
+            .range(offset, offset); // una sola riga all'offset
+        return rows.isEmpty ? null : Specie.fromJson(rows.first);
+      }
+
+      return await pesca(soloComuni: true) ?? await pesca(soloComuni: false);
+    } catch (e) {
+      throw mapError(e);
+    }
+  }
 }
 
 final specieRepositoryProvider = Provider<SpecieRepository>((ref) {

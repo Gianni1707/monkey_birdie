@@ -27,7 +27,7 @@ class InformazioniScreen extends StatelessWidget {
               children: [
                 ListTile(
                   leading: const Icon(Icons.info_outline),
-                  title: const Text('Monkey Bird'),
+                  title: const Text('MonkeyBirdie'),
                   subtitle: Text('${l10n.versionLabel} $kVersioneApp'),
                 ),
                 const Divider(height: 1),

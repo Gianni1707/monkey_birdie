@@ -83,10 +83,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      // Spazio riservato per un logo futuro (nessuna immagine ora).
-                      const SizedBox(height: 40),
+                      const SizedBox(height: 8),
+                      Image.asset(
+                        'assets/branding/logo_uccello.png',
+                        height: 92,
+                        fit: BoxFit.contain,
+                      ),
+                      const SizedBox(height: 8),
                       Text(
-                        'Monkey Bird',
+                        'MonkeyBirdie',
                         style: theme.textTheme.displaySmall?.copyWith(
                           color: theme.colorScheme.primary,
                           fontWeight: FontWeight.w700,
