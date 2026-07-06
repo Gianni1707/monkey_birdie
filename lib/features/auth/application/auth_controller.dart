@@ -33,6 +33,20 @@ class AuthController extends AutoDisposeAsyncNotifier<void> {
     state = await AsyncValue.guard(() => ref.read(authRepositoryProvider).esci());
   }
 
+  /// Richiede l'email di recupero password (link verso la PWA).
+  Future<bool> inviaRecupero(String email) {
+    return _esegui(
+      () => ref.read(authRepositoryProvider).inviaRecuperoPassword(email),
+    );
+  }
+
+  /// Imposta la nuova password (durante il flusso di recupero).
+  Future<bool> aggiornaPassword(String nuova) {
+    return _esegui(
+      () => ref.read(authRepositoryProvider).aggiornaPassword(nuova),
+    );
+  }
+
   Future<bool> _esegui(Future<void> Function() azione) async {
     state = const AsyncLoading();
     final res = await AsyncValue.guard(azione);

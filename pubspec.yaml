@@ -19,6 +19,7 @@ dependencies:
   http: ^1.2.0                  # thumbnail specie (API iNaturalist) per i candidati
   shared_preferences: ^2.3.0    # persistenza scelta lingua
   share_plus: ^10.0.0           # condividi la scheda specie (web Web Share API + Android)
+  url_launcher: ^6.3.0          # apre l'URL dell'APK nel browser (controllo aggiornamenti Android)
 
   # --- State management / navigazione ---
   flutter_riverpod: ^2.5.1

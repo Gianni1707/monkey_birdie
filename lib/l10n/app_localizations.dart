@@ -212,6 +212,108 @@ abstract class AppLocalizations {
   /// **'Registrazione completata: conferma via email.'**
   String get registrationEmailConfirm;
 
+  /// No description provided for @forgotPassword.
+  ///
+  /// In it, this message translates to:
+  /// **'Password dimenticata?'**
+  String get forgotPassword;
+
+  /// No description provided for @recoverPasswordTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Recupera password'**
+  String get recoverPasswordTitle;
+
+  /// No description provided for @recoverPasswordSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Inserisci la tua email: ti invieremo un link per reimpostare la password.'**
+  String get recoverPasswordSubtitle;
+
+  /// No description provided for @sendRecoveryLink.
+  ///
+  /// In it, this message translates to:
+  /// **'Invia link di recupero'**
+  String get sendRecoveryLink;
+
+  /// No description provided for @recoveryEmailSent.
+  ///
+  /// In it, this message translates to:
+  /// **'Se esiste un account con quell\'indirizzo, ti abbiamo inviato un\'email con il link per reimpostare la password.'**
+  String get recoveryEmailSent;
+
+  /// No description provided for @backToLogin.
+  ///
+  /// In it, this message translates to:
+  /// **'Torna all\'accesso'**
+  String get backToLogin;
+
+  /// No description provided for @newPasswordTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Nuova password'**
+  String get newPasswordTitle;
+
+  /// No description provided for @newPasswordSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Scegli una nuova password per il tuo account.'**
+  String get newPasswordSubtitle;
+
+  /// No description provided for @newPassword.
+  ///
+  /// In it, this message translates to:
+  /// **'Nuova password'**
+  String get newPassword;
+
+  /// No description provided for @confirmPassword.
+  ///
+  /// In it, this message translates to:
+  /// **'Conferma password'**
+  String get confirmPassword;
+
+  /// No description provided for @passwordsDoNotMatch.
+  ///
+  /// In it, this message translates to:
+  /// **'Le password non coincidono'**
+  String get passwordsDoNotMatch;
+
+  /// No description provided for @updatePassword.
+  ///
+  /// In it, this message translates to:
+  /// **'Aggiorna password'**
+  String get updatePassword;
+
+  /// No description provided for @passwordUpdated.
+  ///
+  /// In it, this message translates to:
+  /// **'Password aggiornata. Ora sei connesso.'**
+  String get passwordUpdated;
+
+  /// No description provided for @updateAvailableTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Aggiornamento disponibile'**
+  String get updateAvailableTitle;
+
+  /// No description provided for @updateAvailableBody.
+  ///
+  /// In it, this message translates to:
+  /// **'È disponibile la versione {versione}.'**
+  String updateAvailableBody(String versione);
+
+  /// No description provided for @updateLater.
+  ///
+  /// In it, this message translates to:
+  /// **'Più tardi'**
+  String get updateLater;
+
+  /// No description provided for @updateDownload.
+  ///
+  /// In it, this message translates to:
+  /// **'Scarica'**
+  String get updateDownload;
+
   /// No description provided for @tabRecognize.
   ///
   /// In it, this message translates to:

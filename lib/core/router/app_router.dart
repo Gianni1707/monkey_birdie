@@ -5,7 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../data/supabase/supabase_providers.dart';
+import '../../features/auth/application/recupero_password_stato.dart';
 import '../../features/auth/presentation/login_screen.dart';
+import '../../features/auth/presentation/nuova_password_screen.dart';
+import '../../features/auth/presentation/recupera_password_screen.dart';
 import '../../features/auth/presentation/register_screen.dart';
 import '../../features/amici/presentation/amici_screen.dart';
 import '../../features/collection/presentation/specie_detail_screen.dart';
@@ -31,14 +34,26 @@ final goRouterProvider = Provider<GoRouter>((ref) {
   final client = ref.watch(supabaseClientProvider);
   final refresh = _AuthRefreshNotifier(client.auth.onAuthStateChange);
   ref.onDispose(refresh.dispose);
+  // Il redirect deve ri-valutare sia al cambio auth sia quando parte/finisce il
+  // recupero password (flag globale impostato in main.dart).
+  final refreshCombinato = Listenable.merge([refresh, recuperoPasswordInCorso]);
 
   final router = GoRouter(
     initialLocation: '/',
-    refreshListenable: refresh,
+    refreshListenable: refreshCombinato,
     redirect: (context, state) {
-      final loggato = client.auth.currentSession != null;
       final loc = state.matchedLocation;
-      final suAuth = loc == '/login' || loc == '/register';
+
+      // Recupero password: resta sulla schermata dedicata finché la nuova
+      // password non è impostata (o il flusso annullato).
+      if (recuperoPasswordInCorso.value) {
+        return loc == '/nuova-password' ? null : '/nuova-password';
+      }
+
+      final loggato = client.auth.currentSession != null;
+      final suAuth = loc == '/login' ||
+          loc == '/register' ||
+          loc == '/recupera-password';
 
       if (!loggato) return suAuth ? null : '/login';
       if (suAuth) return '/';
@@ -47,6 +62,14 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(path: '/login', builder: (_, __) => const LoginScreen()),
       GoRoute(path: '/register', builder: (_, __) => const RegisterScreen()),
+      GoRoute(
+        path: '/recupera-password',
+        builder: (_, __) => const RecuperaPasswordScreen(),
+      ),
+      GoRoute(
+        path: '/nuova-password',
+        builder: (_, __) => const NuovaPasswordScreen(),
+      ),
       GoRoute(path: '/', builder: (_, __) => const HomeShell()),
       GoRoute(
         path: '/specie/:id',

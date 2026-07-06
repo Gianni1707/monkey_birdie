@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../l10n/app_localizations.dart';
+import '../../aggiornamenti/application/aggiornamenti_provider.dart';
+import '../../aggiornamenti/presentation/aggiornamento_dialog.dart';
 import '../../collection/presentation/collection_screen.dart';
 import '../../map/presentation/mappa_screen.dart';
 import '../../profilo/presentation/profilo_screen.dart';
 import '../application/home_tab_provider.dart';
 import 'home_screen.dart';
+
+/// Avviso aggiornamento mostrato al massimo UNA volta per sessione (sopravvive
+/// ai rebuild della shell). Su web resta sempre false (provider → null).
+bool _avvisoAggiornamentoMostrato = false;
 
 /// Contenitore principale post-login: tab Home / Mappa / Collezione / Profilo.
 /// La tab attiva vive in `homeTabProvider` così altre schermate possono
@@ -19,6 +25,18 @@ class HomeShell extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final index = ref.watch(homeTabProvider);
     void vaiA(int i) => ref.read(homeTabProvider.notifier).state = i;
+
+    // Controllo aggiornamenti (solo Android; fail-safe silenzioso). Alla prima
+    // risposta con update disponibile, mostra l'avviso non bloccante una volta.
+    ref.listen(controlloAggiornamentiProvider, (_, next) {
+      final v = next.valueOrNull;
+      if (v != null && !_avvisoAggiornamentoMostrato) {
+        _avvisoAggiornamentoMostrato = true;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (context.mounted) mostraAggiornamentoDialog(context, v);
+        });
+      }
+    });
 
     final titoli = [
       l10n.tabHome,

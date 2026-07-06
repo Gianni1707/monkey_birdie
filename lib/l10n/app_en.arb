@@ -22,6 +22,28 @@
   "haveAccount": "I already have an account",
   "registrationEmailConfirm": "Registration complete: confirm via email.",
 
+  "forgotPassword": "Forgot password?",
+  "recoverPasswordTitle": "Reset password",
+  "recoverPasswordSubtitle": "Enter your email: we'll send you a link to reset your password.",
+  "sendRecoveryLink": "Send reset link",
+  "recoveryEmailSent": "If an account exists for that address, we've sent an email with the link to reset your password.",
+  "backToLogin": "Back to sign in",
+  "newPasswordTitle": "New password",
+  "newPasswordSubtitle": "Choose a new password for your account.",
+  "newPassword": "New password",
+  "confirmPassword": "Confirm password",
+  "passwordsDoNotMatch": "Passwords don't match",
+  "updatePassword": "Update password",
+  "passwordUpdated": "Password updated. You're now signed in.",
+
+  "updateAvailableTitle": "Update available",
+  "updateAvailableBody": "Version {versione} is available.",
+  "@updateAvailableBody": {
+    "placeholders": { "versione": { "type": "String" } }
+  },
+  "updateLater": "Later",
+  "updateDownload": "Download",
+
   "tabRecognize": "Recognize",
   "tabHome": "Home",
   "tabMap": "Map",

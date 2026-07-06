@@ -22,6 +22,28 @@
   "haveAccount": "Ho già un account",
   "registrationEmailConfirm": "Registrazione completata: conferma via email.",
 
+  "forgotPassword": "Password dimenticata?",
+  "recoverPasswordTitle": "Recupera password",
+  "recoverPasswordSubtitle": "Inserisci la tua email: ti invieremo un link per reimpostare la password.",
+  "sendRecoveryLink": "Invia link di recupero",
+  "recoveryEmailSent": "Se esiste un account con quell'indirizzo, ti abbiamo inviato un'email con il link per reimpostare la password.",
+  "backToLogin": "Torna all'accesso",
+  "newPasswordTitle": "Nuova password",
+  "newPasswordSubtitle": "Scegli una nuova password per il tuo account.",
+  "newPassword": "Nuova password",
+  "confirmPassword": "Conferma password",
+  "passwordsDoNotMatch": "Le password non coincidono",
+  "updatePassword": "Aggiorna password",
+  "passwordUpdated": "Password aggiornata. Ora sei connesso.",
+
+  "updateAvailableTitle": "Aggiornamento disponibile",
+  "updateAvailableBody": "È disponibile la versione {versione}.",
+  "@updateAvailableBody": {
+    "placeholders": { "versione": { "type": "String" } }
+  },
+  "updateLater": "Più tardi",
+  "updateDownload": "Scarica",
+
   "tabRecognize": "Riconosci",
   "tabHome": "Home",
   "tabMap": "Mappa",

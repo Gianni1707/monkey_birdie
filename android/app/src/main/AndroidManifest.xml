@@ -50,5 +50,11 @@
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
         </intent>
+        <!-- Richiesto da Android 11+ perché url_launcher possa aprire un link
+             https nel browser (controllo aggiornamenti → pulsante "Scarica"). -->
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <data android:scheme="https"/>
+        </intent>
     </queries>
 </manifest>

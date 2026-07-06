@@ -67,6 +67,61 @@ class AppLocalizationsEn extends AppLocalizations {
       'Registration complete: confirm via email.';
 
   @override
+  String get forgotPassword => 'Forgot password?';
+
+  @override
+  String get recoverPasswordTitle => 'Reset password';
+
+  @override
+  String get recoverPasswordSubtitle =>
+      'Enter your email: we\'ll send you a link to reset your password.';
+
+  @override
+  String get sendRecoveryLink => 'Send reset link';
+
+  @override
+  String get recoveryEmailSent =>
+      'If an account exists for that address, we\'ve sent an email with the link to reset your password.';
+
+  @override
+  String get backToLogin => 'Back to sign in';
+
+  @override
+  String get newPasswordTitle => 'New password';
+
+  @override
+  String get newPasswordSubtitle => 'Choose a new password for your account.';
+
+  @override
+  String get newPassword => 'New password';
+
+  @override
+  String get confirmPassword => 'Confirm password';
+
+  @override
+  String get passwordsDoNotMatch => 'Passwords don\'t match';
+
+  @override
+  String get updatePassword => 'Update password';
+
+  @override
+  String get passwordUpdated => 'Password updated. You\'re now signed in.';
+
+  @override
+  String get updateAvailableTitle => 'Update available';
+
+  @override
+  String updateAvailableBody(String versione) {
+    return 'Version $versione is available.';
+  }
+
+  @override
+  String get updateLater => 'Later';
+
+  @override
+  String get updateDownload => 'Download';
+
+  @override
   String get tabRecognize => 'Recognize';
 
   @override

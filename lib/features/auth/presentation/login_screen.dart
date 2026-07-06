@@ -115,7 +115,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 ? l10n.passwordMin
                                 : null,
                           ),
-                          const SizedBox(height: 24),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              onPressed: isLoading
+                                  ? null
+                                  : () => context.push('/recupera-password'),
+                              child: Text(l10n.forgotPassword),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
                           BottonePrimarioAuth(
                             testo: l10n.login,
                             isLoading: isLoading,
