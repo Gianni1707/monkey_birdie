@@ -1,115 +1,111 @@
-# MonkeyBirdie 🐦
+# MonkeyBirdie
 
-App di bird watching: riconoscimento **on-device** del canto, collezione, mappa e
-social. Backend **Supabase** (Postgres + PostGIS, Auth, Storage), client **Flutter**.
-Progetto **non commerciale** (free tier / open source).
+App di bird watching che riconosce gli uccelli dal canto e dalle foto direttamente sul
+dispositivo, li raccoglie, li mostra su mappa e permette di condividerli. È un progetto
+personale, non commerciale, costruito su servizi gratuiti (Flutter + Supabase).
 
-## Due piattaforme, un solo codebase
-- **Android nativo** (`flutter build apk`): riconoscimento con **TFLite** (`tflite_flutter`).
-- **Web / PWA** (`flutter build web`): è la versione per **iPhone/Apple** (Safari →
-  installabile sulla home) e desktop; riconoscimento in-browser con **TF.js**.
+Versione web: https://monkeybirdie.com
 
-Niente target iOS nativo, niente store: Android si condivide come **APK**, Apple via
-**link alla PWA**.
+## Come è fatta
 
-> Stato: **Fase 1 (MVP)** — login, registrazione canto → riconoscimento → salvataggio
-> avvistamento geolocalizzato, collezione + scheda specie.
+Un solo codebase Flutter con due destinazioni:
 
----
+- Android nativo: riconoscimento con TensorFlow Lite (`tflite_flutter`).
+- Web / PWA: è anche la versione per iPhone (si installa da Safari) e desktop; qui il
+  riconoscimento gira nel browser con TensorFlow.js.
 
-## Architettura del riconoscimento
-Tutto dietro un'unica interfaccia `BirdRecognizer`, con impl scelta a compile-time
-(conditional import):
+Non c'è un'app iOS nativa e non si passa dagli store: Android si distribuisce come APK
+firmato, Apple tramite il link alla PWA.
+
+Il backend è Supabase: Postgres con PostGIS, autenticazione e storage. Ogni utente vede
+solo i propri dati grazie alla Row Level Security; gli avvistamenti si condividono solo
+se si attiva l'apposito interruttore.
+
+## Cosa fa
+
+- Riconoscimento del canto (BirdNET) e delle foto (AIY Birds V1), tutto on-device.
+- Collezione degli avvistamenti con foto, data e luogo.
+- Mappa degli avvistamenti (`flutter_map` + tile OpenStreetMap).
+- Schede specie con descrizione, morfologia, ordine tassonomico, distribuzione (GBIF) e
+  nome comune in italiano.
+- Raccolte, lista dei desideri, preferiti.
+- Profilo con avatar e badge; amici e condivisione.
+- Recupero password e, sulla versione Android, avviso quando esce un aggiornamento.
+- Interfaccia in italiano e inglese.
+
+## Il riconoscimento
+
+Tutto passa da un'interfaccia comune (`BirdRecognizer`), con l'implementazione scelta a
+compile-time tramite conditional import:
 
 ```
-lib/ml/
-  recognizer/
-    bird_recognizer.dart          interfaccia
-    bird_recognizer_factory.dart  if(dart.library.io)->io  if(dart.library.js_interop)->web
-    bird_recognizer_io.dart       Android: tflite_flutter
-    bird_recognizer_web.dart      Web: TF.js via js_interop (shim web/birdnet/birdnet_tfjs.js)
-    bird_recognizer_stub.dart     fallback
-  audio/audio_dsp.dart            DSP puro condiviso (decode WAV, resample, finestra 3s)
-  birdnet/birdnet_labels.dart     parsing label + BirdNetPrediction
+lib/ml/recognizer/
+  bird_recognizer.dart          interfaccia
+  bird_recognizer_factory.dart  io -> Android (tflite),  js_interop -> Web (TF.js)
+  bird_recognizer_io.dart       Android: tflite_flutter
+  bird_recognizer_web.dart      Web: TF.js (shim web/birdnet/birdnet_tfjs.js)
 ```
-Il web non importa `tflite_flutter`; Android non tira il JS interop. Cambiare runtime
-web non tocca il resto dell'app.
 
-**Perché due runtime:** il modello BirdNET incorpora il mel-spectrogram (STFT/FFT) nel
-grafo. `tfjs-tflite` non esegue la FFT (abort in invoke), quindi sul web si usa il
-**modello TF.js ufficiale** (LayersModel con custom layer `MelSpecLayerSimple`, FFT via
-`tf.signal.stft`). Backend **WebGL** → **nessun bisogno di COOP/COEP / cross-origin
-isolation**: la PWA gira su qualsiasi host statico HTTPS.
+Servono due runtime perché il modello BirdNET incorpora nel grafo il calcolo del
+mel-spettrogramma (STFT/FFT): `tfjs-tflite` non esegue la FFT, quindi sul web si usa il
+modello TF.js ufficiale (con custom layer e FFT via `tf.signal.stft`). Gira su backend
+WebGL, perciò non servono header COOP/COEP e la PWA sta su qualsiasi host statico HTTPS.
+Lo stesso schema vale per il riconoscimento da foto.
 
----
+## Requisiti
 
-## 1. Prerequisiti
-- Flutter ≥ 3.22 (testato su 3.44 / Dart 3.12)
-- Un progetto **Supabase** (piano Free)
-- Per Android: device fisico (mic + GPS); per iPhone: Safari (PWA)
+- Flutter ≥ 3.22 (sviluppato su 3.44 / Dart 3.12)
+- Un progetto Supabase (piano gratuito)
+- Per Android: un dispositivo fisico (serve microfono e GPS)
 
-## 2. Setup Supabase
-SQL Editor, in quest'ordine:
-1. `schema.sql` — tabelle, RLS, trigger
-2. `supabase/migrations/0002_geo_helpers.sql` — RPC insert + view geo (PostgREST non
-   serializza i tipi `geography`)
-3. `supabase/migrations/0003_specie_birdnet_label.sql` — colonna `birdnet_label`
-4. `supabase/seed/specie_full_seed.sql` — catalogo completo (6516 specie, generato dalle
-   label BirdNET) — oppure `specie_seed.sql` per il set starter
+## Configurazione Supabase
 
-Auth: per l'MVP disattiva *Confirm email*. Copia **Project URL** e **anon/publishable key**.
+Nel SQL Editor, in quest'ordine: `schema.sql`, poi le migrazioni in `supabase/migrations/`
+in ordine numerico, poi i seed opzionali in `supabase/seed/` (catalogo specie, nomi
+italiani, descrizioni, morfologia, ecc.). Per lo sviluppo conviene disattivare la conferma
+email in Auth; per la produzione va configurato un SMTP (l'email integrata di Supabase ha
+un limite molto basso).
 
-## 3. Modelli BirdNET (non versionati, vedi .gitignore)
-Fonte: **Zenodo 15050749** (BirdNET-Analyzer team). Licenza modelli **CC BY-NC-SA 4.0**
-→ ok solo perché non commerciale.
-- **Android**: `assets/models/birdnet.tflite` (da `BirdNET_v2.4_tflite.zip` → `audio-model.tflite`)
-- **Web**: `web/birdnet/model/` (da `BirdNET_v2.4_tfjs.zip`, cartella `model/`: `model.json` + shard + `labels.json`)
-- **Label**: `assets/labels/birdnet_labels.txt` (6522, formato `Sci_Common`, da `labels/en_us.txt`)
+Le chiavi non vanno passate a mano: stanno in `config/supabase.json` (solo Project URL e
+publishable key, che è pubblica ed è protetta dalla RLS) e il build le legge con
+`--dart-define-from-file`.
 
-## 4. Build & dipendenze
+## Modelli
+
+I modelli non sono nel repository (troppo grossi, vedi `.gitignore`). Vanno scaricati e
+messi in:
+
+- Canto, Android: `assets/models/birdnet.tflite`
+- Canto, Web: `web/birdnet/model/`
+- Foto, Android: `assets/models/birds_V1.tflite`
+- Foto, Web: `web/birds_image/model/birds_V1.tflite`
+
+BirdNET viene da Zenodo (record 15050749), AIY Birds V1 da Kaggle. Il modello BirdNET è
+sotto licenza CC BY-NC-SA 4.0: è utilizzabile qui solo perché il progetto non è commerciale.
+
+## Build
+
 ```bash
 flutter pub get
-dart run build_runner build --delete-conflicting-outputs   # genera *.freezed.dart / *.g.dart
+dart run build_runner build --delete-conflicting-outputs   # genera i file freezed/json
 ```
-Permessi Android (mic + posizione + internet) sono già in
-`android/app/src/main/AndroidManifest.xml`.
 
-## 5. Avvio
-**Android (device):**
+Web (release, poi deploy su un host statico HTTPS):
+
 ```bash
-flutter run -d <device> \
-  --dart-define=SUPABASE_URL=https://xxxx.supabase.co \
-  --dart-define=SUPABASE_ANON_KEY=eyJhbGciOi...
+./tool/build_web.sh          # build release + rimuove birdnet.tflite (inutile sul web)
 ```
-**Web / PWA:**
+
+Android (APK di release firmato): serve un keystore e un file `android/key.properties` con
+le credenziali (entrambi fuori dal repository). Poi:
+
 ```bash
-flutter build web \
-  --dart-define=SUPABASE_URL=... --dart-define=SUPABASE_ANON_KEY=...
-# servi build/web con un host statico HTTPS (Cloudflare Pages / Netlify / ecc.)
+flutter build apk --release --dart-define-from-file=config/supabase.json
+# risultato: build/app/outputs/flutter-apk/app-release.apk
 ```
-Su iPhone: apri il link in Safari → Condividi → *Aggiungi a Home*.
 
----
+## Attribuzioni
 
-## Distribuzione
-- **Android**: condividi `build/app/outputs/flutter-apk/app-release.apk`.
-- **Apple/desktop**: condividi il **link della PWA**. Nessuno store.
-
-## Scelte/limiti Fase 1
-- **Audio non caricato su Storage** (free tier 1GB): solo metadati + posizione.
-- Riconoscimento **solo canto** (foto → fase successiva).
-- Mapping BirdNET→catalogo per `birdnet_label` (fallback: nome scientifico).
-- **Da validare on-device**: su web il formato del file registrato (`record` →
-  `decodeAudioData`) può variare per browser, in particolare iOS Safari.
-
-## Spike di validazione (storia tecnica)
-`spike/web_recognizer/` (tfjs-tflite, fallito su FFT) e `spike/web_recognizer_tfjs/`
-(TF.js ufficiale, OK: merlo → *Turdus merula*, ~273 ms). Cartelle standalone, non
-parte dell'app.
-
-## Roadmap
-1. **MVP** (questa fase) — UT01, UT02, UT04
-2. Mappa avvistamenti (UT03) + habitat (UT05) — MapLibre (`maplibre_gl` Android / GL JS web) + OpenFreeMap
-3. Raccolte (UT06), lista desideri (UT07), profilo (UT09)
-4. Social: amici e condivisione (UT08)
-5. Riconoscimento da foto on-device
+Modelli di riconoscimento: BirdNET (CC BY-NC-SA 4.0) e AIY Vision Birds V1 (Apache 2.0).
+Foto delle specie da iNaturalist, mappe da OpenStreetMap, distribuzione e tassonomia da
+GBIF, dati morfologici da BIRDBASE, descrizioni da Wikipedia. Progetto non commerciale.
