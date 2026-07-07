@@ -5,6 +5,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/selettore_lingua.dart';
 import '../../auth/application/auth_controller.dart';
+import '../../feedback/presentation/feedback_screen.dart';
 import 'account_screen.dart';
 import 'informazioni_screen.dart';
 
@@ -53,6 +54,17 @@ class ImpostazioniScreen extends ConsumerWidget {
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute<void>(
                       builder: (_) => const InformazioniScreen(),
+                    ),
+                  ),
+                ),
+                const Divider(height: 1),
+                _RigaCategoria(
+                  icona: Icons.feedback_outlined,
+                  titolo: l10n.feedbackTitle,
+                  sottotitolo: l10n.feedbackSubtitle,
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => const FeedbackScreen(),
                     ),
                   ),
                 ),

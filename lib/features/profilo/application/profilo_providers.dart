@@ -15,6 +15,7 @@ abstract final class DatiProfilo {
   static const localita = 'localita';
   static const avatar = 'avatar'; // path dell'avatar nel bucket 'avatar'
   static const condividiTutti = 'condividi_tutti'; // bool: condividi tutto
+  static const developer = 'developer'; // bool: badge sviluppatore
 }
 
 /// Livello "birder" ASSEGNATO DAL SISTEMA in base al numero di SPECIE DIVERSE

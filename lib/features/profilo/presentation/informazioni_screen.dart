@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../../core/link_esterni.dart';
 import '../../../core/versione_locale.dart';
 import '../../../l10n/app_localizations.dart';
 
@@ -28,6 +30,22 @@ class InformazioniScreen extends StatelessWidget {
                   subtitle: Text('${l10n.versionLabel} $kVersioneApp'),
                 ),
                 const Divider(height: 1),
+                ListTile(
+                  leading: const Icon(Icons.code),
+                  title: Text(l10n.aboutGithub),
+                  subtitle: Text(l10n.aboutGithubSubtitle),
+                  trailing: const Icon(Icons.open_in_new, size: 18),
+                  onTap: () => _apri(kUrlGithubProfilo),
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  leading: const Icon(Icons.favorite_border),
+                  title: Text(l10n.aboutDonate),
+                  subtitle: Text(l10n.aboutDonateSubtitle),
+                  trailing: const Icon(Icons.open_in_new, size: 18),
+                  onTap: () => _apri(kUrlDonazioni),
+                ),
+                const Divider(height: 1),
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: Text(
@@ -43,5 +61,10 @@ class InformazioniScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _apri(String url) async {
+    final uri = Uri.tryParse(url);
+    if (uri != null) await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 }

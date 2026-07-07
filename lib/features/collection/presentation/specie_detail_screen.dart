@@ -8,6 +8,7 @@ import '../../../data/repositories/specie_immagine_repository.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/nome_specie.dart';
 import '../../../shared/ordine_tassonomico.dart';
+import '../../../shared/widgets/contenuto_centrato.dart';
 import '../../../shared/widgets/state_views.dart';
 import '../../desideri/application/desideri_providers.dart';
 import '../../desideri/presentation/desiderio_button.dart';
@@ -52,8 +53,11 @@ class _Dettaglio extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final ordineIt = ordineInItaliano(specie.ordine);
 
-    // Contenuto scorrevole + barra azioni pinnata in basso.
-    return Column(
+    // Contenuto scorrevole + barra azioni pinnata in basso. Centrato a
+    // larghezza mobile sul desktop (come le altre schermate) → la hero non si
+    // stira a tutta la pagina.
+    return ContenutoCentrato(
+      child: Column(
       children: [
         Expanded(
           child: ListView(
@@ -146,6 +150,7 @@ class _Dettaglio extends ConsumerWidget {
         ),
         _BarraAzioni(specie),
       ],
+      ),
     );
   }
 

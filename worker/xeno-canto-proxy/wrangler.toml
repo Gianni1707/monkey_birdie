@@ -9,5 +9,7 @@ compatibility_date = "2024-11-01"
 routes = [
   { pattern = "monkeybirdie.com/api/xc*", zone_name = "monkeybirdie.com" },
   # Proxy GBIF occurrence (Uccelli nei dintorni): evita i 403/CORS lato browser.
-  { pattern = "monkeybirdie.com/api/gbif*", zone_name = "monkeybirdie.com" }
+  { pattern = "monkeybirdie.com/api/gbif*", zone_name = "monkeybirdie.com" },
+  # Notifica email feedback (Database Webhook Supabase → Resend).
+  { pattern = "monkeybirdie.com/api/feedback-mail*", zone_name = "monkeybirdie.com" }
 ]

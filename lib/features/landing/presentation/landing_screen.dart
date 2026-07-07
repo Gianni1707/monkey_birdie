@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../core/link_esterni.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../l10n/app_localizations.dart';
 
-// Link esterni della landing (non segreti).
-const _kUrlGithub = 'https://github.com/Gianni1707';
-const _kUrlReleases = 'https://github.com/Gianni1707/monkey_birdie/releases';
+// Email di contatto della landing (non segreta). Gli altri link in link_esterni.
 const _kEmailContatti = 'beneficogianni@gmail.com';
 
 const double _kMaxWidth = 1120;
@@ -483,7 +482,7 @@ class _Disponibile extends StatelessWidget {
       corpo: l10n.landingAndroidBody,
       bottone: l10n.landingAndroidButton,
       nota: l10n.landingAndroidNote,
-      onTap: () => _apri(_kUrlReleases),
+      onTap: () => _apri(kUrlReleasesApk),
     );
     return Container(
       width: double.infinity,
@@ -702,7 +701,8 @@ class _Footer extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                link(l10n.landingGithub, () => _apri(_kUrlGithub)),
+                link(l10n.landingGithub, () => _apri(kUrlGithubProfilo)),
+                link(l10n.aboutDonate, () => _apri(kUrlDonazioni)),
                 link(l10n.landingContacts, () => _apri('mailto:$_kEmailContatti')),
                 link(l10n.privacyTitle, () => context.go('/privacy')),
               ],

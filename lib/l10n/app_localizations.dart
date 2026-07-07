@@ -1631,8 +1631,104 @@ abstract class AppLocalizations {
   /// No description provided for @nonCommercialNote.
   ///
   /// In it, this message translates to:
-  /// **'MonkeyBirdie è un progetto non commerciale, a costo zero.'**
+  /// **'MonkeyBirdie è un progetto personale e non commerciale.'**
   String get nonCommercialNote;
+
+  /// No description provided for @aboutGithub.
+  ///
+  /// In it, this message translates to:
+  /// **'GitHub'**
+  String get aboutGithub;
+
+  /// No description provided for @aboutGithubSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Il mio profilo'**
+  String get aboutGithubSubtitle;
+
+  /// No description provided for @aboutDonate.
+  ///
+  /// In it, this message translates to:
+  /// **'Sostieni il progetto'**
+  String get aboutDonate;
+
+  /// No description provided for @aboutDonateSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Offrimi un caffè su Ko-fi'**
+  String get aboutDonateSubtitle;
+
+  /// No description provided for @developerBadge.
+  ///
+  /// In it, this message translates to:
+  /// **'Developer'**
+  String get developerBadge;
+
+  /// No description provided for @feedbackTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Invia un feedback'**
+  String get feedbackTitle;
+
+  /// No description provided for @feedbackSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Consigli, bug o altro: mi arrivano direttamente'**
+  String get feedbackSubtitle;
+
+  /// No description provided for @feedbackType.
+  ///
+  /// In it, this message translates to:
+  /// **'Tipo'**
+  String get feedbackType;
+
+  /// No description provided for @feedbackTypeConsiglio.
+  ///
+  /// In it, this message translates to:
+  /// **'Consiglio'**
+  String get feedbackTypeConsiglio;
+
+  /// No description provided for @feedbackTypeBug.
+  ///
+  /// In it, this message translates to:
+  /// **'Bug'**
+  String get feedbackTypeBug;
+
+  /// No description provided for @feedbackTypeAltro.
+  ///
+  /// In it, this message translates to:
+  /// **'Altro'**
+  String get feedbackTypeAltro;
+
+  /// No description provided for @feedbackMessage.
+  ///
+  /// In it, this message translates to:
+  /// **'Messaggio'**
+  String get feedbackMessage;
+
+  /// No description provided for @feedbackHint.
+  ///
+  /// In it, this message translates to:
+  /// **'Scrivi qui il tuo feedback…'**
+  String get feedbackHint;
+
+  /// No description provided for @feedbackSend.
+  ///
+  /// In it, this message translates to:
+  /// **'Invia'**
+  String get feedbackSend;
+
+  /// No description provided for @feedbackThanks.
+  ///
+  /// In it, this message translates to:
+  /// **'Grazie! Il tuo feedback è stato inviato.'**
+  String get feedbackThanks;
+
+  /// No description provided for @feedbackEmpty.
+  ///
+  /// In it, this message translates to:
+  /// **'Scrivi un messaggio prima di inviare.'**
+  String get feedbackEmpty;
 
   /// No description provided for @profileSaved.
   ///

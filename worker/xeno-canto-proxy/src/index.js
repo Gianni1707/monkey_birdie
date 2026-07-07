@@ -7,6 +7,12 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+    // Ramo FEEDBACK: Database Webhook Supabase (INSERT su `feedback`) → invia
+    // l'email di notifica via Resend. Solo server-to-server, protetto da secret.
+    if (url.pathname.startsWith("/api/feedback-mail")) {
+      return feedbackMail(request, env);
+    }
+
     // Ramo GBIF: /api/gbif?... → proxa la occurrence search (stessa query
     // string) aggiungendo CORS. Evita i 403/CORS lato browser (Uccelli in zona).
     if (url.pathname.startsWith("/api/gbif")) return proxyGbif(url);
@@ -106,6 +112,68 @@ async function proxyGbif(url) {
       "cache-control": "public, max-age=3600",
     },
   });
+}
+
+// Notifica email dei feedback. Riceve il payload del Database Webhook Supabase
+// (INSERT su `feedback`) e invia un'email via Resend. Protetto da un secret
+// (header Authorization: Bearer <FEEDBACK_HOOK_SECRET>) così nessuno può spammare.
+const _DEST_FEEDBACK = "beneficogianni@gmail.com";
+const _MITTENTE_FEEDBACK = "MonkeyBirdie <no-reply@monkeybirdie.com>";
+
+async function feedbackMail(request, env) {
+  if (request.method !== "POST") return json({ error: "method" }, 405);
+  const atteso = `Bearer ${env.FEEDBACK_HOOK_SECRET || ""}`;
+  if (!env.FEEDBACK_HOOK_SECRET || request.headers.get("authorization") !== atteso) {
+    return json({ error: "unauthorized" }, 401);
+  }
+  if (!env.RESEND_API_KEY) return json({ error: "server not configured" }, 500);
+
+  let record;
+  try {
+    const body = await request.json();
+    record = body.record || body; // supporta payload webhook o riga diretta
+  } catch (_) {
+    return json({ error: "bad payload" }, 400);
+  }
+
+  const tipo = esc(record.tipo || "altro");
+  const testo = [
+    `Tipo: ${record.tipo || "altro"}`,
+    `Messaggio: ${record.messaggio || ""}`,
+    `Versione app: ${record.versione_app || "-"}`,
+    `Piattaforma: ${record.piattaforma || "-"}`,
+    `Utente: ${record.utente_id || "-"}`,
+    `Data: ${record.creato_il || ""}`,
+  ].join("\n");
+  const html = `<h2>Nuovo feedback: ${tipo}</h2><pre style="font:14px/1.5 monospace;white-space:pre-wrap">${esc(testo)}</pre>`;
+
+  let resp;
+  try {
+    resp = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${env.RESEND_API_KEY}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        from: _MITTENTE_FEEDBACK,
+        to: [_DEST_FEEDBACK],
+        subject: `[MonkeyBirdie] Nuovo ${record.tipo || "feedback"}`,
+        text: testo,
+        html,
+      }),
+    });
+  } catch (_) {
+    return json({ error: "resend_unreachable" }, 502);
+  }
+  return json({ ok: resp.ok }, resp.ok ? 200 : 502);
+}
+
+function esc(s) {
+  return String(s)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
 }
 
 function json(obj, status) {

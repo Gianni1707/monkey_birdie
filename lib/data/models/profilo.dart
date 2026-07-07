@@ -6,6 +6,8 @@ part 'profilo.g.dart';
 /// Tabella `profili` (estende auth.users).
 @freezed
 class Profilo with _$Profilo {
+  const Profilo._();
+
   const factory Profilo({
     required String id,
     required String username,
@@ -16,4 +18,7 @@ class Profilo with _$Profilo {
 
   factory Profilo.fromJson(Map<String, dynamic> json) =>
       _$ProfiloFromJson(json);
+
+  /// Badge sviluppatore: flag `developer` in `dati_personali` (jsonb).
+  bool get isDeveloper => datiPersonali['developer'] == true;
 }

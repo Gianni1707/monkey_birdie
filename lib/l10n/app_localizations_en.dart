@@ -826,7 +826,56 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nonCommercialNote =>
-      'MonkeyBirdie is a non-commercial, zero-cost project.';
+      'MonkeyBirdie is a personal, non-commercial project.';
+
+  @override
+  String get aboutGithub => 'GitHub';
+
+  @override
+  String get aboutGithubSubtitle => 'My profile';
+
+  @override
+  String get aboutDonate => 'Support the project';
+
+  @override
+  String get aboutDonateSubtitle => 'Buy me a coffee on Ko-fi';
+
+  @override
+  String get developerBadge => 'Developer';
+
+  @override
+  String get feedbackTitle => 'Send feedback';
+
+  @override
+  String get feedbackSubtitle =>
+      'Suggestions, bugs or anything else: they reach me directly';
+
+  @override
+  String get feedbackType => 'Type';
+
+  @override
+  String get feedbackTypeConsiglio => 'Suggestion';
+
+  @override
+  String get feedbackTypeBug => 'Bug';
+
+  @override
+  String get feedbackTypeAltro => 'Other';
+
+  @override
+  String get feedbackMessage => 'Message';
+
+  @override
+  String get feedbackHint => 'Write your feedback here…';
+
+  @override
+  String get feedbackSend => 'Send';
+
+  @override
+  String get feedbackThanks => 'Thanks! Your feedback has been sent.';
+
+  @override
+  String get feedbackEmpty => 'Write a message before sending.';
 
   @override
   String get profileSaved => 'Profile updated.';

@@ -9,6 +9,7 @@ import '../../../shared/nome_specie.dart';
 import '../../../shared/widgets/avatar_utente.dart';
 import '../../../shared/widgets/avvistamento_foto.dart';
 import '../../../shared/widgets/avvistamento_tile.dart';
+import '../../../shared/widgets/badge_developer.dart';
 import '../../../shared/widgets/state_views.dart';
 import '../../amici/application/condivisione_providers.dart';
 import '../../amici/presentation/pulsante_amicizia.dart';
@@ -51,6 +52,7 @@ class ProfiloPubblicoScreen extends ConsumerWidget {
                   AvatarUtente(profilo: profilo, size: 104),
                   const SizedBox(height: 12),
                   Text(profilo.username, style: t.headlineSmall),
+                  BadgeDeveloper(profilo: profilo),
                   if (sub != null) ...[
                     const SizedBox(height: 2),
                     Text(
