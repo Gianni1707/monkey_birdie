@@ -75,6 +75,7 @@ flutter:
     - assets/models/
     - assets/labels/
     - assets/branding/logo_uccello.png
+    - assets/landing/
   # Font bundlati (offline/PWA-safe, nessuna dipendenza runtime). Variabili:
   # il peso si seleziona via fontWeight nel tema. Titoli=serif, corpo=Inter.
   fonts:

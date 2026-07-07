@@ -154,6 +154,131 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String get landingEyebrow => 'Guida da campo digitale';
+
+  @override
+  String get landingHeroTitle =>
+      'Riconosci gli uccelli dal canto o da una foto.';
+
+  @override
+  String get landingHeroSubtitle =>
+      'Il tuo diario di campo digitale: identifica, colleziona e condividi ogni avvistamento.';
+
+  @override
+  String get landingStartNow => 'Inizia ora';
+
+  @override
+  String get landingHowTitle => 'Come funziona';
+
+  @override
+  String get landingStepWord => 'Passo';
+
+  @override
+  String get landingStep1 => 'Ascolta o fotografa';
+
+  @override
+  String get landingStep2 => 'Scopri la specie';
+
+  @override
+  String get landingStep3 => 'Salva nella collezione';
+
+  @override
+  String get landingFeaturesTitle => 'Tutto quello che serve sul campo';
+
+  @override
+  String get landingFeat1Title => 'Riconoscimento dal canto e dalla foto';
+
+  @override
+  String get landingFeat1Body => 'L\'IA identifica la specie in pochi secondi.';
+
+  @override
+  String get landingFeat2Title => 'Collezione e mappa';
+
+  @override
+  String get landingFeat2Body =>
+      'Ogni avvistamento nella tua raccolta e sulla mappa.';
+
+  @override
+  String get landingFeat3Title => 'Schede da guida da campo';
+
+  @override
+  String get landingFeat3Body =>
+      'Descrizione, habitat, dati e il verso di ogni specie.';
+
+  @override
+  String get landingFeat4Title => 'Amici e condivisione';
+
+  @override
+  String get landingFeat4Body =>
+      'Segui gli amici e condividi i tuoi avvistamenti.';
+
+  @override
+  String get landingPreviewTitle => 'Dai un\'occhiata all\'app';
+
+  @override
+  String get landingPreviewSubtitle =>
+      'Collezione, schede specie e mappa degli avvistamenti.';
+
+  @override
+  String get landingAvailEyebrow => 'Come si usa';
+
+  @override
+  String get landingAvailTitle => 'Disponibile su iPhone e Android';
+
+  @override
+  String get landingAvailSubtitle =>
+      'L\'esperienza completa di MonkeyBirdie su entrambi i sistemi. Scegli il tuo dispositivo.';
+
+  @override
+  String get landingIphoneTitle => 'Su iPhone';
+
+  @override
+  String get landingIphoneTag => 'App web · Nessun download';
+
+  @override
+  String get landingIphoneBody =>
+      'Nessuna installazione: apri MonkeyBirdie dal browser e, da Safari, tocca «Aggiungi a Home» per averla come un\'app.';
+
+  @override
+  String get landingIphoneButton => 'Apri l\'app';
+
+  @override
+  String get landingAndroidTitle => 'Su Android';
+
+  @override
+  String get landingAndroidTag => 'App nativa · Sempre aggiornata';
+
+  @override
+  String get landingAndroidBody =>
+      'Scarica l\'app (file APK) e installala. Riceverai gli avvisi di aggiornamento direttamente nell\'app.';
+
+  @override
+  String get landingAndroidButton => 'Scarica per Android';
+
+  @override
+  String get landingAndroidNote =>
+      'Ti verrà chiesto di consentire l\'installazione da questa origine: è normale per le app fuori dagli store.';
+
+  @override
+  String get landingClosing => 'Inizia a osservare in un modo nuovo.';
+
+  @override
+  String get landingEnter => 'Entra nell\'app';
+
+  @override
+  String get landingContacts => 'Contatti';
+
+  @override
+  String get landingGithub => 'GitHub';
+
+  @override
+  String get privacyTitle => 'Privacy';
+
+  @override
+  String get privacyBody =>
+      'MonkeyBirdie è un progetto personale e non commerciale. I tuoi dati (account, avvistamenti, foto e posizione) sono conservati sul backend Supabase e servono solo a far funzionare l\'app: la tua collezione, la mappa e la condivisione con gli amici. Gli avvistamenti sono privati per impostazione predefinita e diventano visibili agli amici soltanto se attivi tu la condivisione. Non vendiamo dati e non usiamo tracciamento pubblicitario. Il riconoscimento delle specie avviene sul dispositivo. Per qualsiasi richiesta, o per cancellare il tuo account e i tuoi dati, scrivi a beneficogianni@gmail.com.';
+
+  @override
   String get tabRecognize => 'Riconosci';
 
   @override

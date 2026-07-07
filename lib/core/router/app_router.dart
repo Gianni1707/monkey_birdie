@@ -14,6 +14,8 @@ import '../../features/amici/presentation/amici_screen.dart';
 import '../../features/collection/presentation/specie_detail_screen.dart';
 import '../../features/dintorni/presentation/dintorni_screen.dart';
 import '../../features/home/presentation/home_shell.dart';
+import '../../features/landing/presentation/landing_screen.dart';
+import '../../features/landing/presentation/privacy_screen.dart';
 import '../../features/profilo/presentation/profilo_pubblico_screen.dart';
 import '../../features/raccolte/presentation/raccolta_dettaglio_screen.dart';
 
@@ -52,13 +54,23 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       }
 
       final loggato = client.auth.currentSession != null;
-      final suAuth = loc == '/login' ||
-          loc == '/register' ||
-          loc == '/recupera-password';
+      const pubbliche = ['/login', '/register', '/recupera-password'];
+      final suAuth = pubbliche.contains(loc);
 
-      if (!loggato) return suAuth ? null : '/login';
-      if (suAuth) return '/';
-      return null;
+      if (loggato) {
+        // Loggato: landing/pagine di accesso non servono → home.
+        if (suAuth || loc == '/landing') return '/';
+        return null;
+      }
+      // Non loggato:
+      if (kIsWeb) {
+        // Web: landing di ingresso. Consentiti landing, accesso, privacy;
+        // ogni altra rotta → landing.
+        if (suAuth || loc == '/landing' || loc == '/privacy') return null;
+        return '/landing';
+      }
+      // App nativa (Android): niente landing marketing → login.
+      return suAuth ? null : '/login';
     },
     routes: [
       GoRoute(path: '/login', builder: (_, __) => const LoginScreen()),
@@ -95,6 +107,8 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/dintorni',
         builder: (_, __) => const DintorniScreen(),
       ),
+      GoRoute(path: '/landing', builder: (_, __) => const LandingScreen()),
+      GoRoute(path: '/privacy', builder: (_, __) => const PrivacyScreen()),
     ],
   );
   ref.onDispose(router.dispose);

@@ -368,6 +368,234 @@ abstract class AppLocalizations {
   /// **'Registrazione di {autore} · XC{id} · xeno-canto'**
   String recordingCredit(String autore, String id);
 
+  /// No description provided for @landingEyebrow.
+  ///
+  /// In it, this message translates to:
+  /// **'Guida da campo digitale'**
+  String get landingEyebrow;
+
+  /// No description provided for @landingHeroTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Riconosci gli uccelli dal canto o da una foto.'**
+  String get landingHeroTitle;
+
+  /// No description provided for @landingHeroSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Il tuo diario di campo digitale: identifica, colleziona e condividi ogni avvistamento.'**
+  String get landingHeroSubtitle;
+
+  /// No description provided for @landingStartNow.
+  ///
+  /// In it, this message translates to:
+  /// **'Inizia ora'**
+  String get landingStartNow;
+
+  /// No description provided for @landingHowTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Come funziona'**
+  String get landingHowTitle;
+
+  /// No description provided for @landingStepWord.
+  ///
+  /// In it, this message translates to:
+  /// **'Passo'**
+  String get landingStepWord;
+
+  /// No description provided for @landingStep1.
+  ///
+  /// In it, this message translates to:
+  /// **'Ascolta o fotografa'**
+  String get landingStep1;
+
+  /// No description provided for @landingStep2.
+  ///
+  /// In it, this message translates to:
+  /// **'Scopri la specie'**
+  String get landingStep2;
+
+  /// No description provided for @landingStep3.
+  ///
+  /// In it, this message translates to:
+  /// **'Salva nella collezione'**
+  String get landingStep3;
+
+  /// No description provided for @landingFeaturesTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Tutto quello che serve sul campo'**
+  String get landingFeaturesTitle;
+
+  /// No description provided for @landingFeat1Title.
+  ///
+  /// In it, this message translates to:
+  /// **'Riconoscimento dal canto e dalla foto'**
+  String get landingFeat1Title;
+
+  /// No description provided for @landingFeat1Body.
+  ///
+  /// In it, this message translates to:
+  /// **'L\'IA identifica la specie in pochi secondi.'**
+  String get landingFeat1Body;
+
+  /// No description provided for @landingFeat2Title.
+  ///
+  /// In it, this message translates to:
+  /// **'Collezione e mappa'**
+  String get landingFeat2Title;
+
+  /// No description provided for @landingFeat2Body.
+  ///
+  /// In it, this message translates to:
+  /// **'Ogni avvistamento nella tua raccolta e sulla mappa.'**
+  String get landingFeat2Body;
+
+  /// No description provided for @landingFeat3Title.
+  ///
+  /// In it, this message translates to:
+  /// **'Schede da guida da campo'**
+  String get landingFeat3Title;
+
+  /// No description provided for @landingFeat3Body.
+  ///
+  /// In it, this message translates to:
+  /// **'Descrizione, habitat, dati e il verso di ogni specie.'**
+  String get landingFeat3Body;
+
+  /// No description provided for @landingFeat4Title.
+  ///
+  /// In it, this message translates to:
+  /// **'Amici e condivisione'**
+  String get landingFeat4Title;
+
+  /// No description provided for @landingFeat4Body.
+  ///
+  /// In it, this message translates to:
+  /// **'Segui gli amici e condividi i tuoi avvistamenti.'**
+  String get landingFeat4Body;
+
+  /// No description provided for @landingPreviewTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Dai un\'occhiata all\'app'**
+  String get landingPreviewTitle;
+
+  /// No description provided for @landingPreviewSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Collezione, schede specie e mappa degli avvistamenti.'**
+  String get landingPreviewSubtitle;
+
+  /// No description provided for @landingAvailEyebrow.
+  ///
+  /// In it, this message translates to:
+  /// **'Come si usa'**
+  String get landingAvailEyebrow;
+
+  /// No description provided for @landingAvailTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Disponibile su iPhone e Android'**
+  String get landingAvailTitle;
+
+  /// No description provided for @landingAvailSubtitle.
+  ///
+  /// In it, this message translates to:
+  /// **'L\'esperienza completa di MonkeyBirdie su entrambi i sistemi. Scegli il tuo dispositivo.'**
+  String get landingAvailSubtitle;
+
+  /// No description provided for @landingIphoneTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Su iPhone'**
+  String get landingIphoneTitle;
+
+  /// No description provided for @landingIphoneTag.
+  ///
+  /// In it, this message translates to:
+  /// **'App web · Nessun download'**
+  String get landingIphoneTag;
+
+  /// No description provided for @landingIphoneBody.
+  ///
+  /// In it, this message translates to:
+  /// **'Nessuna installazione: apri MonkeyBirdie dal browser e, da Safari, tocca «Aggiungi a Home» per averla come un\'app.'**
+  String get landingIphoneBody;
+
+  /// No description provided for @landingIphoneButton.
+  ///
+  /// In it, this message translates to:
+  /// **'Apri l\'app'**
+  String get landingIphoneButton;
+
+  /// No description provided for @landingAndroidTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Su Android'**
+  String get landingAndroidTitle;
+
+  /// No description provided for @landingAndroidTag.
+  ///
+  /// In it, this message translates to:
+  /// **'App nativa · Sempre aggiornata'**
+  String get landingAndroidTag;
+
+  /// No description provided for @landingAndroidBody.
+  ///
+  /// In it, this message translates to:
+  /// **'Scarica l\'app (file APK) e installala. Riceverai gli avvisi di aggiornamento direttamente nell\'app.'**
+  String get landingAndroidBody;
+
+  /// No description provided for @landingAndroidButton.
+  ///
+  /// In it, this message translates to:
+  /// **'Scarica per Android'**
+  String get landingAndroidButton;
+
+  /// No description provided for @landingAndroidNote.
+  ///
+  /// In it, this message translates to:
+  /// **'Ti verrà chiesto di consentire l\'installazione da questa origine: è normale per le app fuori dagli store.'**
+  String get landingAndroidNote;
+
+  /// No description provided for @landingClosing.
+  ///
+  /// In it, this message translates to:
+  /// **'Inizia a osservare in un modo nuovo.'**
+  String get landingClosing;
+
+  /// No description provided for @landingEnter.
+  ///
+  /// In it, this message translates to:
+  /// **'Entra nell\'app'**
+  String get landingEnter;
+
+  /// No description provided for @landingContacts.
+  ///
+  /// In it, this message translates to:
+  /// **'Contatti'**
+  String get landingContacts;
+
+  /// No description provided for @landingGithub.
+  ///
+  /// In it, this message translates to:
+  /// **'GitHub'**
+  String get landingGithub;
+
+  /// No description provided for @privacyTitle.
+  ///
+  /// In it, this message translates to:
+  /// **'Privacy'**
+  String get privacyTitle;
+
+  /// No description provided for @privacyBody.
+  ///
+  /// In it, this message translates to:
+  /// **'MonkeyBirdie è un progetto personale e non commerciale. I tuoi dati (account, avvistamenti, foto e posizione) sono conservati sul backend Supabase e servono solo a far funzionare l\'app: la tua collezione, la mappa e la condivisione con gli amici. Gli avvistamenti sono privati per impostazione predefinita e diventano visibili agli amici soltanto se attivi tu la condivisione. Non vendiamo dati e non usiamo tracciamento pubblicitario. Il riconoscimento delle specie avviene sul dispositivo. Per qualsiasi richiesta, o per cancellare il tuo account e i tuoi dati, scrivi a beneficogianni@gmail.com.'**
+  String get privacyBody;
+
   /// No description provided for @tabRecognize.
   ///
   /// In it, this message translates to:

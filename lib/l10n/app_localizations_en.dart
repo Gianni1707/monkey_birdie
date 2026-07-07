@@ -153,6 +153,129 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get landingEyebrow => 'Digital field guide';
+
+  @override
+  String get landingHeroTitle => 'Identify birds by their song or a photo.';
+
+  @override
+  String get landingHeroSubtitle =>
+      'Your digital field journal: identify, collect and share every sighting.';
+
+  @override
+  String get landingStartNow => 'Get started';
+
+  @override
+  String get landingHowTitle => 'How it works';
+
+  @override
+  String get landingStepWord => 'Step';
+
+  @override
+  String get landingStep1 => 'Listen or take a photo';
+
+  @override
+  String get landingStep2 => 'Discover the species';
+
+  @override
+  String get landingStep3 => 'Save to your collection';
+
+  @override
+  String get landingFeaturesTitle => 'Everything you need in the field';
+
+  @override
+  String get landingFeat1Title => 'Recognition by song and photo';
+
+  @override
+  String get landingFeat1Body => 'The AI identifies the species in seconds.';
+
+  @override
+  String get landingFeat2Title => 'Collection and map';
+
+  @override
+  String get landingFeat2Body =>
+      'Every sighting in your collection and on the map.';
+
+  @override
+  String get landingFeat3Title => 'Field-guide species pages';
+
+  @override
+  String get landingFeat3Body =>
+      'Description, habitat, data and the call of each species.';
+
+  @override
+  String get landingFeat4Title => 'Friends and sharing';
+
+  @override
+  String get landingFeat4Body => 'Follow friends and share your sightings.';
+
+  @override
+  String get landingPreviewTitle => 'Take a look at the app';
+
+  @override
+  String get landingPreviewSubtitle =>
+      'Collection, species pages and the sightings map.';
+
+  @override
+  String get landingAvailEyebrow => 'How to use it';
+
+  @override
+  String get landingAvailTitle => 'Available on iPhone and Android';
+
+  @override
+  String get landingAvailSubtitle =>
+      'The full MonkeyBirdie experience on both systems. Choose your device.';
+
+  @override
+  String get landingIphoneTitle => 'On iPhone';
+
+  @override
+  String get landingIphoneTag => 'Web app · No download';
+
+  @override
+  String get landingIphoneBody =>
+      'No installation: open MonkeyBirdie in the browser and, from Safari, tap “Add to Home Screen” to use it like an app.';
+
+  @override
+  String get landingIphoneButton => 'Open the app';
+
+  @override
+  String get landingAndroidTitle => 'On Android';
+
+  @override
+  String get landingAndroidTag => 'Native app · Always up to date';
+
+  @override
+  String get landingAndroidBody =>
+      'Download the app (APK file) and install it. You\'ll get update notices right in the app.';
+
+  @override
+  String get landingAndroidButton => 'Download for Android';
+
+  @override
+  String get landingAndroidNote =>
+      'You\'ll be asked to allow installation from this source: that\'s normal for apps outside the stores.';
+
+  @override
+  String get landingClosing => 'Start birdwatching in a new way.';
+
+  @override
+  String get landingEnter => 'Enter the app';
+
+  @override
+  String get landingContacts => 'Contacts';
+
+  @override
+  String get landingGithub => 'GitHub';
+
+  @override
+  String get privacyTitle => 'Privacy';
+
+  @override
+  String get privacyBody =>
+      'MonkeyBirdie is a personal, non-commercial project. Your data (account, sightings, photos and location) is stored on the Supabase backend and is used only to run the app: your collection, the map and sharing with friends. Sightings are private by default and become visible to friends only if you turn sharing on. We don\'t sell data and we don\'t use advertising tracking. Species recognition runs on your device. For any request, or to delete your account and data, write to beneficogianni@gmail.com.';
+
+  @override
   String get tabRecognize => 'Recognize';
 
   @override
