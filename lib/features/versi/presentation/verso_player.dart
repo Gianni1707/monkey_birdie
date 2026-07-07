@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -47,6 +48,12 @@ class _VersoPlayerState extends State<VersoPlayer> {
     super.dispose();
   }
 
+  /// Sul web l'audio passa dal Worker (same-origin, senza Content-Disposition,
+  /// così il browser lo riproduce inline); su Android il file diretto va bene.
+  String get _urlRiproduzione => kIsWeb
+      ? '$kXenoCantoProxy?audio=${widget.verso.xcId}'
+      : widget.verso.audioUrl;
+
   Future<void> _toggle() async {
     if (_inRiproduzione) {
       await _player.pause();
@@ -57,7 +64,7 @@ class _VersoPlayerState extends State<VersoPlayer> {
       if (_avviato) {
         await _player.resume();
       } else {
-        await _player.play(UrlSource(widget.verso.audioUrl));
+        await _player.play(UrlSource(_urlRiproduzione));
         _avviato = true;
       }
     } catch (_) {

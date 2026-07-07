@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +9,10 @@ import '../../../core/locale/locale_controller.dart';
 
 /// Raggio di ricerca "nei dintorni" (GBIF + community), in km.
 const int kRaggioDintorniKm = 25;
+
+/// Sul web la occurrence search GBIF passa dal Worker (same-origin, con CORS,
+/// niente 403 lato browser); su Android si va diretti a GBIF.
+const String kGbifProxy = 'https://monkeybirdie.com/api/gbif';
 
 /// GBIF per "Uccelli nei dintorni": nomi scientifici delle specie di uccelli
 /// (classe Aves, taxonKey 212) osservate entro [kRaggioDintorniKm] dal punto,
@@ -26,7 +31,7 @@ class DintorniRepository {
 
     try {
       final annoMax = DateTime.now().year;
-      final uri = Uri.https('api.gbif.org', '/v1/occurrence/search', {
+      final params = {
         'taxonKey': '212', // classe Aves nel backbone GBIF
         'basisOfRecord': 'HUMAN_OBSERVATION',
         'hasCoordinate': 'true',
@@ -34,7 +39,10 @@ class DintorniRepository {
         // Dato STORICO ma non preistorico: ultimi ~10 anni.
         'year': '${annoMax - 10},$annoMax',
         'limit': '300',
-      });
+      };
+      final uri = kIsWeb
+          ? Uri.parse(kGbifProxy).replace(queryParameters: params)
+          : Uri.https('api.gbif.org', '/v1/occurrence/search', params);
       final resp = await http
           .get(uri, headers: {'User-Agent': _userAgent})
           .timeout(const Duration(seconds: 8));
