@@ -20,7 +20,7 @@ pubspec.lock        # app non pubblicata: lock non versionato per ora
 *.iml
 
 # Segreti / config locale Claude
-.claude/settings.local.json
+.claude/
 CLAUDE.md
 
 # Modelli on-device (grandi, non versionarli: vedi README)
