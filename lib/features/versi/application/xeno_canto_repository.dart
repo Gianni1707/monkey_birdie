@@ -7,8 +7,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/locale/locale_controller.dart';
 
 /// Endpoint del proxy (Cloudflare Worker) che aggiunge la API key xeno-canto.
-/// Same-origin sul web; assoluto su Android. NON è un segreto (è solo l'URL).
-const String kXenoCantoProxy = 'https://monkeybirdie.com/api/xc';
+/// USA l'URL `workers.dev` e NON `monkeybirdie.com`: quest'ultimo resetta le
+/// connessioni dei client non-browser (l'app nativa), mentre `workers.dev`
+/// (come `pages.dev`) è raggiungibile. Vale per web e Android. NON è un segreto.
+const String kXenoCantoProxy =
+    'https://monkeybirdie-xc.super17nuovo.workers.dev/api/xc';
 
 /// Una registrazione del verso scelta per una specie (da xeno-canto, CC).
 /// Porta con sé l'attribuzione obbligatoria: autore + numero XC + pagina.
@@ -52,28 +55,27 @@ class XenoCantoRepository {
   XenoCantoRepository(this._prefs);
   final SharedPreferences _prefs;
 
-  static const _sentinelNessuna = '__none__';
+  // Versione della chiave-cache: alzata per INVALIDARE le cache vecchie (es. i
+  // sentinel "niente registrazione" salvati quando la query xeno-canto era
+  // sbagliata, prima del passaggio ai tag → altrimenti il player non compariva
+  // più per le specie già aperte).
+  static const _cacheVer = 'v2';
+  static const _ttlTrovato = Duration(days: 30);
+  static const _ttlNessuna = Duration(days: 7);
 
   Future<VersoSpecie?> perNomeScientifico(String nomeScientifico) async {
     final nome = nomeScientifico.trim();
     if (nome.isEmpty) return null;
-    final chiave = 'verso_${nome.toLowerCase()}';
+    final chiave = 'verso_${_cacheVer}_${nome.toLowerCase()}';
 
-    final cache = _prefs.getString(chiave);
-    if (cache != null) {
-      if (cache == _sentinelNessuna) return null;
-      try {
-        return VersoSpecie.fromJson(jsonDecode(cache) as Map<String, dynamic>);
-      } catch (_) {
-        // cache corrotta → si riprova sotto
-      }
-    }
+    final cache = _leggiCache(chiave);
+    if (cache != null) return cache.verso; // hit valido (trovato o "niente")
 
     // La v3 accetta SOLO query a tag: niente testo libero. Il nome scientifico
     // va spezzato in gen:<genere> sp:<specie> (+ ssp: se presente).
     final tag = _tagNome(nome);
     if (tag == null) {
-      _prefs.setString(chiave, _sentinelNessuna);
+      _scriviCache(chiave, null);
       return null;
     }
 
@@ -81,16 +83,43 @@ class XenoCantoRepository {
       // Prima le migliori (canto, qualità A); poi fallback allentato.
       final scelto = await _cerca('$tag grp:birds type:song q:A') ??
           await _cerca('$tag grp:birds');
-      if (scelto == null) {
-        _prefs.setString(chiave, _sentinelNessuna);
-        return null;
-      }
-      _prefs.setString(chiave, jsonEncode(scelto.toJson()));
+      _scriviCache(chiave, scelto); // scelto null → "niente" (con timestamp)
       return scelto;
     } catch (_) {
       // Errore/offline: NON cacho (riproverà la prossima volta).
       return null;
     }
+  }
+
+  /// Legge la cache con TTL. Ritorna null se assente/scaduta; altrimenti un
+  /// record col valore (`verso` null = "nessuna registrazione" ancora valida).
+  ({VersoSpecie? verso})? _leggiCache(String chiave) {
+    final raw = _prefs.getString(chiave);
+    if (raw == null) return null;
+    try {
+      final j = jsonDecode(raw) as Map<String, dynamic>;
+      final ts = j['ts'] as int?;
+      if (ts == null) return null;
+      final eta = DateTime.now().millisecondsSinceEpoch - ts;
+      final v = j['verso'];
+      if (v == null) {
+        return eta < _ttlNessuna.inMilliseconds ? (verso: null) : null;
+      }
+      if (eta >= _ttlTrovato.inMilliseconds) return null;
+      return (verso: VersoSpecie.fromJson(v as Map<String, dynamic>));
+    } catch (_) {
+      return null;
+    }
+  }
+
+  void _scriviCache(String chiave, VersoSpecie? verso) {
+    _prefs.setString(
+      chiave,
+      jsonEncode({
+        'ts': DateTime.now().millisecondsSinceEpoch,
+        'verso': verso?.toJson(),
+      }),
+    );
   }
 
   Future<VersoSpecie?> _cerca(String query) async {

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -48,11 +47,11 @@ class _VersoPlayerState extends State<VersoPlayer> {
     super.dispose();
   }
 
-  /// Sul web l'audio passa dal Worker (same-origin, senza Content-Disposition,
-  /// così il browser lo riproduce inline); su Android il file diretto va bene.
-  String get _urlRiproduzione => kIsWeb
-      ? '$kXenoCantoProxy?audio=${widget.verso.xcId}'
-      : widget.verso.audioUrl;
+  /// L'audio passa SEMPRE dal Worker: serve un file "pulito" (audio/wav senza
+  /// Content-Disposition: attachment) — sul web serve per la riproduzione inline,
+  /// su Android perché ExoPlayer non sempre gestisce il redirect+attachment del
+  /// link diretto xeno-canto. Il proxy segue il redirect lato server e cacha.
+  String get _urlRiproduzione => '$kXenoCantoProxy?audio=${widget.verso.xcId}';
 
   Future<void> _toggle() async {
     if (_inRiproduzione) {

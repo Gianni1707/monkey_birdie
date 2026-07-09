@@ -3,6 +3,9 @@
 name = "monkeybirdie-xc"
 main = "src/index.js"
 compatibility_date = "2024-11-01"
+# Espone anche l'URL <name>.<subdomain>.workers.dev, che l'app nativa raggiunge
+# (il dominio custom monkeybirdie.com viene invece resettato per i client non-browser).
+workers_dev = true
 
 # Gira SOLO sul path /api/xc* del dominio (Pages serve tutto il resto).
 # Same-origin per la PWA → niente problemi di CORS lato web.

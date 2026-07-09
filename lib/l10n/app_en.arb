@@ -43,6 +43,7 @@
   },
   "updateLater": "Later",
   "updateDownload": "Download",
+  "updateMandatory": "Update required to keep using the app.",
 
   "nearbyTitle": "Species found in this area",
   "nearbySeenRecently": "Seen here recently",

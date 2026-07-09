@@ -123,6 +123,10 @@ class AppLocalizationsIt extends AppLocalizations {
   String get updateDownload => 'Scarica';
 
   @override
+  String get updateMandatory =>
+      'Aggiornamento richiesto per continuare a usare l\'app.';
+
+  @override
   String get nearbyTitle => 'Specie presenti in questa zona';
 
   @override

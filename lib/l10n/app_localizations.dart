@@ -314,6 +314,12 @@ abstract class AppLocalizations {
   /// **'Scarica'**
   String get updateDownload;
 
+  /// No description provided for @updateMandatory.
+  ///
+  /// In it, this message translates to:
+  /// **'Aggiornamento richiesto per continuare a usare l\'app.'**
+  String get updateMandatory;
+
   /// No description provided for @nearbyTitle.
   ///
   /// In it, this message translates to:
