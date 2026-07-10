@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,11 +8,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/locale/locale_controller.dart';
 
 /// Endpoint del proxy (Cloudflare Worker) che aggiunge la API key xeno-canto.
-/// USA l'URL `workers.dev` e NON `monkeybirdie.com`: quest'ultimo resetta le
-/// connessioni dei client non-browser (l'app nativa), mentre `workers.dev`
-/// (come `pages.dev`) è raggiungibile. Vale per web e Android. NON è un segreto.
-const String kXenoCantoProxy =
-    'https://monkeybirdie-xc.super17nuovo.workers.dev/api/xc';
+/// Dipende dal target:
+/// - **web** → `monkeybirdie.com/api/xc` (same-origin: niente CORS, l'audio si
+///   riproduce inline; il browser raggiunge il dominio custom senza problemi);
+/// - **nativo** → URL `*.workers.dev` del Worker, perché `monkeybirdie.com`
+///   resetta le connessioni dei client non-browser (l'app nativa).
+/// NON è un segreto (è solo l'URL del proxy).
+const String kXenoCantoProxy = kIsWeb
+    ? 'https://monkeybirdie.com/api/xc'
+    : 'https://monkeybirdie-xc.super17nuovo.workers.dev/api/xc';
 
 /// Una registrazione del verso scelta per una specie (da xeno-canto, CC).
 /// Porta con sé l'attribuzione obbligatoria: autore + numero XC + pagina.
